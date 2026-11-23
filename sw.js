@@ -1,7 +1,7 @@
 // CHROMA service worker: precaches the whole game so it runs offline after the first visit.
 // tools/build_web.cjs fills in the cache name and asset list below; a new build gets a new cache name,
 // so the browser installs the update and drops the old cache.
-const CACHE = "chroma-1.1.0-7280dfd424";
+const CACHE = "chroma-1.2.0-9fa55ab938";
 const ASSETS = ["./","index.html","manifest.webmanifest","icons/apple-touch-icon.png","icons/icon-192.png","icons/icon-512.png"];
 
 self.addEventListener('install', event => {
