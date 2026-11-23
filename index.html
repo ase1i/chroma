@@ -1,0 +1,1070 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f6f5f1">
+  <meta name="description" content="CHROMA — спокойная игра о цвете. Переливайте, собирайте оттенки и находите свой порядок.">
+  <title>CHROMA — цветовая лаборатория</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23907af5'/%3E%3Cpath d='M32 12C21 27 16 33 16 41a16 16 0 0 0 32 0c0-8-5-14-16-29' fill='%23fff'/%3E%3C/svg%3E">
+  <style>
+@charset "UTF-8";
+:root{--paper:#f6f5f1;--ink:#29303b;--muted:#777d86;--line:#e8e7e2;--accent:#8771d7;--accent-soft:#eeebf9;--night:#151d32;--scene-glow:#45416f;--scene-ink:#dfe5f8;--font:"Segoe UI",Arial,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.5 var(--font);-webkit-font-smoothing:antialiased}button,a{-webkit-tap-highlight-color:transparent}button{font:inherit;color:inherit;cursor:pointer}button{border:0}button:disabled{cursor:default}button:focus-visible,a:focus-visible{outline:3px solid #ba9cff;outline-offset:5px}button,a{touch-action:manipulation}button svg,svg.icon{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}button{transition:background .18s,transform .18s,color .18s}button:active:not(:disabled){transform:translateY(1px)}a{color:inherit;text-decoration:none}[hidden]{display:none!important}.icon-library{position:absolute;width:0;height:0;overflow:hidden}.app-shell{max-width:1920px;margin:auto;min-height:100dvh;display:grid;grid-template-columns:238px 1fr}.sidebar{padding:35px 21px 26px;border-right:1px solid var(--line);display:flex;flex-direction:column;position:sticky;top:0;height:100dvh;background:#faf9f6}.brand{display:flex;align-items:center;gap:11px;padding-left:10px;font-weight:750;font-size:31px;letter-spacing:-1.7px;line-height:1.1}.brand-dot{color:var(--accent)}.brand-mark{background:var(--accent);width:40px;height:44px;border-radius:14px 14px 17px 17px;display:grid;place-items:center;box-shadow:0 4px 10px #8771d724}.brand-mark svg{width:26px;height:26px;stroke:white;stroke-width:1.6;fill:none;stroke-linecap:round}.brand small{display:block;margin-top:8px;font-size:7px;letter-spacing:1.9px;font-weight:650;color:#83848b}.nav-label{font-size:9px;letter-spacing:1.7px;color:#9b9da3;margin:55px 0 16px 15px;font-weight:650}.nav-item{width:100%;display:flex;align-items:center;gap:13px;padding:13px 15px;margin-bottom:7px;text-align:left;background:transparent;border-radius:10px;font-size:13px;color:#727780;font-weight:550}.nav-item svg{width:20px;height:20px}.nav-item:hover{background:#efeee9}.nav-item.active{background:var(--accent-soft);color:#7d65ca}.nav-active-dot{width:6px;height:6px;border-radius:50%;background:#9d89df;margin-left:auto}.nav-pill{background:#eae9e4;color:#7b7d85;font-size:10px;padding:1px 6px;border-radius:5px;margin-left:auto}.sidebar-progress{margin:45px 11px 15px;padding:24px 16px 20px;background:#f0efea;border:1px solid #e8e7e1;border-radius:13px}.tiny-circles{height:25px;display:flex;align-items:center}.tiny-circles i{width:17px;height:17px;border:2px solid #f0efea;border-radius:50%;background:#b6a3e5}.tiny-circles i:nth-child(2){background:#9fc8ba;margin-left:-4px}.tiny-circles i:nth-child(3){background:#f0c68d;margin-left:-4px}.sidebar-progress h3{font-size:13px;margin:10px 0 6px;font-weight:650}.sidebar-progress p{font-size:11px;color:#92949a;line-height:1.8;margin:0 0 20px}.progress-line{height:4px;background:#deded6;border-radius:4px;margin-bottom:7px;overflow:hidden}.progress-line span{display:block;height:100%;background:#9c87d5;border-radius:4px;transition:width .5s}.sidebar-progress>span{font-size:9px;color:#8a8d94}.sidebar-bottom{margin-top:auto;padding-top:20px}.sidebar-bottom .nav-item{font-size:12px;font-weight:400;padding-top:8px;padding-bottom:8px}.offline-indicator{display:flex;align-items:center;gap:6px;font-size:9px;color:#959b99;padding:16px 15px 0}.offline-indicator i{background:#91b7a4;width:5px;height:5px;border-radius:50%}main{min-width:0}.topbar{height:90px;border-bottom:1px solid var(--line);padding:0 46px;display:flex;align-items:center;justify-content:space-between}.breadcrumb{font-size:11px;color:#9c9da3}.breadcrumb span{padding:0 12px;color:#c9c9c8}.breadcrumb strong{font-weight:500;color:#777c85}.topbar-right{display:flex;align-items:center;gap:23px}.star-total{display:flex;align-items:center;gap:6px;font-size:11px;color:#999b9f}.star-total svg{width:17px;height:17px;fill:#e3ba78;stroke:#dbb16e;stroke-width:1.4}.star-total b{font-size:13px;font-weight:600;color:#6b6d72}.avatar{width:34px;height:34px;display:grid;place-items:center;background:#e9e3f4;color:#8e77b3;border:3px solid #fff;border-radius:50%;font-size:12px}.main-content{padding:38px 46px 0;max-width:1400px;margin:auto}.page-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:29px}.eyebrow{font-size:9px;letter-spacing:2px;font-weight:600;color:#94969c;display:flex;gap:7px;align-items:center}.eyebrow span{width:5px;height:5px;border-radius:50%;background:#b4a2d9}.page-heading h1{font-size:32px;line-height:1.3;letter-spacing:-1px;margin:10px 0 7px;font-weight:600}.page-heading h1>span{color:#9b85d6}.page-heading p{font-size:12px;color:#92959c;margin:0}.round-button{display:grid;place-items:center;width:40px;height:40px;background:#fff;border:1px solid #e6e5e0;border-radius:50%;color:#8f9299}.round-button:hover{background:#eeebf7}.round-button svg{width:18px;height:18px}#sound-button{margin-top:21px;position:relative}#sound-button[aria-pressed="false"]:after{content:"";position:absolute;width:20px;height:1px;background:currentColor;transform:rotate(-45deg);box-shadow:0 0 0 2px #fff}.play-layout{display:grid;grid-template-columns:minmax(0,1fr) 246px;gap:24px;align-items:start}.game-card{border-radius:18px;background:var(--night);box-shadow:0 12px 30px #1a203312;color:#fff;overflow:hidden;border:1px solid #24304b}.game-top{display:flex;align-items:center;justify-content:space-between;padding:25px 29px 22px;gap:12px}.level-eyebrow{font-size:8px;letter-spacing:2.2px;color:#a29bb9;font-weight:600}.level-heading h2{font-size:22px;letter-spacing:-.3px;font-weight:550;margin:4px 0 0}.game-metrics{display:flex;gap:17px;align-items:center;color:#a3adc1;font-size:10px}.game-metrics>span{display:flex;align-items:center;gap:5px;white-space:nowrap}.game-metrics svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}.game-metrics b{font-size:12px;color:#d0d4e3;font-weight:500;font-variant-numeric:tabular-nums}.game-metrics small{font-size:9px}.game-help{background:transparent;padding:0;color:#737f9d;display:flex}.game-help svg{width:18px;height:18px}.completion-line{height:1px;background:#ffffff0b}.completion-line>span{display:block;height:100%;background:#b2a0f3;box-shadow:0 0 7px #b2a0f3;transition:width .5s}.board-scene{position:relative;min-height:382px;background:radial-gradient(ellipse at 50% 45%,color-mix(in srgb,var(--scene-glow) 40%,transparent),transparent 63%);display:flex;flex-direction:column;justify-content:center;padding:27px 23px 20px;isolation:isolate;overflow:hidden}.scene-orbit{border:1px solid #ffffff04;border-radius:50%;position:absolute;z-index:-1;pointer-events:none}.orbit-one{width:425px;height:425px;left:calc(50% - 212px);top:calc(50% - 212px)}.orbit-two{width:580px;height:580px;left:calc(50% - 290px);top:calc(50% - 290px)}.scene-spark{position:absolute;color:#a79bce;opacity:.4;font-size:14px;pointer-events:none}.spark-one{left:15%;top:14%;font-size:10px}.spark-two{right:15%;top:24%}.spark-three{right:23%;bottom:15%;font-size:9px}.board{display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:25px 15px;width:100%;max-width:620px;margin:5px auto 20px;min-height:220px;position:relative;z-index:2}.bottle-slot{width:var(--bottle-width,80px);height:var(--bottle-height,200px);background:transparent;position:relative;padding:0;border-radius:18px;flex:0 0 var(--bottle-width,80px);transition:transform .25s,filter .25s;color:#bdb1ef;outline-offset:0}.bottle-slot:hover:not(:disabled){transform:translateY(-6px)}.bottle-slot.selected{transform:translateY(-17px);filter:drop-shadow(0 0 10px #c3adff65)}.bottle-slot:after{content:"";position:absolute;bottom:-10px;left:20%;right:20%;height:9px;background:#0005;filter:blur(5px);border-radius:50%;z-index:-1}.bottle-number{position:absolute;bottom:-25px;left:0;right:0;text-align:center;color:#626d8b;font-size:9px;letter-spacing:1px}.bottle-slot.selected .bottle-number{color:#c6b1ff}.bottle-slot.is-complete .bottle-number{color:#95c4b3}.bottle-slot.is-complete .bottle-number svg{width:13px;height:13px;stroke:#a2e0c1;stroke-width:2}.bottle-slot.hint-from{animation:hint-pulse .85s ease-in-out infinite}.bottle-slot.hint-to{outline:2px dashed #d7c89a;outline-offset:5px}.bottle-slot.shake{animation:shake .32s}.board-message{text-align:center;font-size:10px;color:#8792ad;margin:25px 0 0;min-height:17px;position:relative;z-index:2}.board-message.warning{color:#eccb9b}.board-message.hint{color:#d9c8ff}.game-toolbar{display:flex;justify-content:center;gap:22px;border-top:1px solid #ffffff08;padding:20px 25px 17px;background:#ffffff02}.tool-button{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:59px;background:transparent;color:#aab2c9;padding:0 3px}.tool-button>span{display:grid;place-items:center;width:46px;height:46px;border:1px solid #ffffff16;border-radius:13px;background:#ffffff05;transition:all .2s}.tool-button:hover:not(:disabled)>span{background:#a690e02b;border-color:#a892dc6b;color:#dacbff;transform:translateY(-2px)}.tool-button svg{width:19px;height:19px}.tool-button b{font-size:9px;font-weight:400}.tool-button kbd{position:absolute;top:32px;right:0;font-size:7px;background:#29324b;color:#858ea9;border-radius:3px;padding:0 3px;font-family:inherit;border:1px solid #3a4256}.tool-button small{position:absolute;top:-4px;right:2px;font-size:8px;border-radius:5px;background:#c5b3ed;color:#2b244a;padding:0 4px;font-weight:650}.tool-button:disabled{opacity:.3}.game-footnote{font-size:8px;color:#717c98;padding:14px 22px 15px;display:flex;align-items:center;gap:5px;border-top:1px solid #ffffff07}.little-dot{width:4px;height:4px;background:#828bb4;border-radius:50%}#saved-state{margin-left:auto;display:flex;align-items:center;gap:4px;font-size:7px;color:#77897f}#saved-state svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:1.5}.right-column{display:flex;flex-direction:column;gap:18px}.daily-card{position:relative;padding:24px 22px 18px;background:#ece7f6;border:1px solid #e4ddee;border-radius:15px;overflow:hidden}.card-overline{font-size:7px;letter-spacing:1.15px;font-weight:650;color:#8c80a4;display:flex;align-items:center;gap:6px}.card-overline>svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}.daily-art{height:106px;position:relative;margin:12px 0}.art-orbit{width:134px;height:75px;border:1px solid #cfc4e7;position:absolute;left:calc(50% - 67px);top:25px;border-radius:50%;transform:rotate(-20deg)}.art-orbit:after{content:"";width:96px;height:96px;border:1px solid #dfd5ed;position:absolute;left:18px;top:-12px;border-radius:50%}.art-droplet{position:absolute;border-radius:3px 50% 50% 50%;transform:rotate(45deg);box-shadow:inset 3px 4px 9px #ffffff70,inset -5px -6px 10px #362a6a21,0 8px 12px #69608713}.art-droplet:after{content:"";position:absolute;background:#ffffff60;border-radius:50%;width:13%;height:35%;left:18%;top:26%;transform:rotate(20deg)}.drop-a{background:#ab92df;width:54px;height:54px;left:58px;top:21px;z-index:2}.drop-b{background:#eab5b2;width:38px;height:38px;left:105px;top:51px;z-index:3}.drop-c{background:#9cc9be;width:32px;height:32px;left:32px;top:59px}.art-star{position:absolute;color:#ac91ce;top:8px;right:32px;font-size:22px}.daily-card h3{font-size:20px;letter-spacing:-.4px;margin:6px 0 8px;font-weight:600;color:#4e426b}.daily-card p{font-size:11px;line-height:1.8;color:#958aa7;margin:0 0 18px}.daily-button{width:100%;display:flex;align-items:center;justify-content:space-between;background:#fff9;border:1px solid #ffffff;border-radius:8px;padding:10px 13px;font-size:10px;font-weight:600;color:#807098}.daily-button:hover{background:#fff}.daily-button svg{width:15px;height:15px}.daily-date{display:block;text-align:center;font-size:8px;color:#ac9fb9;margin-top:12px}.tip-card{padding:20px 22px;background:#edf0e9;border:1px solid #e2e7dd;border-radius:14px}.tip-icon{display:block;color:#91a18a;margin-bottom:13px}.tip-icon svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round}.tip-card .card-overline{color:#8d9a87;font-size:7px;letter-spacing:1.2px}.tip-card h3{font-size:17px;letter-spacing:-.2px;font-weight:550;line-height:1.5;margin:10px 0;color:#586650}.tip-card p{font-size:10px;line-height:1.9;color:#929b8b;margin:0}.right-footer{text-align:center;color:#aaa9a6;font-size:8px;padding:4px 0}.right-footer>div{display:flex;justify-content:center;gap:5px;margin-top:9px}.right-footer i{width:5px;height:5px;border-radius:50%;background:#b6a1d4}.right-footer i:nth-child(2){background:#8fbcab}.right-footer i:nth-child(3){background:#e2b29f}.right-footer i:nth-child(4){background:#d7c188}.page-footer{display:flex;justify-content:space-between;padding:26px 0 22px;color:#a3a5aa;font-size:8px;letter-spacing:.25px}.footer-separator{padding:0 10px;color:#c6c6c4}.page-footer button{display:flex;align-items:center;gap:8px;background:none;font-size:9px;color:#93949a;padding:0}.page-footer svg{width:13px;height:13px}.mobile-nav{display:none}.secondary-view{min-height:590px;background:#fff9;border:1px solid var(--line);border-radius:16px;padding:28px}.section-top{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:28px}.section-top h2{font-size:19px;font-weight:550;margin:0 0 7px;letter-spacing:-.4px}.section-top p{font-size:11px;color:#9699a0;margin:0}.outline-pill{padding:5px 10px;font-size:10px;white-space:nowrap;background:var(--accent-soft);color:#8f77c3;border-radius:20px}.chapter{margin-bottom:27px}.chapter h3{font-size:10px;font-weight:550;letter-spacing:1.3px;color:#92949e;text-transform:uppercase;margin:0 0 14px}.levels-row{display:grid;grid-template-columns:repeat(10,1fr);gap:9px}.level-tile{aspect-ratio:1;min-height:54px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;background:#f1efe9;border:1px solid #e8e6df;border-radius:10px;font-size:15px;color:#807b8b}.level-tile:not(:disabled):hover{background:var(--accent-soft);transform:translateY(-3px)}.level-tile.current{background:#8c75ce;color:#fff;border-color:#8c75ce;box-shadow:0 4px 9px #8c75ce20}.level-tile:disabled{background:#f7f6f3;color:#c5c5c4;border-color:#efeee9}.level-tile>svg{width:15px;height:15px}.tile-stars{display:flex;gap:1px}.tile-stars svg{width:7px;height:7px;stroke:none;fill:#d5b17c}.theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.theme-card{background:#fff;border:1px solid #e6e4df;border-radius:12px;overflow:hidden}.theme-preview{height:155px;display:flex;align-items:center;justify-content:center;gap:10px;background:radial-gradient(ellipse at 50% 60%,var(--preview-glow),transparent),var(--preview-bg);position:relative}.preview-tube{width:23px;height:77px;border-radius:7px 7px 11px 11px;border:1px solid #b4cae078;box-shadow:inset 2px 0 1px #ffffff24;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;padding:2px}.preview-tube:nth-child(2){transform:translateY(-12px)}.preview-tube i{height:18px;background:var(--liquid);border-radius:1px}.theme-content{padding:16px}.theme-content h3{font-weight:600;font-size:13px;margin:0 0 5px}.theme-content p{font-size:10px;color:#9b9da3;margin:0 0 17px}.theme-select{background:var(--accent-soft);color:#8c76bc;border:1px solid #e4ddf0;border-radius:7px;padding:8px 10px;width:100%;font-size:10px;display:flex;align-items:center;justify-content:center;gap:5px}.theme-select svg{width:12px;height:12px}.theme-select:disabled{color:#a9a9af;background:#f4f3f0;border-color:#e8e7e3}.collection-note{display:flex;gap:9px;align-items:center;margin-top:25px;color:#a2a0a6;font-size:10px}.collection-note svg{width:15px;height:15px;stroke:#d5b17c;fill:#e6cfb0;stroke-width:1}.modal-backdrop{position:fixed;inset:0;z-index:50;background:#1013279c;backdrop-filter:blur(8px);display:grid;place-items:center;padding:20px}.modal{background:#faf9f6;border:1px solid #fff8;border-radius:22px;padding:38px;max-width:440px;width:100%;max-height:90dvh;overflow:auto;position:relative;box-shadow:0 20px 80px #070c2544;animation:modal-in .25s ease-out}.modal-close{position:absolute;right:15px;top:15px;width:29px;height:29px;background:transparent;border-color:transparent}.modal-close svg{width:16px;height:16px}.modal h2{font-size:25px;font-weight:600;letter-spacing:-.6px;margin:8px 0 12px;line-height:1.3}.modal p{font-size:12px;color:#92949e;line-height:1.9}.modal-eyebrow{font-size:8px;letter-spacing:2px;color:#9c8eb7}.modal-primary,.modal-secondary{padding:13px 20px;border-radius:9px;font-size:12px;font-weight:550;width:100%;margin-top:10px;display:flex;justify-content:center;align-items:center;gap:10px}.modal-primary{background:#927bd3;color:#fff;box-shadow:0 3px 0 #7a62b9}.modal-primary:hover{background:#a28add}.modal-secondary{background:#eeece7;color:#94909e}.modal-primary svg{width:16px;height:16px}.help-step{display:flex;gap:13px;align-items:flex-start;margin:18px 0}.step-number{display:grid;place-items:center;background:#eee9f8;color:#a28bc7;border-radius:50%;min-width:29px;height:29px;font-size:11px}.help-step h3{font-size:12px;font-weight:600;margin:2px 0}.help-step p{font-size:11px;margin:2px 0}.key-note{font-size:10px!important;padding:12px;background:#eeece6;border-radius:8px}.key-note kbd{padding:2px 5px;background:#fff;border-radius:4px;font-family:inherit}.settings-row{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:16px 0;border-bottom:1px solid #e7e5de}.settings-row h3{font-size:12px;font-weight:550;margin:0 0 3px}.settings-row p{font-size:10px;margin:0}.toggle{width:38px;height:22px;border-radius:20px;background:#d9d7d1;padding:3px}.toggle span{display:block;width:16px;height:16px;border-radius:50%;background:white;box-shadow:0 1px 2px #0001;transition:transform .2s}.toggle[aria-checked="true"]{background:#a18acb}.toggle[aria-checked="true"] span{transform:translateX(16px)}.win-content{text-align:center}.win-art{margin:3px auto 23px;width:88px;height:88px;background:radial-gradient(#e8e0f5,#f3eef9);border:1px solid #e3d9ed;border-radius:50%;display:grid;place-items:center}.win-art svg{width:40px;height:40px;stroke:#9a81c2;fill:#c5b3e3;stroke-width:1.4}.win-stars{display:flex;justify-content:center;gap:9px;margin:20px 0}.win-stars svg{width:34px;height:34px;fill:#dfb677;stroke:#d5a668;stroke-width:1;filter:drop-shadow(0 3px 2px #d2a35a25)}.win-stars svg.empty{fill:#e5e3df;stroke:#d9d6d1}.win-metrics{display:flex;justify-content:center;gap:32px;margin:20px 0 25px}.win-metrics b{display:block;font-weight:550;font-size:22px;color:#655a75}.win-metrics span{font-size:10px;color:#a39cab}.win-reward{font-size:10px;color:#a895bd;background:#eee9f5;border-radius:8px;padding:9px;margin:17px 0}.toast{position:fixed;bottom:25px;left:50%;transform:translate(-50%,20px);max-width:calc(100% - 35px);width:max-content;opacity:0;pointer-events:none;z-index:100;background:#2b2b3a;color:#e1dcec;border:1px solid #ffffff22;box-shadow:0 8px 25px #0002;border-radius:10px;padding:12px 21px;font-size:12px;transition:opacity .2s,transform .2s;text-align:center}.toast.visible{opacity:1;transform:translate(-50%,0)}.confetti-container{position:fixed;inset:0;pointer-events:none;z-index:70;overflow:hidden}.confetti-piece{position:absolute;top:-20px;width:7px;height:12px;border-radius:2px;animation:confetti-fall 2.6s ease-in forwards}.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}.stat-grid>div{padding:17px;background:#f0ede6;border-radius:10px}.stat-grid b{font-size:24px;display:block;font-weight:550;color:#8c78b6}.stat-grid span{font-size:10px;color:#9a96a2}.pattern-symbol{font:600 11px "Segoe UI",sans-serif;fill:#fff;opacity:.7;paint-order:stroke;stroke:#0004;stroke-width:.5px}.theme-garden{--night:#173332;--scene-glow:#4c8070;--scene-ink:#d3eee3}.theme-sunset{--night:#3e293d;--scene-glow:#946563;--scene-ink:#f8dfdc}
+@keyframes hint-pulse{50%{transform:translateY(-12px);filter:drop-shadow(0 0 9px #baa5e57a)}}@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}@keyframes modal-in{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}@keyframes confetti-fall{to{transform:translateY(105vh) rotate(540deg);opacity:0}}
+@media(min-width:1550px){.main-content{padding-top:50px}.page-heading{margin-bottom:35px}.play-layout{grid-template-columns:minmax(0,1fr) 280px;gap:30px}.board-scene{min-height:450px}.daily-card{padding:28px}.daily-art{height:125px}.daily-card h3{font-size:23px}.tip-card{padding:26px}.game-top{padding:30px 35px}.page-heading h1{font-size:37px}}
+@media(max-width:1190px){.app-shell{grid-template-columns:194px 1fr}.sidebar{padding:32px 14px 23px}.brand{font-size:28px;padding-left:7px;gap:8px}.brand-mark{width:35px;height:40px}.brand small{font-size:6px;letter-spacing:1.4px}.topbar{padding:0 30px;height:76px}.main-content{padding:30px 30px 0}.play-layout{grid-template-columns:minmax(0,1fr) 215px;gap:18px}.daily-card,.tip-card{padding:20px 17px}.drop-a{left:46px}.drop-b{left:88px}.drop-c{left:22px}.game-top{padding:24px 22px}.game-metrics{gap:12px}.game-metrics small{display:none}.game-toolbar{gap:11px;padding-left:14px;padding-right:14px}.game-footnote{padding-left:18px;padding-right:18px}#saved-state{font-size:0;gap:0}.page-heading h1{font-size:28px}.sidebar-progress{margin:38px 4px 15px}.levels-row{grid-template-columns:repeat(5,1fr)}.theme-grid{gap:13px}.theme-content{padding:12px}}
+@media(max-width:1000px) and (min-width:761px){.app-shell{grid-template-columns:175px 1fr}.main-content{padding:28px 25px 0}.topbar{padding:0 25px}.right-column{display:none}.play-layout{grid-template-columns:1fr}.board-scene{min-height:390px}.game-toolbar{gap:34px}.brand{font-size:26px}.brand small{letter-spacing:1px}.brand-mark{width:32px;height:37px}.sidebar-progress{padding:21px 12px}.nav-item{padding:13px 12px;font-size:12px;gap:10px}.sidebar-bottom .nav-item{font-size:11px}.offline-indicator{padding-left:11px;font-size:8px}.nav-label{font-size:8px;letter-spacing:1.2px}.theme-grid{grid-template-columns:1fr}.theme-card{display:grid;grid-template-columns:160px 1fr}.theme-preview{height:150px}}
+@media(max-width:760px){.app-shell{display:block}.sidebar{display:none}.topbar{height:60px;padding:0 21px}.breadcrumb{font-size:10px}.breadcrumb span{padding:0 8px}.topbar-right{gap:13px}.avatar{width:29px;height:29px;font-size:10px}.star-total{font-size:10px}.star-total b{font-size:12px}.main-content{padding:24px 18px 80px}.page-heading{margin-bottom:22px}.eyebrow{font-size:7px;letter-spacing:1.6px}.page-heading h1{font-size:26px;letter-spacing:-.8px;margin-top:8px}.page-heading p{font-size:10px}.round-button{width:34px;height:34px}.play-layout{display:block}.game-card{border-radius:16px}.game-top{padding:21px 22px 18px}.level-eyebrow{font-size:7px;letter-spacing:1.8px}.level-heading h2{font-size:21px}.game-metrics{gap:12px;font-size:9px}.game-metrics small{display:none}.game-metrics b{font-size:11px}.game-help svg{width:17px;height:17px}.board-scene{min-height:350px;padding:28px 13px 20px}.board{gap:26px 12px;min-height:208px;margin-bottom:22px}.bottle-number{font-size:8px}.board-message{font-size:9px;margin-top:25px}.game-toolbar{gap:19px;padding:19px 15px 18px}.tool-button{min-width:54px}.tool-button>span{width:43px;height:43px;border-radius:12px}.tool-button b{font-size:9px}.tool-button kbd{display:none}.tool-button small{right:0}.game-footnote{font-size:7px;padding:13px 17px}#saved-state{font-size:0;gap:0}.right-column{margin-top:19px;display:grid;grid-template-columns:1fr}.daily-card{padding:19px 19px 17px;min-height:140px}.daily-card .card-overline{font-size:6px;letter-spacing:1px}.daily-art{position:absolute;right:15px;top:12px;width:133px;height:90px;margin:0;transform:scale(.85)}.drop-a{left:42px}.drop-b{left:82px}.drop-c{left:18px}.daily-card h3{font-size:18px;margin:12px 0 5px}.daily-card p{font-size:10px;margin-bottom:12px}.daily-button{width:150px;padding:8px 11px;font-size:9px}.daily-date{position:absolute;right:22px;bottom:23px;font-size:7px}.tip-card,.right-footer{display:none}.page-footer{font-size:7px;padding-top:21px}.page-footer button{font-size:8px}.footer-separator{padding:0 5px}.mobile-nav{display:flex;position:fixed;z-index:20;bottom:0;left:0;right:0;padding:10px 14px max(10px,env(safe-area-inset-bottom));background:#faf9f7f5;backdrop-filter:blur(15px);border-top:1px solid #e5e3dd;justify-content:space-around}.mobile-nav button{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;color:#a09ca7;font-size:8px;min-width:55px;padding:1px 0}.mobile-nav svg{width:21px;height:21px;stroke-width:1.6}.mobile-nav button.active{color:#9b80cf}.toast{bottom:84px;font-size:11px}.secondary-view{padding:21px 17px;min-height:500px}.section-top{gap:12px;margin-bottom:24px}.section-top h2{font-size:16px}.section-top p{font-size:10px;line-height:1.8}.outline-pill{font-size:8px;padding:4px 7px}.levels-row{gap:7px}.level-tile{min-height:45px;border-radius:8px;font-size:13px}.chapter h3{font-size:8px}.theme-grid{grid-template-columns:1fr}.theme-card{display:grid;grid-template-columns:120px 1fr}.theme-preview{height:145px}.theme-content{padding:16px}.theme-content h3{font-size:13px}.theme-content p{font-size:9px}.collection-note{font-size:9px;line-height:1.8}.modal{padding:33px 25px;max-width:390px}.modal h2{font-size:23px}.modal p{font-size:11px}}
+@media(max-width:370px){.main-content{padding-left:12px;padding-right:12px}.page-heading h1{font-size:23px}.game-top{padding-left:17px;padding-right:17px}.game-metrics{gap:8px}.game-toolbar{gap:12px}.board-scene{padding-left:8px;padding-right:8px}.daily-art{right:0}.game-footnote{font-size:6px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
+.reduce-motion *,.reduce-motion *:before,.reduce-motion *:after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+
+.board {display:grid;justify-items:center;align-items:center;max-width:100%}
+.bottle-slot canvas {display:block;width:100%;height:100%;pointer-events:none}
+.bottle-slot.pouring canvas {visibility:hidden}
+.board-scene.in-motion {overflow:visible;z-index:3}
+#water-overlay {position:absolute;z-index:5;pointer-events:none}
+#water-overlay[hidden] {display:none}
+#flow-style {max-width:55%;font:inherit;padding:6px;color:#413758;background:#f7f4fa;border:1px solid #d4cce2;border-radius:6px}
+
+/* APK edition: chapter shortcuts, solved tiles, more themes, no accidental text selection on touch. */
+body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.chapter-nav{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 12px;margin:-10px 0 18px;scrollbar-width:thin}
+.chapter-nav button{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 12px;border-radius:9px;background:#f1efe9;border:1px solid #e8e6df;color:#807b8b;font-size:11px;font-weight:600;font-variant-numeric:tabular-nums}
+.chapter-nav button.current{background:var(--accent-soft);border-color:#d9d0f3;color:#7d65ca}
+.chapter-nav small{display:flex;align-items:center;gap:3px;font-size:9px;font-weight:500;color:#b4935f}
+.chapter-nav small svg,.chapter h3 small svg{width:9px;height:9px;fill:#d5b17c;stroke:none}
+.chapter{scroll-margin-top:14px}.chapter h3{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.chapter h3 small{display:flex;align-items:center;gap:4px;font-size:9px;letter-spacing:.5px;color:#b4935f;white-space:nowrap}
+.level-tile.solved:not(.current){background:#f4f0fb;border-color:#e6dff5}
+.tile-stars svg.empty{fill:#dcd8cf}
+.theme-ocean{--night:#10303f;--scene-glow:#2f7d8c;--scene-ink:#d4f1f5}.theme-amber{--night:#3a2c1c;--scene-glow:#a07a3c;--scene-ink:#f8ead2}.theme-aurora{--night:#121d2e;--scene-glow:#3f9a7f;--scene-ink:#d8f5ea}
+@media(max-width:760px){.chapter-nav{margin:-8px -4px 16px;padding-bottom:10px}.chapter-nav button{padding:6px 10px;font-size:10px}.level-tile{font-size:12px}}
+
+</style>
+  
+  
+  
+  
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="CHROMA">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="chroma-build" content="1.1.0-7280dfd424">
+  <style>:root{--font:"Segoe UI",-apple-system,BlinkMacSystemFont,system-ui,Arial,sans-serif}</style>
+</head>
+<body>
+  <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+    <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3C8 9 5 12 5 16a7 7 0 0 0 14 0c0-4-3-7-7-13Z"/><path d="M8 16a4 4 0 0 0 4 4"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="m9 5 11 7-11 7Z"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/></symbol>
+    <symbol id="i-palette" viewBox="0 0 24 24"><path d="M20 13a9 9 0 1 0-9 8c4 0 1-5 4-5h2c2 0 3-1 3-3Z"/><circle cx="7" cy="11" r=".7"/><circle cx="10" cy="7" r=".7"/><circle cx="15" cy="7" r=".7"/><circle cx="17" cy="11" r=".7"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="m9 4 1-2h4l1 2 2 1 2-1 2 3-1 2v4l1 2-2 3-2-1-2 1-1 3h-4l-1-3-2-1-2 1-2-3 1-2V9L3 7l2-3 2 1Z"/><circle cx="12" cy="11" r="3"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="m9 5-5 5 5 5M4 10h9a6 6 0 0 1 0 12" transform="translate(0 -2)"/></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 10a8 8 0 1 1 1 8M4 4v6h6"/></symbol>
+    <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18v-2c-5-4-3-12 3-12s8 8 3 12v2ZM9 21h6M12 1v1M3 4l2 2M19 6l2-2M1 11h2M21 11h2"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9L7.5 14 3 9.6l6.2-.9Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24"><path d="m11 4-6 5H2v6h3l6 5ZM15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 2-2.5 2-2.5 4M12 17h.01"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M20 3C7 1 2 8 5 15s15 5 15-12ZM4 21 16 9"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  </defs></svg>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#play" aria-label="CHROMA — играть"><span class="brand-mark"><svg><use href="#i-drop"/></svg></span><span>chroma<span class="brand-dot">.</span><small>ЦВЕТОВАЯ ЛАБОРАТОРИЯ</small></span></a>
+      <p class="nav-label">ВАШЕ ПРОСТРАНСТВО</p>
+      <nav aria-label="Основное меню">
+        <button class="nav-item active" data-view="play"><svg><use href="#i-play"/></svg><span>Играть</span><span class="nav-active-dot"></span></button>
+        <button class="nav-item" data-view="levels"><svg><use href="#i-grid"/></svg><span>Уровни</span><span id="nav-level" class="nav-pill">01</span></button>
+        <button class="nav-item" data-view="collection"><svg><use href="#i-palette"/></svg><span>Коллекция</span></button>
+      </nav>
+      <div class="sidebar-progress"><div class="tiny-circles"><i></i><i></i><i></i></div><h3>Цвет за цветом</h3><p>Маленькие шаги.<br>Красивый результат.</p><div class="progress-line"><span id="journey-fill"></span></div><span id="journey-label">0 уровней пройдено</span></div>
+      <div class="sidebar-bottom"><button class="nav-item" id="help-button"><svg><use href="#i-help"/></svg>Как играть</button><button class="nav-item" id="settings-button"><svg><use href="#i-settings"/></svg>Настройки</button><div class="offline-indicator"><i></i> Можно играть офлайн</div></div>
+    </aside>
+    <main>
+      <header class="topbar"><div class="breadcrumb">Ваша лаборатория <span>/</span> <strong id="breadcrumb-current">Игра</strong></div><div class="topbar-right"><span class="star-total"><svg><use href="#i-star"/></svg><b id="total-stars">0</b><span>звёзд</span></span><button class="avatar" id="profile-button" aria-label="Мой прогресс">Ц</button></div></header>
+      <div class="main-content">
+        <section class="page-heading"><div><div class="eyebrow"><span></span> ПАУЗА ДЛЯ СЕБЯ</div><h1 id="page-title">Всё в своём цвете<span>.</span></h1><p id="page-subtitle">Найдите порядок. Насладитесь процессом.</p></div><button id="sound-button" class="round-button" aria-label="Включить звук" aria-pressed="false"><svg><use href="#i-sound"/></svg></button></section>
+        <div class="play-layout" id="view-play">
+          <section class="game-card" aria-label="Игровое поле">
+            <div class="game-top"><div class="level-heading"><span class="level-eyebrow" id="chapter-name">ПЕРВЫЕ КАПЛИ</span><h2 id="level-title">Уровень 01</h2></div><div class="game-metrics"><span><svg><use href="#i-drop"/></svg><b id="move-count">0</b> <small>ходов</small></span><span><svg><use href="#i-clock"/></svg><b id="timer">00:00</b></span><button class="game-help" id="game-help" aria-label="Правила игры"><svg><use href="#i-help"/></svg></button></div></div>
+            <div class="completion-line"><span id="completion-fill"></span></div>
+            <div class="board-scene" id="board-scene"><div class="scene-orbit orbit-one"></div><div class="scene-orbit orbit-two"></div><div class="scene-spark spark-one">✦</div><div class="scene-spark spark-two">✧</div><div class="scene-spark spark-three">✦</div><div id="board" class="board" aria-label="Бутылочки с цветной жидкостью"></div><canvas id="water-overlay" aria-hidden="true" hidden></canvas><div class="board-message" id="board-message" role="status">Выберите бутылочку, затем — куда перелить</div></div>
+            <div class="game-toolbar"><button id="undo-button" class="tool-button" disabled><span><svg><use href="#i-undo"/></svg></span><b>Отменить</b><kbd>Z</kbd></button><button id="restart-button" class="tool-button"><span><svg><use href="#i-reset"/></svg></span><b>Заново</b><kbd>R</kbd></button><button id="hint-button" class="tool-button"><span><svg><use href="#i-bulb"/></svg></span><b>Подсказка</b><kbd>H</kbd></button><button id="extra-button" class="tool-button"><span><svg><use href="#i-plus"/></svg></span><b>Бутылочка</b><small id="extra-count">+1</small></button></div>
+            <div class="game-footnote"><span class="little-dot"></span> Без спешки. Без ограничений по времени.<span id="saved-state">Прогресс сохранён <svg><use href="#i-check"/></svg></span></div>
+          </section>
+          <aside class="right-column">
+            <section class="daily-card"><div class="card-overline"><svg><use href="#i-sun"/></svg> НОВЫЙ ДЕНЬ — НОВЫЙ ЦВЕТ</div><div class="daily-art" aria-hidden="true"><div class="art-orbit"></div><div class="art-droplet drop-a"></div><div class="art-droplet drop-b"></div><div class="art-droplet drop-c"></div><span class="art-star">✦</span></div><h3>Задача дня</h3><p>Одна головоломка.<br>Маленькая победа каждый день.</p><button class="daily-button" id="daily-button">Попробовать <svg><use href="#i-arrow"/></svg></button><span class="daily-date" id="daily-date"></span></section>
+            <section class="tip-card"><span class="tip-icon"><svg><use href="#i-leaf"/></svg></span><div class="card-overline">СЕКРЕТ СПОКОЙСТВИЯ</div><h3>Оставьте место<br>для нового.</h3><p>Пустая бутылочка — ваш простор для манёвра. Не спешите её заполнять.</p></section>
+            <div class="right-footer"><span>Сделано для вашего спокойствия</span><div><i></i><i></i><i></i><i></i></div></div>
+          </aside>
+        </div>
+        <section id="view-levels" class="secondary-view" hidden><div class="section-top"><div><h2>Ваша цветовая история</h2><p id="levels-subtitle">Все уровни открыты — играйте в любом порядке.</p></div><span id="levels-complete" class="outline-pill"></span></div><nav id="chapter-nav" class="chapter-nav" aria-label="Главы"></nav><div id="level-grid" class="level-chapters"></div></section>
+        <section id="view-collection" class="secondary-view" hidden><div class="section-top"><div><h2>Настроение вашей лаборатории</h2><p>Собирайте звёзды и открывайте новые палитры пространства.</p></div></div><div id="theme-grid" class="theme-grid"></div><div class="collection-note"><svg><use href="#i-star"/></svg> Звёзды открывают оформление и остаются в вашей коллекции.</div></section>
+        <footer class="page-footer"><span>CHROMA <span class="footer-separator">/</span> искусство простых вещей</span><button id="footer-help">Как играть <svg><use href="#i-arrow"/></svg></button></footer>
+      </div>
+    </main>
+    <nav class="mobile-nav" aria-label="Мобильное меню"><button class="active" data-view="play"><svg><use href="#i-play"/></svg>Игра</button><button data-view="levels"><svg><use href="#i-grid"/></svg>Уровни</button><button data-view="collection"><svg><use href="#i-palette"/></svg>Коллекция</button><button id="mobile-settings"><svg><use href="#i-settings"/></svg>Настройки</button></nav>
+  </div>
+  <div class="modal-backdrop" id="modal-backdrop" hidden><section class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><button class="modal-close round-button" id="modal-close" aria-label="Закрыть"><svg><use href="#i-close"/></svg></button><div id="modal-content"></div></section></div>
+  <div id="toast" class="toast" role="status"></div>
+  <div id="confetti" class="confetti-container" aria-hidden="true"></div>
+<script>
+(function (root, factory) {
+  const api = factory();
+  api.workerSource = () => 'const solver = (' + factory.toString() + ')();' +
+    'self.onmessage = event => { const result = solver.solve(event.data, { limit: 300000, timeout: 2600 }); self.postMessage(result.path?.[0] || null); };';
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.ChromaEngine = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+  const CAPACITY = 4;
+  const clone = board => board.map(b => b.slice());
+  const top = bottle => bottle[bottle.length - 1];
+  const uniform = b => b.length > 0 && b.every(c => c === b[0]);
+  const complete = b => b.length === CAPACITY && uniform(b);
+  const won = board => board.every(b => !b.length || complete(b));
+  function amount(board, from, to) {
+    if (!Number.isInteger(from) || !Number.isInteger(to) || from === to || !board[from] || !board[to]) return 0;
+    const a = board[from], b = board[to];
+    if (!a.length || b.length >= CAPACITY || (b.length && top(a) !== top(b))) return 0;
+    let count = 1;
+    while (count < a.length && a[a.length - count - 1] === top(a)) count++;
+    return Math.min(count, CAPACITY - b.length);
+  }
+  function pour(board, from, to) {
+    const count = amount(board, from, to);
+    if (!count) return null;
+    const next = clone(board);
+    next[to].push(...next[from].splice(-count));
+    return { board: next, count, color: top(board[from]), from, to };
+  }
+  const key = board => board.map(b => b.join('.')).sort().join('|');
+  function solve(board, options = {}) {
+    const limit = options.limit || 120000;
+    const timeout = options.timeout || 1200;
+    const start = Date.now(), seen = new Map();
+    let nodes = 0, exhausted = false;
+    function visit(state, depth, previous) {
+      if (won(state)) return [];
+      if (++nodes > limit || (nodes % 256 === 0 && Date.now() - start > timeout)) { exhausted = true; return null; }
+      if (depth > 110) return null;
+      const signature = key(state);
+      if (seen.has(signature) && seen.get(signature) <= depth) return null;
+      seen.set(signature, depth);
+      const candidates = [];
+      for (let from = 0; from < state.length; from++) {
+        if (!state[from].length || complete(state[from])) continue;
+        let triedEmpty = false;
+        const triedDest = new Set();
+        for (let to = 0; to < state.length; to++) {
+          const n = amount(state, from, to);
+          if (!n || (previous && previous[0] === to && previous[1] === from)) continue;
+          if (!state[to].length) {
+            if (triedEmpty || uniform(state[from])) continue;
+            triedEmpty = true;
+          }
+          const dest = state[to].join('.');
+          if (triedDest.has(dest)) continue;
+          triedDest.add(dest);
+          const result = pour(state, from, to);
+          const score = (complete(result.board[to]) ? 40 : 0) + (state[to].length ? 12 : 0) + (!result.board[from].length ? 8 : 0) + n;
+          candidates.push({ from, to, result, score });
+        }
+      }
+      candidates.sort((a, b) => b.score - a.score);
+      for (const c of candidates) {
+        const path = visit(c.result.board, depth + 1, [c.from, c.to]);
+        if (path) return [[c.from, c.to], ...path];
+        if (exhausted) return null;
+      }
+      return null;
+    }
+    const path = visit(clone(board), 0, null);
+    return { path, nodes, exhausted, elapsed: Date.now() - start };
+  }
+  function random(seed) {
+    return function () {
+      seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+      let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  // Every reverse step is checked against a legal forward pour. The reversed
+  // history is therefore a certificate, independent of the hint solver.
+  function generate(colors, seed, steps = 100) {
+    const rng = random(seed);
+    let board = Array.from({ length: colors }, (_, c) => Array(CAPACITY).fill(c));
+    board.push([], []);
+    const history = [], seen = new Set([key(board)]);
+    let best = null, bestScore = -1;
+    for (let step = 0; step < steps; step++) {
+      const candidates = [];
+      for (let from = 0; from < board.length; from++) {
+        if (!board[from].length) continue;
+        const color = top(board[from]);
+        let run = 1;
+        while (run < board[from].length && board[from][board[from].length - run - 1] === color) run++;
+        for (let to = 0; to < board.length; to++) {
+          if (from === to || board[to].length >= CAPACITY || top(board[to]) === color) continue;
+          for (let n = 1; n <= Math.min(run, CAPACITY - board[to].length); n++) {
+            if (n === run && run < board[from].length) continue;
+            const next = clone(board);
+            next[to].push(...next[from].splice(-n));
+            const back = pour(next, to, from);
+            if (!back || back.count !== n || key(back.board) !== key(board) || seen.has(key(next))) continue;
+            candidates.push({ board: next, move: [to, from], weight: rng() });
+          }
+        }
+      }
+      if (!candidates.length) break;
+      candidates.sort((a, b) => b.weight - a.weight);
+      const next = candidates[0];
+      board = next.board; history.push(next.move); seen.add(key(board));
+      const transitions = board.reduce((n, b) => n + b.filter((c, i) => i > 0 && c !== b[i - 1]).length, 0);
+      const empty = board.filter(b => !b.length).length;
+      const score = transitions * 10 + (empty === 2 ? 35 : empty === 1 ? 15 : 0) + history.length * .02;
+      if (transitions >= colors && score > bestScore) {
+        bestScore = score;
+        best = { board: clone(board), solution: history.slice().reverse(), colors, seed };
+      }
+    }
+    return best || { board, solution: history.reverse(), colors, seed };
+  }
+  function validBoard(board, colors) {
+    if (!Array.isArray(board) || board.length < colors + 2 || board.length > colors + 3) return false;
+    const counts = Array(colors).fill(0);
+    for (const b of board) {
+      if (!Array.isArray(b) || b.length > CAPACITY) return false;
+      for (const c of b) {
+        if (!Number.isInteger(c) || c < 0 || c >= colors) return false;
+        counts[c]++;
+      }
+    }
+    return counts.every(n => n === CAPACITY);
+  }
+  return { CAPACITY, clone, top, uniform, complete, won, amount, pour, key, solve, random, generate, validBoard };
+});
+
+</script>
+<script>
+// Original, deterministic puzzles. Liquids are stored bottom to top.
+(function(r){r.CHROMA_LEVELS=[{"board":[[0,0,1,1],[1,1,0,0],[],[]],"colors":2,"seed":7919,"solution":[[0,2],[1,0],[1,2]],"id":1,"par":3},{"board":[[0,1,0,1],[1,0,1,0],[],[]],"colors":2,"seed":15838,"solution":[[0,2],[1,0],[2,1],[0,2],[1,0],[2,1],[0,2],[1,0],[2,1]],"id":2,"par":9},{"board":[[0,1,2,0],[2,0,1,2],[1,2,0,1],[],[]],"colors":3,"seed":23757,"solution":[[0,3],[1,0],[2,1],[3,2],[0,3],[1,0],[2,1],[3,2],[0,3],[1,0],[2,1],[3,2]],"id":3,"par":12},{"board":[[0,0,0,2],[1],[],[2,2,1],[1,0,2,1]],"solution":[[1,3],[3,2],[0,3],[4,2],[4,3],[4,0],[2,4]],"colors":3,"seed":31676,"id":4,"par":7},{"board":[[0,0,2,1],[1,2],[],[0,0,1,2],[1,2]],"solution":[[1,4],[0,1],[0,4],[4,2],[3,2],[1,4],[3,4],[0,3]],"colors":3,"seed":39595,"id":5,"par":8},{"board":[[],[1,0,0,1],[2,2,2,1],[0],[2,1,0]],"solution":[[3,4],[4,0],[1,4],[1,0],[1,4],[4,3],[2,3],[2,4]],"colors":3,"seed":47514,"id":6,"par":8},{"board":[[0,0,0,3],[1,1,0,2],[2],[3,2],[2],[1,3,3,1]],"solution":[[2,3],[4,3],[3,2],[1,2],[0,3],[1,0],[5,1],[5,3],[1,5]],"colors":4,"seed":55433,"id":7,"par":9},{"board":[[0,2,3,1],[],[],[3,3,3,1],[0,0,0,2],[2,2,1,1]],"solution":[[5,1],[0,1],[3,1],[0,3],[5,0],[0,2],[4,2],[4,0]],"colors":4,"seed":63352,"id":8,"par":8},{"board":[[0,3,0],[1,1,1,2],[2,2,3,0],[],[1,2,3],[3,0]],"solution":[[0,5],[0,4],[0,5],[5,3],[2,3],[5,2],[2,0],[4,0],[2,4],[4,5],[1,5],[1,4]],"colors":4,"seed":71271,"id":9,"par":12},{"board":[[],[3,3,0,1],[2,2,1,0],[3,0,1],[3,1],[2,2,0]],"solution":[[1,3],[3,4],[1,3],[2,3],[3,5],[4,2],[5,3],[3,0],[5,0],[1,3],[2,4],[4,1],[3,4],[2,1],[2,5]],"colors":4,"seed":79190,"id":10,"par":15},{"board":[[0,0,0,3],[],[2,1,1,3],[3,1],[2,2,2,0],[1,3]],"solution":[[0,5],[4,0],[2,5],[2,3],[4,2],[3,1],[5,3],[1,5]],"colors":4,"seed":87109,"id":11,"par":8},{"board":[[0,0,3,1],[1,1,2,2],[],[3,2],[3,2],[0,0,3,1]],"solution":[[1,3],[0,1],[5,1],[0,5],[3,2],[4,2],[3,4],[5,4],[0,5]],"colors":4,"seed":95028,"id":12,"par":9},{"board":[[0,2],[1,1,0,3],[],[3,3,0,2],[2,0,2],[1,1,3]],"solution":[[0,4],[1,5],[0,1],[1,2],[4,0],[2,4],[3,0],[4,3],[3,2],[4,2],[0,4],[5,3],[1,5]],"colors":4,"seed":102947,"id":13,"par":13},{"board":[[0],[1,1,0],[2,2,1,3],[],[2,2,0,3],[3,0,1,3]],"solution":[[0,1],[1,3],[2,0],[1,2],[4,0],[2,1],[3,4],[5,0],[5,1],[3,5],[4,5],[5,3],[0,5],[4,3],[2,4]],"colors":4,"seed":110866,"id":14,"par":15},{"board":[[0,0,0,2],[1,1,1,3],[2,2,2,3],[],[0,3,1,3],[]],"solution":[[0,3],[1,5],[2,5],[2,3],[4,5],[4,1],[4,5],[0,4]],"colors":4,"seed":118785,"id":15,"par":8},{"board":[[0,0,3],[3],[2,2,2,0],[],[4,4,4,0],[1,1,2,3],[1,4,1,3]],"solution":[[1,0],[0,3],[2,0],[4,0],[5,3],[5,2],[6,3],[5,6],[6,1],[6,4],[1,5],[5,6]],"colors":5,"seed":126704,"id":16,"par":12},{"board":[[0,0,0,3],[1,1,4,2],[2,2,0,3],[4,3],[4,4,3],[],[1,1,2]],"solution":[[0,3],[1,6],[2,3],[2,0],[6,2],[3,4],[3,5],[4,5],[4,3],[1,3],[1,6]],"colors":5,"seed":134623,"id":17,"par":11},{"board":[[0,0,3],[1,1,1,3],[2,2,0,1],[2,2,0],[4,4,3],[4,4,3],[]],"solution":[[0,4],[0,3],[1,5],[2,1],[0,2],[2,6],[3,6],[2,3],[4,0],[5,0],[4,5]],"colors":5,"seed":142542,"id":18,"par":11},{"board":[[],[],[2,4,3,4],[3,1,1,0],[4,4,1,1],[2,2,2,3],[0,0,3,0]],"solution":[[4,0],[2,4],[5,2],[2,1],[2,4],[5,2],[3,5],[3,0],[1,3],[6,5],[6,3],[5,6]],"colors":5,"seed":150461,"id":19,"par":12},{"board":[[0,0],[],[2,3,3,1],[3,1,1,0],[4,0],[2,2,2,3],[4,4,4,1]],"solution":[[0,4],[4,1],[3,1],[2,3],[5,2],[2,0],[5,2],[3,5],[0,3],[6,5],[6,4]],"colors":5,"seed":263109,"id":20,"par":11},{"board":[[0,2],[3,0],[2,2,1],[3,3,3,0],[4,2],[4,4,0],[1,1,1,4]],"solution":[[0,4],[0,1],[1,5],[3,1],[5,1],[1,0],[3,1],[5,0],[6,5],[2,6],[4,2],[5,4]],"colors":5,"seed":166299,"id":21,"par":12},{"board":[[0,0,3,2],[1,0,2],[2],[3,3,3,4],[4,4,4,2],[1,1,1,0],[]],"solution":[[2,1],[1,6],[0,6],[4,6],[3,4],[0,3],[0,1],[1,2],[5,2],[5,1]],"colors":5,"seed":174218,"id":22,"par":10},{"board":[[1,0],[],[2,2,2,0],[3,4,4,1],[4,4,2,3],[0,1],[3,3,0,1]],"solution":[[2,0],[3,5],[6,5],[0,6],[5,1],[5,0],[6,0],[0,5],[1,0],[6,5],[4,6],[4,2],[3,4],[6,3]],"colors":5,"seed":182137,"id":23,"par":14},{"board":[[0,1,2],[1,2],[],[3,4,2],[4,4,4,1],[3,3,1,2],[0,0,0,3]],"solution":[[0,1],[1,3],[4,0],[3,1],[3,4],[6,3],[1,2],[5,2],[1,0],[0,5],[0,1],[6,0],[5,1],[3,5]],"colors":5,"seed":190056,"id":24,"par":14},{"board":[[0,4,0],[1,4,3],[2,3,4,3],[],[4,1,1,0],[2,2,2,3],[1,0]],"solution":[[0,6],[2,1],[0,2],[0,6],[6,3],[4,3],[6,4],[4,0],[2,4],[1,2],[1,4],[0,1],[2,0],[5,0],[5,2]],"colors":5,"seed":197975,"id":25,"par":15},{"board":[[0,4,4,0],[1,2],[],[3,3,2],[4,4,3,1],[0,0,1,3],[2,1,2]],"solution":[[1,3],[3,6],[4,1],[5,4],[1,5],[6,3],[5,1],[0,5],[3,6],[0,2],[5,0],[6,3],[3,5],[4,3],[2,4],[5,6],[6,2],[6,1],[2,5],[5,6]],"colors":5,"seed":310623,"id":26,"par":20},{"board":[[0,0,0,1],[1,1,1,3],[2,3,3,2],[3,4],[4],[0,2,4],[2,4]],"solution":[[4,3],[3,6],[1,3],[0,1],[6,5],[5,4],[6,4],[6,5],[2,5],[2,3],[5,2],[0,5]],"colors":5,"seed":213813,"id":27,"par":12},{"board":[[0,0,1],[1,4,2],[2,1,2,1],[3,3,4],[],[5,5,3],[5,5,0,4],[0,2,4,3]],"solution":[[2,0],[1,2],[1,3],[0,1],[7,5],[3,7],[6,3],[0,6],[2,4],[2,1],[4,2],[6,0],[3,4],[5,3],[5,6],[7,4],[7,2],[0,7]],"colors":6,"seed":221732,"id":28,"par":18},{"board":[[0,1,4,1],[1,1,5,3],[2,2,2,4],[],[4,5,4,3],[5,3],[5,3],[0,0,0,2]],"solution":[[1,5],[5,6],[5,1],[6,3],[4,3],[1,6],[0,1],[0,4],[0,1],[4,5],[4,6],[5,4],[2,4],[7,2],[7,0]],"colors":6,"seed":229651,"id":29,"par":15},{"board":[[0,0,0,4],[1,4],[2,2,2,5],[3,3,4],[],[5,5,5,0],[1,3,4],[2,1,1,3]],"solution":[[0,1],[5,0],[2,5],[1,3],[1,6],[3,4],[6,4],[3,6],[7,3],[6,3],[1,6],[7,6],[2,7]],"colors":6,"seed":342299,"id":30,"par":13},{"board":[[0,0,4,1],[1],[2,2,2,4],[4,4,1],[],[5,5,2,0],[5,5,3,1],[3,3,0,3]],"solution":[[1,3],[3,4],[0,4],[6,4],[0,3],[2,3],[5,0],[5,2],[7,6],[7,0],[6,7],[5,6]],"colors":6,"seed":245489,"id":31,"par":12},{"board":[[0,0,3],[1,1,1,4],[2,5,5,3],[3,3,4],[],[5,5,0,1],[0,4],[2,2,2,4]],"solution":[[1,3],[5,1],[3,6],[0,3],[2,3],[0,5],[6,4],[7,4],[0,6],[5,6],[2,5],[7,2]],"colors":6,"seed":253408,"id":32,"par":12},{"board":[[0,0,0,3],[1,1,5,4],[2,2,5],[3,3,3,0],[4,5],[],[4,2,5],[2,1,1,4]],"solution":[[2,4],[4,6],[6,5],[2,6],[5,4],[4,2],[1,4],[1,2],[7,4],[7,1],[6,7],[4,6],[0,4],[3,0],[3,4]],"colors":6,"seed":261327,"id":33,"par":15},{"board":[[0,0,0,1],[1,1,1,4],[],[3,3,0,2],[4,4,3,2],[5,3,5],[5,5,2],[4,2]],"solution":[[3,6],[6,7],[5,6],[7,2],[4,2],[1,7],[0,1],[3,0],[3,5],[5,4],[4,3],[4,7],[5,3],[6,5]],"colors":6,"seed":269246,"id":34,"par":14},{"board":[[3,5,4],[1,1,0,4],[2,3,5,2],[3,2,4],[],[5,5,4],[0,0,0,2],[1,1,3]],"solution":[[0,3],[1,5],[3,4],[5,4],[5,0],[2,3],[0,2],[6,3],[1,6],[2,0],[0,5],[2,5],[0,2],[2,7],[3,0],[3,2],[7,2],[2,3],[0,2],[7,3],[1,7]],"colors":6,"seed":277165,"id":35,"par":21},{"board":[[0,0,2],[],[2,0,0,3],[3,2,5,1],[4,3,3,1],[2],[4,4,4,1],[5,5,5,1]],"solution":[[5,0],[0,1],[2,5],[2,0],[1,2],[3,1],[4,1],[5,4],[6,1],[7,1],[3,7],[3,2],[4,3],[6,4]],"colors":6,"seed":285084,"id":36,"par":14},{"board":[[0,0,0,5],[1,4,4,3],[2,2,3],[1,2,3],[4,1],[5,5,5,4],[2,1],[0,3]],"solution":[[1,2],[2,7],[4,6],[4,1],[7,3],[1,4],[5,4],[0,5],[1,6],[3,7],[6,1],[2,6],[7,3],[3,2],[7,2],[0,7],[3,6],[1,3]],"colors":6,"seed":293003,"id":37,"par":18},{"board":[[0,0,0,4],[],[2,2,5,4],[3,3,2,5],[4,1,1,2],[],[1,1,3,5],[0,4,5,3]],"solution":[[0,1],[2,1],[3,2],[4,3],[2,5],[3,2],[6,5],[3,6],[7,3],[6,3],[4,6],[7,5],[1,4],[7,4],[0,7]],"colors":6,"seed":300922,"id":38,"par":15},{"board":[[0,4],[1,1,1,5],[2,1,5,4],[3,3,3,0],[],[5,4],[2,2,5,0],[3,2,0,4]],"solution":[[0,5],[2,5],[1,2],[3,0],[6,0],[2,6],[5,4],[7,4],[7,0],[5,2],[6,5],[2,5],[2,1],[6,2],[7,2],[3,7]],"colors":6,"seed":308841,"id":39,"par":16},{"board":[[0,0,2,1],[1,1,4,5],[2,2,4],[3,3,1,5],[4,5],[],[3,3,0,4],[0,2,5]],"solution":[[1,4],[1,2],[0,1],[3,4],[3,1],[4,7],[2,5],[0,2],[6,5],[0,6],[7,4],[6,0],[3,6],[4,7],[4,3],[5,4],[7,3],[7,2],[0,7]],"colors":6,"seed":316760,"id":40,"par":19},{"board":[[0,0,2,3],[1,1,1,4],[],[3,2],[4,4,4,0],[5,5,2,3],[5,0,5,3],[1,2]],"solution":[[3,7],[0,3],[0,7],[4,0],[1,4],[5,3],[6,3],[7,5],[5,2],[7,2],[1,7],[5,6],[6,1],[6,0],[1,5],[5,6]],"colors":6,"seed":324679,"id":41,"par":16},{"board":[[0,0,5,0],[1,1,4],[1,4],[3,3,5,2],[],[5,4,1],[4,3,3,2],[0,2,5,2]],"solution":[[1,2],[1,5],[2,4],[1,2],[5,2],[4,5],[5,1],[0,4],[5,0],[3,5],[0,3],[6,5],[3,0],[7,5],[0,3],[0,7],[0,4],[3,0],[6,3],[1,6],[7,0],[7,5],[4,7]],"colors":6,"seed":332598,"id":42,"par":23},{"board":[[0,0,0,2],[1,1,2,1],[2,6,5],[3,3,2,1],[4,5,6,4],[5,4,6],[],[3,6,5],[0,3,4]],"solution":[[2,7],[2,5],[0,2],[4,8],[5,4],[4,6],[7,4],[6,7],[7,5],[5,6],[7,6],[8,5],[7,8],[4,7],[5,4],[7,5],[8,7],[0,8],[1,0],[1,2],[1,0],[3,0],[3,2],[3,7]],"colors":7,"seed":340517,"id":43,"par":24},{"board":[[0,4,3],[1,1,1,2],[3],[],[4,4,4,2],[5,0,2,0],[6,6,3,6],[5,5,5,2],[1,0,6,3]],"solution":[[2,0],[0,3],[8,3],[6,8],[6,3],[8,6],[5,8],[1,5],[5,2],[8,5],[1,8],[4,2],[0,4],[5,0],[7,2],[7,5]],"colors":7,"seed":348436,"id":44,"par":16},{"board":[[0,3],[1,1,6,0],[2,2,4,0],[3,3,1,5],[4,0],[5,1,4,3],[6,6,6,2],[],[2,5,5,4]],"solution":[[1,4],[2,4],[5,0],[2,5],[6,2],[1,6],[4,7],[5,4],[8,4],[1,5],[3,8],[5,3],[8,1],[2,8],[3,5],[5,2],[1,5],[3,2],[0,3],[7,0]],"colors":7,"seed":356355,"id":45,"par":20},{"board":[[2,2,5,1],[1,0,0,4],[2,2,4,5],[3],[0,4,3],[],[6,6,4,5],[1,1,5,3],[6,6,0,3]],"solution":[[3,4],[4,5],[1,4],[7,5],[8,5],[1,8],[2,7],[8,1],[2,4],[4,3],[1,4],[0,1],[6,0],[6,3],[6,8],[0,6],[0,2],[7,6],[1,7]],"colors":7,"seed":364274,"id":46,"par":19},{"board":[[],[1,1,1,5],[2,6,0,5],[3,3,3,0],[4,2,2,1],[5,0],[6,2,5],[4,4,4,3],[6,6,0]],"solution":[[1,6],[4,1],[3,5],[7,3],[5,8],[4,0],[7,4],[8,5],[5,7],[6,5],[2,5],[2,7],[0,6],[8,2],[2,0],[6,2],[0,6]],"colors":7,"seed":372193,"id":47,"par":17},{"board":[[0,5,3],[1,1,4],[2,2,2,5],[3,3,4,0],[4,5,0],[],[6,6,1,4],[2,0,3],[5,6,6,1]],"solution":[[0,7],[2,0],[3,4],[1,3],[8,1],[0,5],[4,0],[5,4],[3,5],[7,3],[7,0],[2,7],[6,5],[6,1],[8,6],[4,8],[5,4]],"colors":7,"seed":380112,"id":48,"par":17},{"board":[[],[1,1,1,2],[2,2,0],[3,3,3,0],[2,4,4,0],[5,5,5,3],[6,6,5,0],[6,6,4],[1,4]],"solution":[[3,2],[5,3],[7,8],[2,0],[1,2],[4,0],[6,0],[6,5],[6,7],[4,8],[8,6],[1,8],[4,6],[2,4]],"colors":7,"seed":388031,"id":49,"par":14},{"board":[[],[0,2,1],[2,1],[3,5,6,3],[4,4,4,5],[5,5,1,2],[6,6,1],[4,3,3,0],[6,0,0,2]],"solution":[[1,2],[2,6],[5,1],[6,2],[2,5],[8,1],[5,2],[7,8],[2,5],[3,7],[3,6],[4,3],[5,2],[1,0],[8,1],[6,8],[2,5],[7,6],[4,7],[5,2],[2,4],[0,2],[5,4],[3,5],[6,3]],"colors":7,"seed":500679,"id":50,"par":25},{"board":[[0,2,2,1],[],[2,4,4,5],[3,3,3,4],[6,6,5,1],[],[6,1,5,1],[0,0,0,3],[6,5,4,2]],"solution":[[0,1],[4,1],[2,4],[3,2],[7,3],[6,1],[4,6],[8,0],[2,8],[6,4],[8,2],[0,5],[7,0],[2,8],[4,6],[8,2],[2,7],[5,2],[8,7],[6,8],[6,1],[8,4],[4,5],[8,5],[4,6],[6,8]],"colors":7,"seed":403869,"id":51,"par":26},{"board":[[],[1,1,4,0],[0,3],[3,3,2],[4,2,0],[5,1,3,0],[6,6,1,2],[6,6,4,2],[5,5,5,4]],"solution":[[1,4],[6,3],[8,1],[3,0],[3,2],[7,0],[1,7],[2,3],[4,2],[4,0],[5,2],[5,3],[4,1],[5,6],[8,5],[1,4],[6,1],[7,4],[6,7]],"colors":7,"seed":411788,"id":52,"par":19},{"board":[[],[],[2,2,5,2],[3,3,3,5],[4,4,0,1],[5,1,1,1],[6,6,3,0],[4,4,0,2],[6,6,0,5]],"solution":[[5,0],[4,0],[3,5],[6,4],[6,3],[8,5],[4,8],[8,1],[6,8],[1,4],[4,6],[6,1],[2,6],[2,5],[2,6],[7,6],[7,1],[4,7]],"colors":7,"seed":419707,"id":53,"par":18},{"board":[[0,5,0],[1,0],[2,2,2,6],[3,3,5],[4,4,4,2],[],[1,5,5,3],[1,1,6,0],[6,4,3,6]],"solution":[[0,1],[0,3],[0,1],[1,5],[7,5],[2,7],[4,2],[3,0],[6,3],[6,0],[1,6],[7,1],[6,7],[8,1],[8,3],[8,4],[1,8]],"colors":7,"seed":427626,"id":54,"par":17},{"board":[[0,0,2,3],[1,1,3,4],[],[3,3,6,2],[],[5,5,2,0],[6,6,6,5],[2,0,4,4],[1,1,4,5]],"solution":[[7,2],[1,2],[0,1],[3,0],[5,7],[0,5],[5,4],[0,4],[7,0],[4,7],[6,5],[3,6],[1,3],[8,5],[8,2],[1,8]],"colors":7,"seed":435545,"id":55,"par":16},{"board":[[0,2,0,0],[1,1,4,3],[2,3,3,1],[],[4,4,2,3],[5,5,5,0],[6,6,6,1],[],[6,2,5,4]],"solution":[[0,3],[5,3],[0,7],[3,0],[1,3],[4,3],[7,4],[8,1],[8,5],[4,8],[1,4],[2,1],[2,3],[8,2],[6,1],[6,8]],"colors":7,"seed":443464,"id":56,"par":16},{"board":[[0],[],[5,5,2,3],[3,2,6,0],[4,3,3,1],[5,5,0,6],[6,1,0],[2,1,1,6],[4,4,4,2]],"solution":[[0,6],[6,1],[3,1],[4,6],[2,4],[5,3],[5,1],[8,2],[4,0],[8,4],[2,8],[2,5],[3,2],[8,3],[7,2],[6,7],[3,8],[0,3],[7,6],[6,0],[2,6],[7,0],[8,7]],"colors":7,"seed":451383,"id":57,"par":23},{"board":[[0,4,5],[6,6,3,0],[2,1,1,3],[],[4,4,5,0],[5,5,3],[6,3],[2,2,4,6],[1,2,1,0]],"solution":[[2,5],[5,6],[0,5],[6,3],[7,6],[0,7],[1,0],[1,3],[1,6],[4,0],[4,5],[7,4],[8,0],[2,8],[8,1],[1,2],[7,8],[2,1],[8,2],[1,8]],"colors":7,"seed":459302,"id":58,"par":20},{"board":[[0,0,5,1],[],[2,2,2,6],[3,3,3,5],[4,4,2,3],[],[6,6,6,1],[0,0,5,1],[4,4,5,1]],"solution":[[0,1],[3,0],[4,3],[6,1],[2,6],[4,2],[7,1],[8,1],[0,8],[0,7],[7,5],[0,7],[8,5],[4,8]],"colors":7,"seed":571950,"id":59,"par":14},{"board":[[0,0,0,2],[1,1,5,1],[2,3,5,6],[3,3,4,5],[4,0,2,5],[6],[],[2,3,6],[4,4,1,6]],"solution":[[5,7],[7,6],[2,6],[8,6],[1,8],[1,2],[8,1],[2,5],[2,7],[0,2],[3,5],[4,5],[2,4],[3,8],[7,3],[2,7],[4,7],[4,0],[8,4]],"colors":7,"seed":475140,"id":60,"par":19},{"board":[[0,1,6,3],[1,2,3],[2,2,1,3],[],[4,1],[5,5,5,2],[6,6,3],[0,0,0,4],[5,4,4,6]],"solution":[[0,1],[1,6],[2,1],[2,4],[5,2],[8,0],[7,8],[8,3],[5,8],[0,5],[4,0],[3,4],[0,3],[7,0],[1,7],[6,7],[5,6],[1,2],[3,1]],"colors":7,"seed":483059,"id":61,"par":19},{"board":[[0,0,5,1],[1,1,3,4],[2,5,2,3],[3,4],[],[5,5,4,1],[6,6,4],[6,6,2],[0,0,2,3]],"solution":[[1,3],[2,1],[2,7],[3,6],[1,4],[6,3],[0,1],[5,1],[2,0],[7,2],[6,7],[3,5],[8,4],[8,2],[5,3],[3,6],[4,3],[5,6],[0,5],[0,8]],"colors":7,"seed":490978,"id":62,"par":20},{"board":[[0,0,0,6],[1,5,2,3],[],[3,2],[4,1,5],[5,3,2],[6,1,2,3],[4,4,1,5],[0,6,6,4]],"solution":[[3,5],[1,3],[5,1],[6,3],[1,5],[1,6],[1,4],[4,2],[1,4],[7,2],[4,7],[5,1],[6,1],[5,3],[2,5],[7,4],[4,6],[8,7],[6,4],[0,8],[4,6],[6,2],[8,6],[0,8],[4,2],[7,4]],"colors":7,"seed":498897,"id":63,"par":26},{"board":[[0,0,0,2],[1,1,0,4],[2,5,3],[],[4,5,3],[5,6,3],[6,6,4],[1,1,2,6],[2,5,3,4]],"solution":[[1,6],[2,4],[4,5],[5,3],[3,4],[7,5],[4,3],[0,7],[1,0],[2,4],[7,2],[1,7],[4,1],[6,4],[5,6],[8,4],[8,3],[1,5],[8,5],[2,8]],"colors":7,"seed":716274,"id":64,"par":20},{"board":[[5,2,5],[4,2,1,0],[],[3,0,0,3],[4,4,4,0],[5],[6,6,1,2],[6,6,3,5],[1,1,3,2]],"solution":[[5,0],[0,2],[6,0],[7,2],[3,7],[1,3],[1,6],[0,1],[2,0],[1,2],[8,2],[7,8],[3,5],[4,5],[4,1],[3,7],[6,3],[7,4],[6,7],[8,4],[3,8]],"colors":7,"seed":619464,"id":65,"par":21},{"board":[[0,0,6,5],[1,6,3],[2,4,3],[],[4,4,2,5],[5,1,4,3],[6,2,2,5],[0,0,6,1],[1,3]],"solution":[[1,2],[2,8],[8,3],[5,3],[2,5],[7,8],[1,7],[8,1],[5,8],[5,1],[0,5],[4,5],[6,5],[2,4],[4,6],[6,2],[4,2],[4,8],[6,0],[0,4],[7,4],[0,7]],"colors":7,"seed":522654,"id":66,"par":22},{"board":[[0,5,3,1],[1,3],[2,2,3],[],[4,4,5,3],[5,4,1],[6,6,6,1],[6,2,2,5],[0,0,0,4]],"solution":[[0,5],[0,1],[1,2],[4,1],[0,4],[2,1],[1,3],[2,3],[5,1],[6,1],[8,5],[8,0],[4,8],[5,4],[8,5],[7,5],[7,2],[6,7]],"colors":7,"seed":530573,"id":67,"par":18},{"board":[[],[1,1,1,3],[2,2,2,4],[3,5,5,0],[4,4,3,0],[],[6,6,4,0],[6,6,2,1],[5,3,0,5]],"solution":[[1,0],[7,1],[3,5],[4,5],[0,4],[6,5],[2,6],[7,2],[8,3],[8,5],[4,8],[6,4],[6,7],[3,0],[8,3],[0,8]],"colors":7,"seed":538492,"id":68,"par":16},{"board":[[0,2,3],[1,1,3],[1,6,6,0],[],[2,1,6,2],[5,5,5,4],[6,3],[0,5,0,3],[4,4,4,2]],"solution":[[0,1],[1,6],[4,0],[8,0],[5,8],[0,3],[2,0],[4,2],[1,4],[2,1],[4,2],[3,4],[6,3],[1,6],[7,3],[0,7],[7,1],[7,5],[1,0],[0,7]],"colors":7,"seed":546411,"id":69,"par":20},{"board":[[0,0,0,7],[1,2,2,6],[2,5,1,6],[3,3,0,7],[4,1,2],[5,5,5,7],[],[7,6],[4,3,3,4],[4,1,6]],"solution":[[1,7],[1,4],[2,7],[4,1],[2,4],[7,9],[1,6],[1,4],[9,7],[7,1],[9,1],[0,7],[3,7],[3,0],[5,7],[2,5],[6,2],[4,6],[9,6],[4,9],[8,9],[8,3],[9,8]],"colors":8,"seed":659059,"id":70,"par":23},{"board":[[0,6,2],[1,1,5,6],[],[3,3,2],[4,4,1,3],[5,4,4,0],[6,6,2],[5,5,2],[0,0,1,3]],"solution":[[0,3],[1,0],[3,6],[3,7],[4,3],[8,3],[4,8],[0,2],[5,0],[5,4],[5,1],[6,5],[2,6],[7,5],[1,7],[8,1],[0,8]],"colors":7,"seed":562249,"id":71,"par":17},{"board":[[0,2,2,1],[],[2,6,1,6],[3,5,5,6],[4,2,0,1],[5,5,4],[4],[3,3,3,0],[4,0,6,1]],"solution":[[6,5],[5,1],[0,6],[4,6],[7,4],[8,6],[2,8],[2,6],[8,2],[4,8],[0,4],[8,0],[1,8],[2,1],[4,2],[8,4],[3,1],[3,5],[7,3]],"colors":7,"seed":570168,"id":72,"par":19},{"board":[[0,6],[1,1,4],[2,2,0],[3,3,6,0],[4,4,5,6],[5,1,0,3],[],[5,5,3,6],[1,2,2,4]],"solution":[[3,2],[0,3],[2,0],[8,1],[8,2],[1,6],[1,8],[3,1],[4,1],[7,1],[3,7],[5,3],[7,3],[5,0],[5,8],[7,5],[4,5],[4,6]],"colors":7,"seed":578087,"id":73,"par":18},{"board":[[],[],[2,2,2,4],[3,1,3,3],[4,4,4,1],[5,5,5,2],[6,0,0,1],[5,6,6,0],[6,0,1,3]],"solution":[[3,0],[4,3],[2,4],[5,2],[6,3],[7,6],[8,0],[3,8],[6,1],[6,7],[8,3],[3,6],[0,3],[8,6],[8,1],[7,8],[5,7]],"colors":7,"seed":690735,"id":74,"par":17},{"board":[[0,0,3,5],[1,1,1,2],[2,0],[3,3,5,2],[4,5],[],[6,2,5,0],[4,4,4,3],[6,6,6,1]],"solution":[[0,4],[6,2],[4,6],[7,0],[6,4],[1,6],[8,1],[3,6],[4,3],[6,5],[8,6],[3,4],[4,8],[7,4],[3,8],[0,3],[2,0],[5,2]],"colors":7,"seed":698654,"id":75,"par":18},{"board":[[0,2,5,3],[1,4,4,3],[2,2,3],[],[4,5,1],[5,5,4,6],[6,1,3],[6,6,1],[0,0,0,2]],"solution":[[0,2],[1,6],[4,7],[0,4],[8,0],[0,3],[8,0],[1,8],[7,1],[5,7],[5,8],[4,5],[8,4],[2,8],[2,3],[6,8],[6,1],[7,6]],"colors":7,"seed":601844,"id":76,"par":18},{"board":[[0,4],[1,5,5,0],[2,2,2,4],[3,3,3,2],[],[5,4],[6,6,6,3],[6,1,0,4],[0,1,1,5]],"solution":[[0,5],[1,0],[2,5],[3,2],[6,3],[8,1],[1,4],[1,8],[5,1],[4,5],[7,1],[0,7],[8,4],[0,8],[7,8],[7,4],[6,7]],"colors":7,"seed":714492,"id":77,"par":17},{"board":[[0,3,2],[1,1,3,4],[2,5,5,3],[5,0,4],[],[0,0,4],[6,6,6,3],[1,1,5],[6,2,2,4]],"solution":[[1,3],[2,1],[2,7],[3,5],[7,2],[5,3],[8,5],[0,8],[1,0],[1,7],[0,1],[6,1],[2,4],[8,2],[6,8],[3,6],[5,6],[5,0],[3,0],[4,3]],"colors":7,"seed":617682,"id":78,"par":20},{"board":[[0,0,2,4],[1,1,1,3],[2,2,5,6],[3,4],[],[5,4,6,4],[6,3,3,1],[5,6],[0,0,5,2]],"solution":[[0,3],[2,7],[5,3],[5,7],[3,5],[8,0],[5,3],[2,8],[0,2],[3,5],[5,4],[3,4],[8,5],[0,8],[1,3],[6,1],[6,3],[7,6],[5,7]],"colors":7,"seed":625601,"id":79,"par":19},{"board":[[0,0,1,5],[1,1,4],[2,2,2,3],[3,5],[4,3,7],[5,5,4,7],[6,3,7,1],[],[0,0,2,6],[4,6,6,7]],"solution":[[0,3],[5,4],[1,5],[0,1],[6,1],[4,6],[9,4],[8,9],[9,7],[5,9],[3,5],[2,3],[8,2],[0,8],[4,0],[6,0],[3,4],[4,6],[6,3],[7,6],[4,3],[9,4]],"colors":8,"seed":633520,"id":80,"par":22},{"board":[[0,0,3],[1,1,1,3],[2,5,4],[2,0],[4,3,4],[5,5,3,0],[6,6,6,2],[1,4],[6,2,5]],"solution":[[1,0],[2,4],[4,7],[0,4],[0,3],[2,8],[6,2],[3,0],[5,0],[2,3],[4,5],[7,2],[1,7],[5,4],[4,1],[2,4],[5,1],[8,5],[8,3],[6,8]],"colors":7,"seed":641439,"id":81,"par":20},{"board":[[],[1,1,6,3],[2,2,4,1],[3,3,5],[4,4,4,0],[5,5,6,0],[6,0,0,1],[2,2,6,3],[5]],"solution":[[8,3],[3,0],[1,3],[7,3],[1,7],[2,1],[6,1],[4,6],[2,4],[6,8],[5,8],[6,5],[7,6],[2,7],[5,6],[0,5]],"colors":7,"seed":754087,"id":82,"par":16},{"board":[[0,0,0,4],[1,1,3,5],[2,5],[3,3,2,5],[4,6,6,0],[5,4,2],[6,6,4,3],[],[1,1,2]],"solution":[[1,2],[3,2],[3,5],[1,3],[6,3],[0,6],[4,0],[5,8],[2,7],[2,5],[4,2],[6,4],[2,6],[5,2],[8,2],[1,8],[5,4],[7,5]],"colors":7,"seed":762006,"id":83,"par":18},{"board":[[0,0,2],[],[4,1,0],[3,3,3,4],[4,5,0,1],[2,1],[6,4,1,2],[5,5,5,2],[6,6,3,6]],"solution":[[4,5],[2,4],[5,2],[5,0],[2,1],[3,2],[0,5],[4,0],[6,5],[6,1],[7,5],[4,7],[2,4],[6,4],[8,6],[8,3],[6,8]],"colors":7,"seed":874654,"id":84,"par":17},{"board":[[0,0,3,2],[1,1,2],[],[3,5,5,0],[4,4,1,5],[2],[6,3,3,5],[4,4,6,1],[6,6,0,2]],"solution":[[5,1],[1,2],[0,2],[8,2],[3,8],[4,3],[1,4],[7,1],[4,1],[3,5],[6,5],[3,0],[0,6],[6,3],[0,3],[8,0],[8,6],[7,6],[4,7]],"colors":7,"seed":673115,"id":85,"par":19},{"board":[[0,1,1,2],[2,1,6,3],[],[3,3,4,2],[4,4,4,6],[5,5,6],[6],[0,0,0,5],[1,3,5,2]],"solution":[[6,5],[5,2],[4,2],[7,5],[0,6],[3,6],[3,4],[1,3],[1,2],[0,1],[7,0],[8,6],[8,5],[8,3],[1,8],[6,1]],"colors":7,"seed":681034,"id":86,"par":16},{"board":[[0,6,3,3],[1,1,1,2],[],[],[4,4,4,6],[5,5,5,2],[6,1,2,6],[0,0,0,5],[4,2,3,3]],"solution":[[0,2],[8,2],[1,8],[4,0],[5,8],[7,5],[6,0],[8,6],[0,3],[7,0],[6,8],[8,7],[4,8],[6,7],[6,1],[3,6]],"colors":7,"seed":688953,"id":87,"par":16},{"board":[[0,5,0,2],[1,1,1,6],[2],[3,3,3,5],[4,4,0,6],[5,5,2],[],[4,4,1,6],[6,3,0,2]],"solution":[[2,5],[5,6],[0,6],[8,6],[0,8],[5,0],[0,2],[3,2],[8,0],[8,3],[1,8],[4,8],[4,0],[7,8],[7,1],[4,7]],"colors":7,"seed":696872,"id":88,"par":16},{"board":[[0,0,0,6],[],[2,4,4,1],[3,3,6],[5,6,1],[5,5,0,6],[3,1],[5,4,3,1],[2,2,2,4]],"solution":[[0,3],[2,4],[4,6],[3,4],[8,2],[2,1],[8,2],[4,8],[5,8],[5,0],[5,4],[6,5],[7,5],[3,6],[7,6],[7,1],[4,7]],"colors":7,"seed":704791,"id":89,"par":17},{"board":[[3,2,1],[],[0,1,2,1],[6,6,6,2],[4,2],[5,5,5,3],[6,4,4,0],[7,7,7,5],[0,4,3,1],[7,3,0]],"solution":[[2,0],[2,4],[0,2],[4,0],[6,9],[4,6],[0,1],[3,1],[5,0],[7,5],[2,4],[8,4],[9,2],[0,9],[9,8],[6,0],[3,6],[8,9],[9,3],[7,9],[8,3],[8,0],[2,8]],"colors":8,"seed":922168,"id":90,"par":23},{"board":[[0,0,0,2],[],[2,1],[3,3,2,1],[4,1],[5,5,5,0],[6,6,3,4],[4,4,3,1],[6,6,5,2]],"solution":[[2,4],[0,2],[5,0],[3,4],[2,3],[8,2],[3,2],[8,5],[4,1],[7,1],[3,7],[6,4],[3,6],[7,3],[4,7],[6,3],[6,8]],"colors":7,"seed":720629,"id":91,"par":17},{"board":[[0,0,0,4],[1,1,2,4],[2,2,2,1],[3,4,5],[3,5],[],[6,6,6,0],[1,4,5],[6,3,3,5]],"solution":[[3,4],[0,3],[6,0],[1,3],[4,7],[8,4],[7,4],[3,5],[3,8],[4,7],[8,3],[6,8],[7,4],[4,6],[3,4],[7,6],[7,5],[2,7],[1,2],[1,7]],"colors":7,"seed":938006,"id":92,"par":20},{"board":[[0,3,0],[1,1,3,6],[2,2,2,1],[3,3,6,0],[4,4,6],[5,4],[6,0,1,4],[],[5,5,2,5]],"solution":[[1,4],[3,0],[4,3],[6,5],[2,6],[3,4],[0,7],[0,1],[7,0],[4,3],[1,7],[6,1],[6,0],[6,4],[3,6],[3,7],[4,6],[5,4],[8,5],[8,2],[5,8]],"colors":7,"seed":736467,"id":93,"par":21},{"board":[[0,0,0,5],[1,1,6],[2,2,6],[3,6],[4,4,4,5],[5,2,2,4],[],[3,3,6,1],[0,3,5,1]],"solution":[[1,2],[2,3],[7,1],[8,1],[0,8],[3,7],[3,6],[7,6],[7,3],[8,7],[8,3],[0,8],[4,7],[5,4],[5,2],[7,5]],"colors":7,"seed":744386,"id":94,"par":16},{"board":[[],[1,4,6],[2,0],[2,2,0],[4,5,5,2],[5,5,3,6],[6,0,6,0],[3,3,3,4],[1,1,1,4]],"solution":[[2,3],[4,2],[5,1],[1,0],[7,1],[5,7],[4,5],[4,1],[3,4],[2,3],[6,4],[0,6],[1,2],[8,2],[8,1],[6,0],[6,4],[0,6]],"colors":7,"seed":961763,"id":95,"par":18},{"board":[[0,2,3,1],[],[2,2,0,1],[],[4,4,6,3],[5,0,0,1],[6,6,6,2],[4,4,3,1],[5,5,5,3]],"solution":[[0,1],[2,1],[4,0],[5,1],[7,1],[0,7],[2,5],[6,2],[4,6],[7,0],[8,7],[5,3],[8,5],[0,8],[7,8],[4,7],[0,2],[3,0]],"colors":7,"seed":760224,"id":96,"par":18},{"board":[[],[1,1,5,0],[2,2,5,0],[3,3,5,4],[4,4,2,6],[],[6,6,6,5],[4,1,1,0],[3,3,2,0]],"solution":[[1,0],[2,0],[1,2],[7,0],[7,1],[8,0],[3,7],[2,3],[6,2],[4,6],[4,8],[4,7],[2,4],[3,4],[8,2],[3,8]],"colors":7,"seed":768143,"id":97,"par":16},{"board":[[0,4,2,6],[1,1,1,5],[],[3,3,3,6],[4,5,2,6],[5,5,1,4],[],[0,4,3,2],[0,0,2,6]],"solution":[[0,2],[3,2],[4,2],[8,2],[0,4],[4,8],[5,0],[7,4],[7,3],[0,7],[7,6],[0,7],[4,0],[8,0],[7,8],[1,4],[5,1],[4,5],[6,4]],"colors":7,"seed":880791,"id":98,"par":19},{"board":[[0,3],[1,1,0,4],[2,2,4,3],[],[4,4,3],[5,5,5,6],[6,6,1,0],[2,2,1],[5,6,0,3]],"solution":[[0,4],[6,0],[6,7],[5,6],[4,3],[1,4],[0,1],[2,3],[2,4],[8,3],[0,8],[1,0],[7,1],[2,7],[8,0],[8,6],[5,8]],"colors":7,"seed":783981,"id":99,"par":17},{"board":[[0,0,5],[1,1,4,5],[2,2,6],[],[4,7,7,6],[2,2,3,7],[6,6,3],[7,1,1,3],[4,5,3],[4,0,0,5]],"solution":[[1,0],[4,2],[5,4],[5,6],[6,8],[7,6],[4,3],[4,1],[0,4],[9,4],[9,0],[1,9],[7,1],[3,7],[2,3],[2,5],[6,2],[3,6],[8,2],[8,4],[9,8]],"colors":8,"seed":791900,"id":100,"par":21},{"board":[[1,1,1,3],[1,4,4,6],[2,2,5,0],[3,3,3,5],[4,6],[5,6,0],[],[2,2,5,0],[4,0,6]],"solution":[[1,4],[2,5],[3,2],[0,3],[4,8],[1,6],[0,1],[8,4],[5,8],[4,5],[5,0],[4,0],[6,4],[2,5],[8,6],[4,8],[7,6],[7,5],[2,7]],"colors":7,"seed":799819,"id":101,"par":19},{"board":[[0,0,3],[1,1,4],[],[3,0,2,4],[4,2],[5,5,5,6],[6,6,4,2],[3,6,0,3],[1,1,5,2]],"solution":[[3,1],[3,4],[6,4],[1,6],[7,0],[3,7],[0,3],[7,0],[5,7],[6,1],[4,2],[8,2],[8,5],[4,6],[1,4],[1,8],[6,4],[7,6],[3,7]],"colors":7,"seed":807738,"id":102,"par":19},{"board":[[],[1,1,0],[2,2,2,3],[3,6,0],[6,6,4],[5,5,5,4],[6,5,4],[1,3,3,0],[2,4,1,0]],"solution":[[1,3],[4,6],[3,0],[4,3],[7,0],[8,0],[1,8],[2,7],[8,1],[6,8],[3,4],[7,3],[1,7],[8,1],[2,8],[5,1],[6,5],[4,6]],"colors":7,"seed":815657,"id":103,"par":18},{"board":[[0,0,2,1],[3,4,2],[2,2,6,0],[3,0],[4,4,4,1],[5,1],[6,3,6],[5,5,5,1],[6,3]],"solution":[[0,5],[0,1],[0,3],[4,5],[3,0],[2,0],[3,8],[2,6],[1,2],[1,4],[1,8],[5,1],[7,1],[7,5],[8,3],[6,8],[6,3],[8,6]],"colors":7,"seed":823576,"id":104,"par":18},{"board":[[0,0,0,4],[],[2,1,3,5],[3,3,0,4],[2,1,2,2],[],[6,6,3,5],[6,6,4,4],[1,5,5,1]],"solution":[[4,1],[8,4],[2,8],[8,5],[6,5],[8,4],[2,6],[4,8],[2,8],[1,2],[2,4],[6,1],[7,2],[6,7],[0,2],[3,2],[3,0],[1,3]],"colors":7,"seed":831495,"id":105,"par":18},{"board":[[],[1,3],[2,1,5,0],[3,1,0],[4,2,3,0],[5,5,5,0],[6,6,6,1],[6,2,3],[4,4,4,2]],"solution":[[1,7],[2,3],[6,1],[3,0],[1,3],[4,0],[5,0],[2,5],[3,2],[7,4],[2,3],[3,1],[2,1],[3,7],[8,2],[4,3],[7,3],[2,4],[4,7],[7,2],[6,7],[4,2],[8,4]],"colors":7,"seed":839414,"id":106,"par":23},{"board":[[0,5,5,6],[1,1,6,4],[2,2,0,3],[],[4,5,1,6],[2,3],[6,4,3],[1,4,2,0],[5,0,3]],"solution":[[2,5],[5,6],[5,8],[7,2],[5,7],[2,3],[7,2],[1,7],[0,1],[0,5],[3,0],[1,3],[4,3],[4,1],[5,4],[6,5],[8,5],[8,0],[4,8],[4,6],[6,7],[7,4],[1,7],[6,4],[3,6]],"colors":7,"seed":952062,"id":107,"par":25},{"board":[[0,0,1,2],[1,1,1,3],[2,2,4,6],[3,4],[4,0,3],[5,5,6],[6,6,0,4],[],[5,5,2,3]],"solution":[[1,4],[2,5],[2,3],[0,2],[0,1],[6,3],[0,6],[3,7],[4,3],[8,3],[8,2],[0,4],[6,4],[4,0],[7,4],[6,0],[5,6],[5,8]],"colors":7,"seed":959981,"id":108,"par":18},{"board":[[0,0,4,5],[3],[2,0,0,2],[],[4,4,4,6],[5,5,2,3],[6,1,1,3],[5,1,3],[2,6,6,1]],"solution":[[1,7],[7,3],[5,3],[6,3],[6,7],[2,5],[4,6],[7,1],[8,1],[8,6],[5,8],[5,7],[0,7],[0,4],[2,0],[8,2]],"colors":7,"seed":863171,"id":109,"par":16},{"board":[[0,0,5,6],[1,3,5,7],[2,2,3,6],[3,0,5,7],[4,2,2,1],[5,7,6],[],[7,6],[1,3,0],[4,4,4,1]],"solution":[[0,5],[5,7],[1,5],[0,1],[0,8],[3,5],[8,0],[1,3],[5,6],[5,1],[7,5],[6,7],[2,5],[2,8],[1,6],[3,6],[3,0],[3,1],[1,8],[8,3],[1,3],[1,8],[4,8],[4,2],[9,8],[9,4]],"colors":8,"seed":871090,"id":110,"par":26},{"board":[[],[1,1,6],[2,2,6,0],[3,1,3],[4,4,4,2],[5,5,1,0],[3,6,0],[3,2,6],[5,5,4,0]],"solution":[[1,7],[2,6],[7,2],[2,0],[0,7],[4,2],[7,0],[7,2],[7,3],[6,7],[6,0],[3,6],[1,3],[5,7],[8,7],[8,4],[3,5],[3,1],[6,3],[5,1],[5,8]],"colors":7,"seed":879009,"id":111,"par":21},{"board":[[2,2,4],[1,6,1,3],[],[3,1,0,2],[4,2,0],[5,5,3,4],[6,6,6,5],[3,4],[5,0,0,1]],"solution":[[0,7],[3,0],[3,4],[5,7],[1,5],[1,3],[8,3],[4,8],[3,2],[5,3],[6,5],[1,6],[2,1],[8,4],[7,2],[3,7],[4,8],[8,3],[5,8],[4,3],[4,0],[2,4]],"colors":7,"seed":991657,"id":112,"par":22},{"board":[[0,0,0,5],[1,1,4,6],[2,2,2,5],[3,3,6],[4,4,0,3],[5,1,1,4],[],[2,5,6],[3,6]],"solution":[[1,3],[3,8],[4,3],[5,1],[8,7],[1,6],[5,1],[0,5],[4,0],[4,6],[2,5],[7,8],[8,4],[3,8],[7,4],[7,5],[2,7]],"colors":7,"seed":894847,"id":113,"par":17},{"board":[[0,0,0,3],[1,1,4],[],[3,1,2],[6,6,3,2],[5,5,4,2],[6,6,2],[3,5,0,5],[4,4,1]],"solution":[[3,6],[3,8],[0,3],[6,2],[4,2],[5,2],[1,5],[8,1],[5,8],[3,4],[7,5],[7,0],[7,5],[3,7],[4,7],[4,6]],"colors":7,"seed":902766,"id":114,"par":16},{"board":[[0,4,4,3],[1,1,5,5],[2,4,3,0],[3,0,0,4],[],[],[6,3,5,1],[6,2,2,1],[6,6,2,5]],"solution":[[1,4],[6,1],[7,1],[4,6],[8,4],[6,4],[0,6],[3,0],[2,3],[2,6],[0,2],[7,8],[2,0],[8,7],[0,2],[2,5],[7,2],[0,5],[3,0],[6,3],[8,6],[6,7]],"colors":7,"seed":910685,"id":115,"par":22},{"board":[[0,1,0,5],[1,2],[],[3,1,4,5],[4,4,3,2],[5,2],[6,6,3,0],[6,6,1,4],[3,0,5,2]],"solution":[[1,5],[4,5],[5,2],[8,2],[5,8],[0,5],[8,5],[3,5],[0,8],[1,0],[6,8],[4,6],[3,4],[7,4],[0,3],[8,0],[6,8],[3,7],[3,1],[8,3],[7,1],[6,7]],"colors":7,"seed":918604,"id":116,"par":22},{"board":[[],[1,0,0,3],[2,2,0,1],[3,6],[4,3],[5,2,4,3],[2,1,1,0],[5,5,6,4],[6,6,5,4]],"solution":[[1,4],[5,4],[6,1],[2,6],[1,2],[7,5],[2,1],[3,7],[4,3],[5,4],[8,4],[1,2],[6,0],[6,5],[2,1],[1,6],[0,1],[2,6],[5,2],[5,8],[7,0],[8,7],[0,8]],"colors":7,"seed":926523,"id":117,"par":23},{"board":[[0,0,2],[1,0,2,0],[],[3,3,3,2],[4,4,5,4],[5,5,4,1],[6,1,1,3],[2],[6,6,6,5]],"solution":[[7,0],[0,2],[1,0],[1,2],[1,0],[3,2],[6,3],[1,6],[6,7],[5,7],[4,5],[8,4],[8,6],[4,1],[5,4],[1,5]],"colors":7,"seed":1039171,"id":118,"par":16},{"board":[[6,3,0],[1,2,5],[2,2,2,0],[3,6],[4,4,4,6],[5,5,3,6],[],[3,0,0,5],[1,1,1,4]],"solution":[[2,0],[4,3],[8,4],[5,3],[7,1],[0,7],[3,6],[3,5],[7,0],[0,3],[7,3],[7,0],[5,0],[0,7],[6,0],[5,7],[1,5],[1,2],[8,1]],"colors":7,"seed":942361,"id":119,"par":19},{"board":[[0],[1,1,1,2],[2,6,0],[3,3,5,4],[],[5,5,5,4],[6,6,6,3],[7,7,3,4],[2,1,4,0],[7,7,2,0]],"solution":[[0,2],[2,4],[8,4],[9,4],[1,9],[3,8],[8,0],[8,1],[9,8],[5,0],[3,5],[7,0],[3,7],[6,3],[7,3],[7,9],[2,6],[8,2]],"colors":8,"seed":950280,"id":120,"par":18},{"board":[[0,0,5,6],[1,1,6],[2,2,5],[3,3,6,1],[4,4,0,4],[5,5,4],[],[2,2,0],[3,3,1,6]],"solution":[[0,1],[0,2],[0,7],[4,5],[0,4],[1,0],[3,1],[0,3],[8,0],[3,0],[8,1],[3,8],[2,3],[4,6],[5,4],[3,5],[7,6],[2,7]],"colors":7,"seed":1062928,"id":121,"par":18},{"board":[[0],[1,0,0],[2,2,5,3],[],[4,4,4,3],[6,6,6,3],[6,1,5,1],[4,5,2,3],[2,5,1,0]],"solution":[[0,1],[1,3],[8,3],[1,8],[8,0],[6,0],[6,8],[6,0],[2,1],[2,8],[4,1],[5,1],[5,6],[7,1],[2,7],[8,5],[2,8],[7,8],[7,5],[4,7]],"colors":7,"seed":966118,"id":122,"par":20},{"board":[[0,0,3,7],[],[2,2,2,0],[3,3,4,1],[4,7,1],[5,7,0,1],[6,6,6,2],[4,4,3],[5,5,5,6],[7,1]],"solution":[[3,4],[4,9],[0,4],[0,7],[2,0],[6,2],[8,6],[9,1],[5,1],[5,0],[9,4],[4,5],[5,9],[8,5],[4,9],[4,3],[3,8],[7,3],[7,8]],"colors":8,"seed":974037,"id":123,"par":19},{"board":[[0,0,0,4],[1,1,3,6],[2,2,7,3],[2,2,5,6],[4,4,4,6],[5,5,3,7],[],[],[7,0,5,6],[1,1,7,3]],"solution":[[0,6],[1,7],[2,1],[3,7],[4,7],[4,6],[8,7],[3,8],[5,2],[1,5],[9,1],[2,9],[1,4],[5,4],[8,5],[8,0],[8,2],[9,8],[1,9],[2,8],[2,3]],"colors":8,"seed":1191414,"id":124,"par":21},{"board":[[4,3,1],[],[2,2,7],[3,1,1,2],[4,4,4,0],[5,0,3,1],[6,7],[7,0,0,5],[6,6,6,3],[2,5,5,7]],"solution":[[2,6],[3,2],[0,3],[8,0],[9,6],[7,9],[4,7],[3,1],[5,1],[3,0],[0,5],[6,3],[8,6],[5,0],[0,8],[4,0],[5,8],[7,5],[5,4],[9,5],[2,9],[7,4],[3,7]],"colors":8,"seed":1094604,"id":125,"par":23},{"board":[[4,2,0,4],[1,1,1,7],[2,2,5,7],[3,7,2,4],[],[5,0,0,4],[6,6,1,5],[],[3,7,3,5],[0,6,6,3]],"solution":[[0,4],[3,4],[5,4],[0,5],[0,3],[4,0],[5,4],[6,5],[8,5],[9,8],[3,7],[1,3],[6,1],[9,6],[4,9],[2,3],[2,5],[2,7],[3,2],[8,3],[8,2],[3,8]],"colors":8,"seed":1102523,"id":126,"par":22},{"board":[[0,0,5,6],[1,4,7],[2,2,2,3],[3,4,6],[4,6],[5,5,0,5],[],[7,7,7,4],[3,3,2,1],[1,1,0,6]],"solution":[[0,3],[3,4],[5,0],[7,3],[1,7],[3,1],[2,3],[1,6],[8,1],[8,2],[3,8],[4,3],[6,4],[9,3],[5,9],[0,5],[9,0],[1,9]],"colors":8,"seed":1005713,"id":127,"par":18},{"board":[[0,0,6,3],[],[2,6,4,1],[3,3,0,1],[],[5,6,2,4],[0,3,7,1],[7,7,7,4],[5,5,5,6],[2,2,4,1]],"solution":[[0,1],[8,0],[2,4],[3,4],[5,2],[6,4],[9,4],[2,9],[7,2],[6,7],[1,6],[0,1],[3,0],[6,3],[0,6],[2,0],[9,0],[1,2],[5,9],[2,5],[5,1],[8,5],[2,1],[9,2]],"colors":8,"seed":1013632,"id":128,"par":24},{"board":[[1,0,7,0],[1,3,3,4],[2,2,2,4],[3,5,6],[4,4,3,6],[5,5,5,6],[6,0,7],[],[2,1,0,7],[1,7]],"solution":[[4,3],[6,9],[0,6],[0,9],[6,0],[3,6],[5,6],[3,5],[3,4],[0,3],[9,7],[8,7],[8,3],[0,8],[9,8],[8,0],[4,9],[1,4],[1,9],[0,1],[2,4],[2,8]],"colors":8,"seed":1021551,"id":129,"par":22},{"board":[[0,0,0,2],[1,7,8,2],[],[3,2],[4,4,4,3],[5,5,8,2],[6,6,4,0],[7,7,6,3],[8,8,3],[7,6,5],[1,1,1,5]],"solution":[[0,3],[6,0],[1,3],[4,8],[6,4],[10,9],[3,2],[5,2],[8,3],[7,3],[1,5],[5,8],[9,5],[6,9],[9,7],[7,6],[9,6],[7,1],[1,9],[10,1]],"colors":9,"seed":1029470,"id":130,"par":20},{"board":[[0,2,5,1],[],[2,2,2,5],[3,3,4],[4],[5,1,0,1],[6,6,3,4],[6,6,0,1],[5,0,4,3]],"solution":[[4,3],[3,1],[6,1],[3,6],[8,3],[6,3],[8,1],[0,4],[2,0],[5,4],[5,8],[4,5],[0,4],[0,2],[0,8],[5,0],[7,0],[4,5],[8,7],[7,4],[6,7],[8,4],[5,8]],"colors":7,"seed":1037389,"id":131,"par":23},{"board":[[0,0,0,2],[1,1,5,3],[2,2,2,5],[],[4,6,5],[5,3],[6,6,3],[1,1,0,3],[4,4,4,6]],"solution":[[1,5],[1,4],[5,6],[7,5],[6,5],[5,3],[6,3],[4,5],[2,5],[0,2],[7,0],[1,7],[6,4],[4,1],[8,1],[8,4]],"colors":7,"seed":1254766,"id":132,"par":16},{"board":[[0,0,0,6],[],[2,1],[3,3,3,4],[4,4,5,2],[5,5,5,6],[6,1],[7,2,1,1],[7,3,2,0],[4,7,7,6]],"solution":[[7,2],[2,6],[4,7],[6,2],[2,1],[6,1],[2,7],[0,6],[8,0],[5,6],[4,5],[9,6],[3,4],[7,8],[7,2],[8,2],[8,3],[7,8],[9,8],[4,9]],"colors":8,"seed":1053227,"id":133,"par":20},{"board":[[0,5],[1,1,1,5],[2,2,5],[3,0,6,2],[4,6,6,4],[],[6,4,1,5],[7,7,3,0],[3,0,2],[7,7,3,4]],"solution":[[0,2],[3,8],[7,0],[2,5],[8,2],[0,8],[1,5],[6,5],[6,1],[4,6],[3,4],[9,6],[7,9],[4,0],[6,4],[0,6],[8,0],[3,0],[3,8],[9,8],[7,9]],"colors":8,"seed":1061146,"id":134,"par":21},{"board":[[0,4,4,5],[1,1,7],[2,3],[],[4,6,2,3],[5,0,5,2],[6,5,4,6],[7,6,7],[7,0,0,1],[1,3,2,3]],"solution":[[1,7],[4,2],[5,4],[0,5],[8,1],[9,2],[4,9],[2,3],[2,4],[0,2],[0,8],[4,0],[9,0],[9,3],[1,9],[6,4],[2,6],[8,1],[6,2],[5,6],[5,1],[6,5],[6,4],[7,8],[4,7],[7,6],[8,7],[4,6],[2,4]],"colors":8,"seed":1069065,"id":135,"par":29},{"board":[[0,6,4],[1,1,1,6],[2,2,4],[],[4,4],[5,5,5,3],[6,1,3,2],[7,7,7,0],[0,0,2,3],[7,5,6,3]],"solution":[[0,2],[2,4],[1,0],[6,2],[5,6],[6,3],[6,1],[6,0],[8,3],[8,2],[9,3],[0,9],[7,8],[9,0],[0,6],[8,0],[9,6],[9,5],[7,9]],"colors":8,"seed":1076984,"id":136,"par":19},{"board":[[0,0,2,3],[1,1,5,0],[3],[],[4,4,5,6],[5,5,2,7],[6,6,0,2],[7,7,7,4],[4,1,3],[2,6,1,3]],"solution":[[2,8],[8,3],[0,3],[9,3],[6,0],[1,6],[8,9],[7,8],[5,7],[0,5],[5,2],[0,2],[6,0],[1,5],[9,1],[6,9],[4,6],[9,6],[2,9],[4,5],[4,8]],"colors":8,"seed":1189632,"id":137,"par":21},{"board":[[0,0,4,0],[1,3,3,4],[6,6,0,2],[3,3,1,4],[],[5,5,5,1],[6,6,5,2],[7,7,2,1],[],[7,7,2,4]],"solution":[[0,4],[1,0],[0,8],[0,4],[3,8],[9,8],[2,9],[2,4],[5,3],[1,0],[3,1],[0,3],[7,1],[6,7],[6,5],[2,6],[7,0],[9,0],[7,9]],"colors":8,"seed":1092822,"id":138,"par":19},{"board":[[0,0,2,6],[1,1,7],[2,2,6,3],[1,7],[4,4,4,6],[5,5,5,4],[6,3,3,7],[],[1,3,7],[0,0,2,5]],"solution":[[1,3],[3,8],[6,3],[2,6],[0,2],[8,3],[3,7],[8,7],[1,3],[6,8],[8,1],[3,8],[6,1],[2,6],[4,6],[5,4],[9,5],[0,2],[9,2],[0,9]],"colors":8,"seed":1100741,"id":139,"par":20},{"board":[[0,0,1,8],[1,4,0,2],[2,2,2,8],[3,3,8,6],[4,4,0,7],[5,5,5,6],[],[7,7,7,1],[],[4,1,8,3],[5,3,6,6]],"solution":[[10,6],[3,6],[5,6],[0,3],[7,0],[4,7],[9,10],[2,9],[1,2],[1,4],[0,8],[4,0],[4,1],[3,4],[9,4],[10,3],[5,10],[8,9],[1,5],[9,1],[5,9]],"colors":9,"seed":1108660,"id":140,"par":21},{"board":[[0,0,4,3],[6,6,4],[2,2,2,3],[],[4,3],[5,5,5,1],[6,2,3],[0,0,5,4],[1,1,1,6]],"solution":[[0,4],[0,1],[2,4],[4,6],[1,3],[6,4],[7,3],[4,6],[8,1],[5,8],[7,5],[0,7],[6,4],[4,0],[3,4],[6,0],[6,2],[1,6]],"colors":7,"seed":1326037,"id":141,"par":18},{"board":[[0,0,0,2],[],[2,2,2,4],[3,3,4,1],[4,3,6,1],[5,5,1],[6,3,6],[0,6,5,1],[5,4]],"solution":[[2,8],[0,2],[3,5],[3,8],[5,1],[4,1],[7,1],[4,6],[3,4],[5,7],[4,3],[8,4],[5,8],[7,8],[6,7],[6,3],[7,6],[0,7]],"colors":7,"seed":1124498,"id":142,"par":18},{"board":[[0,3],[1,1,4],[2,2,5,3],[],[4,4,4,0],[5,6,7,1],[6,6,6,1],[7,3,0,3],[7,5,5,0],[2,2,7]],"solution":[[2,0],[7,0],[4,7],[1,4],[5,1],[6,1],[5,9],[5,6],[5,2],[0,3],[7,0],[7,3],[8,0],[9,7],[2,8],[8,5],[7,8],[2,5],[2,9]],"colors":8,"seed":1237146,"id":143,"par":19},{"board":[[0,0,4,3],[],[2,2,2,1],[3,7,7,5],[4,4,2,5],[],[6,6,1,3],[7,5,5,4],[0,7,3,1],[1,6,6,0]],"solution":[[0,1],[6,1],[2,6],[7,0],[3,7],[7,5],[4,5],[4,2],[0,4],[7,3],[9,0],[3,7],[1,3],[6,1],[9,6],[1,9],[8,9],[8,3],[8,7],[0,8]],"colors":8,"seed":1140336,"id":144,"par":20},{"board":[[0,0,2],[1,1,1,2],[],[3,7,7,5],[4,0,2],[5,5,2,4],[6,6,5,0],[7,4],[3,6,6,4],[3,3,7,1]],"solution":[[0,4],[5,7],[1,5],[9,1],[6,0],[3,6],[3,9],[8,7],[9,3],[3,2],[9,3],[7,9],[2,7],[4,2],[5,2],[6,5],[8,6],[3,8],[4,0],[9,4]],"colors":8,"seed":1357713,"id":145,"par":20},{"board":[[0,6,3],[1,1,6,3],[2,2,2,4],[],[4,4,3],[5,5,1,6],[7,7,7,5],[7,3],[1,0,0,2],[4,0,5,6]],"solution":[[0,4],[4,7],[2,4],[8,2],[5,0],[9,0],[6,9],[0,3],[0,8],[7,0],[6,7],[1,0],[1,3],[1,5],[8,6],[1,8],[5,8],[9,5],[9,6],[4,9]],"colors":8,"seed":1156174,"id":146,"par":20},{"board":[[0,4],[1,3],[2,1],[3,3,4,1],[2,2,1],[5,6,6,2],[6,4,3],[7,7,7,6],[5,5,5,7],[0,0,4,0]],"solution":[[1,6],[1,2],[2,4],[3,2],[0,3],[4,2],[9,0],[2,4],[3,9],[4,2],[2,1],[4,1],[4,2],[5,2],[7,5],[8,7],[9,3],[5,4],[8,5],[3,9],[6,8],[9,6],[0,9],[6,3],[3,0],[3,8],[6,0],[4,6]],"colors":8,"seed":1164093,"id":147,"par":28},{"board":[[],[1,3,0,0],[],[3,3,3,4],[4,2,0,0],[5,5,5,1],[6,6,4,2],[7,7,5,2],[7,7,6,4],[1,1,6,2]],"solution":[[1,0],[4,0],[6,4],[3,6],[1,3],[5,1],[7,4],[7,5],[4,2],[9,2],[6,4],[8,4],[6,8],[6,9],[8,6],[7,8],[9,6],[1,9]],"colors":8,"seed":1172012,"id":148,"par":18},{"board":[[0,0,1,3],[1,1,0,2],[2,2,2,0],[],[4,4,4,7],[5,5,7,6],[],[7,6,7,6],[4,3,6,3],[5,5,1,3]],"solution":[[0,3],[8,3],[5,8],[4,5],[9,3],[0,9],[2,0],[1,2],[1,0],[9,1],[5,6],[5,9],[8,5],[8,3],[4,8],[7,5],[6,7],[7,4],[7,5],[4,6],[6,7]],"colors":8,"seed":1179931,"id":149,"par":21},{"board":[[0,0,0,5],[1,1,1,4],[3,7,4],[3,7,4],[],[5,5,5,2],[6,6,6,7],[7,4],[8,8,8,6],[0,8,2,3],[1,2,3,2]],"solution":[[1,2],[2,7],[6,2],[8,6],[7,3],[3,4],[7,4],[7,2],[3,7],[2,7],[2,3],[9,3],[5,9],[0,5],[9,2],[9,8],[0,9],[10,2],[10,3],[10,2],[1,10]],"colors":9,"seed":1187850,"id":150,"par":21},{"board":[[0,0,3],[1,1,3],[2,3,5,2],[],[4,4,4,2],[5,3,1,5],[6,2,5],[0,0,1],[6,6,6,4]],"solution":[[0,1],[5,6],[5,7],[1,5],[7,1],[0,7],[5,0],[6,5],[2,6],[2,5],[2,0],[2,6],[6,3],[4,3],[8,4],[8,6]],"colors":7,"seed":1195769,"id":151,"par":16},{"board":[[0,0,3,2],[3,4,4,1],[],[],[2,3,0,4],[5,5,4,1],[6,6,1,2],[6,6,0,3],[5,5,1,2]],"solution":[[0,2],[6,2],[1,6],[4,1],[7,0],[4,7],[0,4],[7,0],[8,2],[5,8],[1,5],[4,3],[2,4],[5,1],[1,2],[3,1],[5,2],[6,3],[6,7],[8,3],[5,8]],"colors":7,"seed":1308417,"id":152,"par":21},{"board":[[0,0,0,2],[],[2,2,3,1],[3,3,3,5],[4,5],[5,1,1,4],[6,6,6,0],[7,7,5],[4,4,1],[6,7,7,2]],"solution":[[2,8],[3,4],[2,3],[0,2],[6,0],[9,2],[4,7],[7,1],[9,7],[6,9],[1,4],[4,6],[5,4],[8,5],[5,1],[6,5],[8,1],[4,8]],"colors":8,"seed":1211607,"id":153,"par":18},{"board":[[0,0,0,2],[1,6],[2,2,3,5],[3,4,4,2],[4,4,7,1],[5,5,5,3],[6,1,6],[7,7,3,1],[],[0,7,6]],"solution":[[1,6],[4,1],[6,9],[7,1],[5,7],[2,5],[7,2],[9,6],[2,7],[6,8],[6,1],[8,6],[9,6],[4,9],[7,2],[2,8],[0,2],[3,2],[3,4],[8,3],[7,3],[9,7],[0,9]],"colors":8,"seed":1219526,"id":154,"par":23},{"board":[[0,5],[1,1,6,5],[2,2,2,4],[3,3,3,4],[4,0,5],[],[6,6,7,6],[3,0,4],[1,1,0,7],[2,7,5,7]],"solution":[[0,4],[2,7],[4,5],[0,4],[1,5],[6,1],[8,6],[4,8],[1,0],[8,4],[1,8],[4,1],[7,4],[3,4],[7,1],[3,7],[6,3],[0,6],[9,3],[9,5],[9,3],[2,9]],"colors":8,"seed":1227445,"id":155,"par":22},{"board":[[],[1,1,0,4],[2,6,0],[3,3,3,7],[4,2,0],[5,5,2,0],[6,6,2],[7,5,6,4],[1,1,4],[7,7,3,5]],"solution":[[1,8],[1,2],[2,4],[5,2],[5,6],[9,5],[2,0],[4,0],[6,4],[6,2],[4,6],[8,4],[1,8],[7,4],[2,7],[2,1],[6,2],[7,1],[7,5],[3,7],[9,3],[7,9]],"colors":8,"seed":1235364,"id":156,"par":22},{"board":[[0,0,0,7],[1,1,0,5],[2,2,4],[3,2,4],[],[5,5,5,1],[6,6,2,4],[7,7,7,3],[6,3],[6,1,4,3]],"solution":[[2,3],[7,8],[0,7],[9,8],[3,9],[6,3],[2,6],[8,4],[6,2],[6,8],[3,6],[9,6],[3,2],[4,3],[5,9],[1,5],[1,0],[9,1],[8,9]],"colors":8,"seed":1243283,"id":157,"par":19},{"board":[[0,3,3,1],[1,4,6],[2,1,5],[3,3,2,7],[],[5,5,4],[6,6,4,1],[7,7,6],[0,7,2,4],[0,0,2,5]],"solution":[[1,7],[1,5],[0,1],[6,1],[5,6],[8,5],[9,2],[8,9],[3,8],[9,3],[2,4],[2,1],[2,9],[3,2],[0,3],[9,2],[9,0],[5,9],[4,5],[6,9],[7,6],[8,7],[0,8]],"colors":8,"seed":1251202,"id":158,"par":23},{"board":[[0,0,0,1],[1,1,0,7],[2,4,4,2],[3,3,3,5],[4,6],[5,5,6,2],[],[7,7,7,5],[3,4,6],[1,2,6]],"solution":[[4,8],[8,9],[9,6],[2,9],[4,2],[5,9],[5,6],[8,6],[2,8],[3,5],[7,5],[1,7],[8,2],[2,4],[9,2],[8,4],[3,8],[0,9],[1,0],[1,9]],"colors":8,"seed":1259121,"id":159,"par":20},{"board":[[0,0,0,8],[],[2,2,1,4],[3,3,5,3],[7,7,7,1],[5,3,0,7],[6,6,4,1],[],[8,8,1,2],[6,4,4,2],[5,5,6,8]],"solution":[[0,1],[10,1],[2,7],[6,2],[7,6],[2,7],[4,7],[5,4],[5,0],[3,5],[8,2],[8,7],[1,8],[9,2],[6,9],[9,1],[6,1],[6,9],[10,9],[3,10],[5,3],[10,5]],"colors":9,"seed":1267040,"id":160,"par":22},{"board":[[0,6,1],[1,2],[2,4,4,6],[3,2],[4,4,0,6],[0,0,5,2],[5,1],[3,3,3,5],[5,6,1]],"solution":[[0,6],[1,3],[1,6],[2,0],[4,0],[5,3],[6,8],[7,5],[8,6],[0,1],[0,4],[6,8],[3,0],[7,3],[8,6],[6,7],[8,7],[8,1],[6,8],[5,8],[4,5],[2,4],[0,2]],"colors":7,"seed":1274959,"id":161,"par":23},{"board":[[1,6,1,6],[1,6],[2,2,0,6],[3,3,0,2],[4,4,4,0],[5,5,5,4],[],[3,3,0],[5,2,1]],"solution":[[0,1],[0,8],[1,0],[8,1],[3,8],[3,7],[0,6],[1,0],[2,6],[4,2],[5,4],[2,1],[7,1],[3,7],[8,2],[5,8]],"colors":7,"seed":1492336,"id":162,"par":16},{"board":[[0,5],[1,4],[],[3,3,2,5],[4,4,4,2],[5,1,1,2],[6,6,3,0],[7,7,7,1],[7,0,2,5],[6,6,0,3]],"solution":[[3,0],[4,3],[1,4],[7,1],[8,0],[3,8],[5,3],[5,1],[0,5],[6,0],[9,6],[0,9],[3,2],[6,3],[8,2],[0,8],[9,8],[8,0],[7,8],[9,0],[6,9]],"colors":8,"seed":1395526,"id":163,"par":21},{"board":[[0,0,3,2],[1,7,4],[],[3,3,3,7],[4,4,2],[2,4,5,2],[6,6,6,1],[7,5],[6,1,1,5],[0,0,7,5]],"solution":[[0,4],[8,7],[6,8],[9,7],[3,9],[0,3],[7,2],[9,7],[0,9],[8,0],[6,8],[4,6],[1,4],[1,7],[0,1],[5,6],[5,2],[5,4],[6,5]],"colors":8,"seed":1298716,"id":164,"par":19},{"board":[[0,0,5],[1,0,7,6],[2,2,6,7],[3,3,6],[4,5,2,1],[5,1,0,5],[],[7,6],[4,4,4,3],[3,1,2,7]],"solution":[[1,3],[3,7],[2,1],[5,0],[7,2],[8,3],[2,7],[7,6],[2,6],[1,7],[9,7],[1,5],[2,9],[4,1],[2,4],[0,2],[5,0],[1,5],[4,1],[9,1],[2,4],[5,9],[4,2],[8,4],[9,5],[5,8],[2,5],[9,8],[3,9]],"colors":8,"seed":1306635,"id":165,"par":29},{"board":[[0,0,0,3],[1,2],[],[3,3,1,7],[4,4,2],[5,5,6,1],[0,5,2],[7,7,5,6],[6,6,7,2],[4,4,3,1]],"solution":[[1,4],[4,6],[5,1],[6,4],[7,5],[4,6],[8,4],[3,8],[1,3],[9,1],[3,1],[0,3],[9,3],[4,2],[4,9],[6,2],[6,7],[0,6],[5,0],[7,5],[8,7],[0,8]],"colors":8,"seed":1524012,"id":166,"par":22},{"board":[[0,4,1,3],[],[2,7],[3,3,5,1],[4,4,2,7],[5,5,4,7],[6,6,6,0],[2,2,3,1],[0,1,7],[6,0,5]],"solution":[[2,8],[8,1],[3,8],[3,9],[0,3],[0,8],[4,1],[5,1],[2,4],[0,5],[6,0],[8,2],[7,2],[7,3],[4,7],[5,4],[9,5],[0,8],[9,8],[6,9]],"colors":8,"seed":1322473,"id":167,"par":20},{"board":[[],[1,1,1,0],[2,2,2,4],[3,3,5],[4,0,6],[5,5,0,6],[6,4,6,5],[7,7,7,0],[7,4],[3,1,3,2]],"solution":[[2,8],[9,2],[5,4],[1,5],[6,3],[4,6],[3,0],[3,9],[6,4],[9,3],[9,1],[3,9],[4,6],[5,3],[0,5],[6,4],[7,3],[4,6],[6,0],[8,6],[7,8],[0,4],[6,7],[0,6],[4,6],[4,3],[7,4]],"colors":8,"seed":1330392,"id":168,"par":27},{"board":[[0,1,3,0],[1,0,7],[],[3,3,7],[4,4,0,1],[5,5,6,3],[6,6,4],[7,7,2],[1,5,5,2],[6,2,4,2]],"solution":[[1,3],[0,1],[5,0],[8,7],[0,2],[4,0],[4,1],[6,4],[5,6],[8,5],[8,0],[1,8],[0,1],[8,0],[3,8],[2,3],[7,2],[7,8],[9,2],[9,4],[9,2],[6,9]],"colors":8,"seed":1338311,"id":169,"par":22},{"board":[[0,0,0,3],[1,8,8,4],[2,3,5,4],[3,7,5,6],[4,6],[5,6,4],[],[7,7,7,6],[2,2,5],[1,1,1,0],[8,8,3,2]],"solution":[[1,5],[3,4],[3,8],[7,4],[3,7],[0,3],[9,0],[4,6],[5,4],[2,4],[5,6],[5,2],[1,5],[9,1],[2,9],[8,9],[3,2],[10,8],[2,10],[2,3],[8,2],[10,3],[5,10]],"colors":9,"seed":1346230,"id":170,"par":23},{"board":[[0,0,5,4],[1,1,6],[2,5,0],[3,3,3,5],[4,4,4,3],[6,1],[6,1],[0,6],[2,2,2,5]],"solution":[[1,7],[1,5],[7,1],[7,2],[5,7],[6,7],[1,5],[5,6],[2,1],[3,2],[4,3],[0,4],[0,2],[0,1],[2,0],[8,0],[8,2]],"colors":7,"seed":1354149,"id":171,"par":17},{"board":[[0,6,2],[],[0,0,1,2],[3,3,5,1],[4,1],[5,5,3],[6,6,6,4],[2,2,5,3],[0,4,4,1]],"solution":[[2,0],[2,4],[3,4],[7,5],[3,7],[5,3],[7,5],[0,7],[4,1],[8,1],[4,8],[0,4],[2,0],[8,2],[0,8],[6,2],[6,4]],"colors":7,"seed":1362068,"id":172,"par":17},{"board":[[0,0,1],[1,1,6,4],[2,0,3,4],[3,3,3,5],[4,6],[],[6,6,4],[7,7,5,0],[5,7,5,2],[2,7,2,1]],"solution":[[1,6],[1,4],[0,1],[9,1],[7,0],[3,7],[8,9],[7,8],[4,5],[6,4],[5,6],[2,4],[2,3],[2,0],[9,2],[8,7],[7,5],[7,9],[5,8],[9,7],[2,9],[8,5],[8,7],[5,8]],"colors":8,"seed":1474716,"id":173,"par":24},{"board":[[0,2],[1,1,0],[2,6,2],[3,3,3,1],[4,5,4,3],[5,5,5,7],[6,2],[7,7,7,0],[4,4,1,6],[6,0]],"solution":[[0,2],[0,1],[1,9],[2,6],[3,1],[4,3],[8,2],[8,1],[4,8],[6,0],[6,2],[9,6],[2,9],[0,2],[7,6],[5,7],[4,5],[8,4]],"colors":8,"seed":1377906,"id":174,"par":18},{"board":[[],[4,3,7,0],[2,6,1,0],[3,3,1],[4,6,4,0],[5,3],[6,6,1,4],[7,7,0],[2,2,2,1],[5,5,5,7]],"solution":[[1,7],[8,3],[9,1],[1,0],[5,1],[9,5],[7,9],[0,7],[2,9],[4,9],[3,2],[6,4],[2,3],[2,6],[1,0],[4,1],[2,4],[8,2],[3,8],[0,3],[6,8],[4,6],[1,4]],"colors":8,"seed":1490554,"id":175,"par":23},{"board":[[],[1,4],[2,2,2,0],[3,3,1],[4,0,4],[5,5,5,6],[6,6,0,4],[7,1,0,2],[7,7,7,5],[6,3,3,1]],"solution":[[1,4],[1,3],[3,0],[9,0],[9,3],[5,9],[8,5],[4,1],[2,4],[7,2],[4,7],[6,1],[7,4],[7,0],[8,7],[4,6],[4,8],[1,4],[6,8],[6,9]],"colors":8,"seed":1393744,"id":176,"par":20},{"board":[[0,0,2],[1,1,2],[],[3,3,3,2],[4,4,0],[5,1,3,4],[6,6,6,4],[7,1,6,2],[5,5,5,7],[7,7,0]],"solution":[[0,1],[0,4],[0,9],[1,0],[3,0],[7,0],[4,2],[9,2],[5,4],[5,3],[6,4],[7,6],[1,5],[5,7],[8,9],[7,5],[5,1],[8,5],[7,1],[9,7]],"colors":8,"seed":1401663,"id":177,"par":20},{"board":[[],[1,7,2,0],[2,2,5],[3,7,7,5],[4,4,4,7],[5,0],[6,6,3,0],[1,1,2],[6,6,4,3],[3,1,5,0]],"solution":[[1,5],[1,7],[3,2],[3,1],[6,5],[3,6],[1,0],[4,0],[5,3],[9,3],[5,9],[2,5],[7,2],[9,5],[7,1],[9,1],[6,9],[8,9],[8,4],[6,8]],"colors":8,"seed":1409582,"id":178,"par":20},{"board":[[0],[],[2,2,3,4],[3,3,5,7],[4,7,7,1],[5,5,1,0],[6,6,6,3],[7,2,2,1],[5,4,0],[6,4,1,0]],"solution":[[0,8],[8,1],[2,8],[5,1],[9,1],[4,5],[3,4],[5,9],[6,2],[7,5],[4,0],[4,8],[2,4],[7,2],[0,7],[8,0],[8,3],[5,8],[3,5],[3,4],[9,8],[9,0],[6,9]],"colors":8,"seed":1522230,"id":179,"par":23},{"board":[[0,7,7,4],[1,1,1,2],[],[3,3,2],[4,6,7,5],[5,5,5,6],[6,1,3,2],[6,2],[8,8,8,7],[4,4,3],[0,0,0,8]],"solution":[[1,3],[3,7],[3,9],[7,2],[6,2],[3,6],[5,7],[4,5],[8,4],[10,8],[4,3],[7,4],[6,7],[9,7],[6,1],[4,6],[9,4],[0,4],[0,3],[10,0]],"colors":9,"seed":1425420,"id":180,"par":20},{"board":[[0,5,5,2],[],[2,0,4],[3,3,4,1],[6,6,0],[5,5,1],[6,6,0,1],[3,3,4],[2,2,4,1]],"solution":[[2,7],[2,4],[0,2],[3,5],[5,1],[0,5],[4,0],[6,1],[6,0],[4,6],[8,1],[3,8],[7,4],[3,7],[8,4],[2,8]],"colors":7,"seed":1433339,"id":181,"par":16},{"board":[[0,0,4,1],[3],[2,2,1,3],[],[4,4,5,1],[5,5,6,1],[6,6,6,0],[2,5,4,3],[2,0,3]],"solution":[[1,8],[8,3],[2,3],[7,3],[0,2],[0,7],[0,8],[8,1],[6,1],[2,0],[2,8],[4,0],[5,0],[5,6],[4,5],[7,4],[7,5],[8,7]],"colors":7,"seed":1545987,"id":182,"par":18},{"board":[[0,0,2,1],[],[2,2,7,1],[3,2,7,1],[4,4,4,7],[5,3,3,0],[6,6,6,7],[],[4,5,5,1],[3,5,0,6]],"solution":[[0,1],[2,1],[3,1],[8,1],[2,3],[0,2],[5,0],[3,7],[3,2],[3,5],[4,7],[6,7],[9,6],[9,0],[8,9],[4,8],[5,3],[9,5],[3,9]],"colors":8,"seed":1449177,"id":183,"par":19},{"board":[[0,0,1,7],[5],[2,2,2,4],[3,7,5],[4,4,4,3],[],[6,7,1,5],[7,3,1,5],[0,0,3,6],[2,6,6,1]],"solution":[[1,3],[3,5],[0,3],[6,5],[7,5],[0,6],[6,7],[9,6],[8,9],[4,8],[2,4],[9,1],[2,9],[3,2],[8,3],[0,8],[6,0],[7,0],[7,3],[2,6],[6,7],[1,6]],"colors":8,"seed":1666554,"id":184,"par":22},{"board":[[0,6],[1,2,2,4],[2,7,1,3],[],[4,4,4,3],[5,2,3,6],[1,0,3,7],[7,6],[0,0,1,7],[5,5,5,6]],"solution":[[0,7],[5,7],[2,5],[7,3],[9,3],[6,7],[4,6],[1,4],[8,7],[2,8],[2,7],[2,1],[5,2],[6,2],[0,6],[1,5],[5,0],[9,5],[1,0],[8,1],[6,8],[1,6]],"colors":8,"seed":1465015,"id":185,"par":22},{"board":[[],[1,7,1],[2,2,2,5],[3,3,3,6],[4,4,0],[5,1,0],[6,4,1],[7,7,4,6],[3,2,7,0],[5,5,6,0]],"solution":[[1,6],[4,5],[5,0],[6,5],[4,6],[8,0],[9,0],[1,8],[5,1],[2,5],[3,9],[6,4],[9,6],[5,9],[7,6],[7,4],[8,7],[8,2],[3,8]],"colors":8,"seed":1472934,"id":186,"par":19},{"board":[[0,0,0,7],[1,6],[2,4,4,3],[3,5,3,7],[4,4,1,5],[5,5,7],[6,6,6,0],[],[1,3,7],[2,2,2,1]],"solution":[[0,5],[6,0],[1,6],[3,8],[2,3],[9,1],[2,7],[9,2],[3,9],[4,3],[4,1],[4,7],[3,4],[9,3],[5,9],[4,5],[8,9],[8,3],[1,8]],"colors":8,"seed":1585582,"id":187,"par":19},{"board":[[0,1,5,7],[1,5,5,7],[2,2,4,6],[3,3,4,1],[4,4,5,7],[],[3,3,1,7],[],[6,6,6,0],[2,0,0,2]],"solution":[[0,5],[1,5],[0,1],[3,0],[4,5],[6,5],[0,6],[1,4],[6,0],[4,1],[0,7],[1,4],[8,0],[2,8],[2,3],[4,1],[9,2],[9,0],[2,9],[1,4],[1,2],[7,1],[4,2],[3,4],[3,6]],"colors":8,"seed":1488772,"id":188,"par":25},{"board":[[0,0,4,5],[1,3],[2,2,2,6],[3,0,4],[4,4,2,5],[],[6,6,6,1],[7,1,5],[7,3,0,5],[7,7,3,1]],"solution":[[0,7],[0,3],[3,5],[0,3],[7,0],[4,0],[8,0],[3,8],[6,7],[2,6],[4,2],[4,5],[8,3],[9,7],[1,9],[7,1],[3,8],[3,4],[8,4],[3,8],[9,8],[8,3],[9,3],[9,7],[7,8]],"colors":8,"seed":1496691,"id":189,"par":25},{"board":[[0,4,4,3],[1,1,7,2],[],[3,3,8,1],[4,0,2],[5,5,6,4],[6,6,6,2],[7,7,1,0],[8,8,8,2],[5,5,3],[7,0]],"solution":[[0,9],[1,4],[5,0],[7,10],[3,7],[0,2],[0,10],[4,0],[10,4],[6,0],[5,6],[8,0],[3,8],[9,3],[5,9],[4,10],[10,5],[4,5],[2,4],[10,1],[1,2],[7,1],[2,7]],"colors":9,"seed":1504610,"id":190,"par":23},{"board":[[5,0,5],[1,3,2,4],[2,2,6,0],[3,3,0],[4,4,0,5],[],[6,6,2,5],[3,4],[1,1,1,6]],"solution":[[1,7],[2,3],[4,0],[3,4],[8,2],[4,3],[0,5],[3,0],[0,4],[6,5],[1,6],[3,1],[4,0],[0,3],[5,0],[4,3],[7,4],[1,7],[8,1],[2,5],[6,2],[5,6]],"colors":7,"seed":1512529,"id":191,"par":22},{"board":[[0,4],[1,4,4,0],[2,2,6,1],[3,1],[2,0],[5,5,3,1],[6,6,6,4],[3,0],[5,5,2,3]],"solution":[[1,4],[1,0],[1,3],[4,7],[2,3],[0,1],[7,0],[6,1],[2,6],[2,4],[8,7],[8,4],[3,2],[5,2],[7,3],[5,3],[5,8]],"colors":7,"seed":1625177,"id":192,"par":17},{"board":[[],[1,1,1,2],[2,2,2,5],[7,0],[4,4,4,0],[5,5,3,7],[6,6,6,4],[7,3,0],[3,7,0],[5,6,1,3]],"solution":[[3,7],[4,8],[6,4],[5,3],[9,5],[5,0],[2,5],[1,2],[9,1],[9,6],[5,9],[7,5],[8,5],[0,7],[3,8],[7,0],[8,7],[0,8]],"colors":8,"seed":1528367,"id":193,"par":18},{"board":[[],[1,6,2,0],[],[3,4,1,1],[4,7,0,2],[5,5,5,2],[6,6,0,5],[7,7,7,1],[3,3,3,4],[4,6,0,2]],"solution":[[3,0],[7,0],[8,3],[3,2],[8,3],[1,8],[4,1],[8,4],[1,8],[5,8],[6,5],[9,8],[4,6],[4,9],[4,7],[2,4],[6,2],[9,2],[6,1],[1,9],[9,6],[4,9],[1,6],[0,1]],"colors":8,"seed":1536286,"id":194,"par":24},{"board":[[0,0,2],[1,1,1,5],[1,5,5,2],[3,3,7],[4,7,2,5],[],[6,3,7,0],[7,2],[4,4,4,6],[3,6,6,0]],"solution":[[0,7],[2,7],[1,2],[6,0],[9,0],[3,6],[8,9],[2,5],[1,2],[4,5],[7,4],[9,1],[3,9],[4,7],[7,3],[4,3],[7,4],[6,4],[4,7],[8,4],[6,7],[6,9],[1,6]],"colors":8,"seed":1544205,"id":195,"par":23},{"board":[[0,0,5,3],[1,0,4,6],[2,2,3,7],[],[4,2,2,6],[4,6,3,7],[],[7,7,3,5],[4,5,5,6],[1,1,1,0]],"solution":[[0,3],[7,0],[3,7],[0,3],[9,0],[7,6],[2,7],[5,7],[2,5],[5,6],[1,5],[4,5],[4,2],[4,1],[5,4],[8,4],[8,3],[5,8],[1,8],[1,0],[9,1]],"colors":8,"seed":1552124,"id":196,"par":21},{"board":[[0,5],[1,4,5,7],[2,2,1,3],[3,5,0],[4,4,4,1],[],[6,1,7,0],[7,7,0,5],[6,6,6,3],[2,2,3]],"solution":[[2,9],[4,2],[6,3],[1,6],[0,1],[3,0],[1,3],[1,4],[2,1],[3,5],[7,5],[7,0],[6,7],[6,1],[9,3],[2,9],[8,3],[8,6]],"colors":8,"seed":1664772,"id":197,"par":18},{"board":[[0,0,6,2],[1,6,5,4],[2,2,7,5],[3,3,1],[4,0,5,4],[],[6,2,5],[7,7,7,3],[6,3,0,1],[1,4]],"solution":[[1,9],[1,6],[4,9],[2,4],[8,3],[9,5],[3,9],[7,3],[2,7],[0,2],[0,1],[8,0],[8,3],[8,1],[4,8],[6,8],[4,0],[5,4],[6,2],[1,6],[9,1]],"colors":8,"seed":1567962,"id":198,"par":21},{"board":[[0],[1,1,4,2],[],[3,3,2,0],[4,4,5,6],[5,5,5,6],[6,2,2,1],[7,1,4,0],[7,7,7,3],[6,3,0]],"solution":[[0,9],[9,2],[3,2],[7,2],[1,3],[1,7],[6,1],[3,6],[8,9],[6,3],[3,0],[6,0],[9,3],[6,9],[4,9],[5,9],[4,5],[7,4],[7,1],[8,7]],"colors":8,"seed":1575881,"id":199,"par":20},{"board":[[0,0,8,5],[1,1,8,2],[2,2,1,6],[3,3,3,0],[4,7,6,5],[5],[],[7,7,2,0],[3,6,5],[4,8,8,6],[4,4,1,7]],"solution":[[5,8],[8,6],[0,6],[4,6],[2,4],[4,8],[10,4],[2,10],[1,2],[0,1],[3,0],[7,0],[7,2],[4,7],[8,5],[3,8],[9,5],[1,9],[9,3],[1,3],[10,1],[10,4],[4,9]],"colors":9,"seed":1583800,"id":200,"par":23},{"board":[[0,0,0,6],[],[2,0,4,1],[2,1],[4,1,1,3],[5,5,5,4],[6,6,3,4],[7,7,7,6],[5,2,3],[7,3,2]],"solution":[[2,3],[4,8],[3,4],[5,2],[4,3],[3,1],[4,1],[3,9],[2,4],[6,4],[8,6],[6,3],[0,6],[2,0],[7,6],[9,2],[3,9],[9,8],[8,3],[9,3],[7,9],[8,2],[5,8]],"colors":8,"seed":1591719,"id":201,"par":23},{"board":[[6,6,2],[1,1,7,4],[],[3,3,4],[4,6,2],[5,0,0,6],[4,3,2],[7,7,3,2],[1,1,0,7],[5,5,5,0]],"solution":[[0,4],[1,3],[4,6],[5,0],[6,4],[7,6],[8,1],[5,8],[9,5],[8,5],[5,2],[9,5],[8,2],[1,9],[1,8],[3,1],[7,3],[7,9],[4,7],[6,7],[4,0],[6,3],[1,4],[4,6]],"colors":8,"seed":1599638,"id":202,"par":24},{"board":[[0,0,8],[1,8,6],[2,2,3,6],[3,3,3,5],[4,4,1,4],[5,5,7,6],[],[7,5,0],[8,8,1,6],[2,2,4],[7,7,1,0]],"solution":[[2,1],[4,9],[10,7],[4,10],[9,4],[1,6],[0,1],[7,0],[3,7],[2,3],[2,9],[5,6],[8,6],[10,8],[1,2],[1,10],[7,1],[7,5],[8,7],[2,8],[10,7],[5,10],[1,5]],"colors":9,"seed":1607557,"id":203,"par":23},{"board":[[0,0,5,3],[1,1,3],[2,8],[3,6],[4,4,6],[5,5,7,2],[6,8],[7,7,4,1],[8,4,1,3],[5,2,2,8],[6,0,0,7]],"solution":[[0,1],[2,6],[3,4],[1,3],[8,3],[1,8],[5,2],[8,1],[7,1],[7,8],[5,7],[10,7],[0,5],[10,0],[4,10],[8,4],[8,6],[9,8],[6,8],[10,6],[9,2],[5,9]],"colors":9,"seed":1615476,"id":204,"par":22},{"board":[[0,0,2,1],[1,6,2,5],[2,7,4],[3,3,2,4],[],[5,8,4],[0,0,1,3],[7,7,4],[8,8,3,7],[6,6,5],[6,1,5,8]],"solution":[[1,9],[2,5],[3,7],[1,3],[8,2],[6,8],[0,6],[3,0],[2,4],[2,3],[5,2],[7,2],[4,7],[10,5],[9,10],[0,4],[3,4],[8,3],[5,8],[5,9],[6,5],[0,6],[9,0],[10,0],[5,10],[9,1],[1,5],[10,1],[5,10]],"colors":9,"seed":1728124,"id":205,"par":29},{"board":[[0,0,2],[1,6],[2,1,6],[3,3,3,0],[4,4,4,2],[5,5,7,2],[],[7,7,3,0],[8,8,8,6],[5,5,7,4],[8,1,1,6]],"solution":[[1,2],[4,0],[9,4],[0,6],[3,0],[7,0],[7,3],[5,6],[5,7],[9,7],[5,9],[2,5],[1,2],[8,5],[10,5],[2,10],[10,1],[8,10],[2,1],[6,2]],"colors":9,"seed":1631314,"id":206,"par":20},{"board":[[0,5,6,8],[1,1,1,8],[3,2],[3,4,1,7],[4,4,8,2],[5,5,5,8],[6,6,3],[7,7,2],[],[6,3,7,2],[0,0,0,4]],"solution":[[2,7],[2,6],[6,8],[7,2],[3,7],[4,2],[9,2],[9,7],[8,9],[0,4],[0,6],[9,8],[6,9],[4,6],[1,6],[3,1],[5,6],[0,5],[4,3],[10,4],[10,0],[3,4],[8,3]],"colors":9,"seed":1639233,"id":207,"par":23},{"board":[[0,4,0,2],[],[2],[3,3,1,2],[4,4,4,8],[5,5,5,1],[6,6,6,8],[7,7,3,8],[8,3,2],[7,7,0,1],[0,5,6,1]],"solution":[[2,8],[8,1],[0,1],[3,1],[5,3],[3,2],[3,8],[9,2],[10,2],[0,9],[8,3],[4,8],[0,4],[9,0],[6,8],[7,8],[7,3],[7,9],[10,6],[10,5],[0,10]],"colors":9,"seed":1647152,"id":208,"par":21},{"board":[[0,8,0,6],[1,1,0,4],[2,2,1],[3,3,1,8],[4,7,6],[5,5,5,4],[],[7,7,6],[8,8,6],[5,3,3,4],[0,2,2,7]],"solution":[[0,4],[4,7],[4,8],[10,4],[4,6],[1,4],[0,1],[3,0],[2,3],[10,2],[1,10],[3,1],[5,4],[9,4],[9,3],[5,9],[0,5],[10,0],[7,10],[6,7],[8,10],[5,8]],"colors":9,"seed":1655071,"id":209,"par":22},{"board":[[0,0,0,7],[1,7],[2,8,7],[3,2,2,1],[4,4,2,7],[5,5,5,4],[6,6,6,1],[],[8,8,6,8],[4,1,0],[3,3,3,5]],"solution":[[0,1],[9,0],[1,2],[3,9],[2,1],[6,9],[8,2],[8,6],[2,8],[2,3],[1,2],[9,1],[4,2],[3,4],[5,9],[10,5],[4,3],[3,7],[10,3],[4,7],[4,9]],"colors":9,"seed":1662990,"id":210,"par":21},{"board":[[1,0],[],[2,2,0,1],[3,7,1],[4,4,4,5],[5,5,5,7],[6,6,3,1],[2,0,7],[6,6,7,0],[4,3,3,2]],"solution":[[2,3],[0,2],[3,0],[6,0],[3,7],[3,6],[2,1],[8,1],[5,8],[4,5],[9,2],[6,9],[9,3],[4,9],[6,3],[7,4],[8,4],[6,8],[7,1],[2,7]],"colors":8,"seed":1775638,"id":211,"par":20},{"board":[[0,0,0,7],[1,1,1,2],[2,3,5],[3,3,3,4],[4,4,0,7],[5,1,2,7],[6,5],[],[6,6,6,4],[2,7,5]],"solution":[[2,6],[6,9],[9,7],[7,6],[0,9],[4,9],[4,0],[3,4],[2,3],[8,4],[1,2],[6,7],[8,6],[9,8],[5,8],[2,9],[5,9],[5,1],[7,5]],"colors":8,"seed":1888286,"id":212,"par":19},{"board":[[],[0,4],[2,4,4,0],[3,3,7,5],[1,1,1,7],[5,5,6,8],[6,6,8,1],[7,7,8,0],[8,0],[3,3,5,6],[2,2,2,4]],"solution":[[2,8],[2,1],[7,8],[5,7],[9,5],[3,9],[4,3],[6,4],[7,6],[1,0],[8,1],[10,0],[10,2],[8,7],[3,8],[5,10],[9,5],[3,9],[6,3],[6,10],[7,3],[7,8]],"colors":9,"seed":1686747,"id":213,"par":22},{"board":[[],[1,1,1,2],[2,2,2,7],[3,3,8,5],[4,4,8,5],[5,5,6],[6,6,6,0],[7,1,0,4],[8,7,0],[3,3,4,0],[7,8]],"solution":[[6,8],[5,6],[3,5],[4,5],[3,4],[4,10],[7,4],[8,7],[9,8],[9,4],[3,9],[10,0],[2,10],[1,2],[7,3],[8,3],[7,1],[10,7],[8,7],[0,8]],"colors":9,"seed":1694666,"id":214,"par":20},{"board":[[0,0,0,3],[1,1,1,3],[2,2,0,4],[3,4],[],[5,5,1],[6,6,2,4],[7,7,7,5],[8,5,4],[8,8,8,2],[6,6,7,3]],"solution":[[2,3],[3,8],[6,3],[8,3],[9,6],[3,8],[3,4],[8,4],[0,3],[2,0],[6,2],[1,3],[5,1],[10,3],[5,8],[7,5],[8,5],[9,8],[10,7],[6,10]],"colors":9,"seed":1702585,"id":215,"par":20},{"board":[[0,0,0,5],[4],[6,1,5,1],[3,2,4],[],[5,1,4,3],[6,6,3,4],[7,7,7,0],[8,8,8,6],[2,3,1,2],[8,2,5,7]],"solution":[[1,3],[3,4],[6,4],[5,6],[5,4],[2,5],[0,2],[7,0],[10,7],[2,10],[9,3],[5,9],[10,2],[9,5],[6,9],[2,10],[8,6],[10,2],[5,1],[5,10],[9,5],[9,3],[2,9],[10,9],[2,1],[6,2],[3,10],[10,6],[8,10],[3,6],[5,3]],"colors":9,"seed":1710504,"id":216,"par":31},{"board":[[0,0,0,2],[1,2,7],[2,7,1],[3,3,3,1],[],[5,8,7],[6,6,6,5],[7,8,2,4],[8,8,4],[5,4,0,3],[6,5,4,1]],"solution":[[1,5],[0,1],[3,2],[9,3],[9,0],[7,8],[8,9],[1,7],[9,4],[7,1],[8,7],[6,9],[1,8],[2,1],[10,1],[10,4],[9,10],[5,2],[7,5],[2,9],[8,2],[5,7],[7,8],[9,7],[5,8],[10,5],[6,10]],"colors":9,"seed":1823152,"id":217,"par":27},{"board":[[0,6,6,4],[1,1,7,2],[2,7],[3,3,3,4],[4,2,7,6],[5,3,4],[6,5,1,5],[],[8,8,8,2],[0,0,0,1],[5,8,7]],"solution":[[0,5],[2,10],[1,2],[4,0],[1,4],[8,2],[9,1],[0,7],[9,0],[4,9],[10,9],[4,2],[10,8],[5,4],[3,4],[5,3],[5,10],[6,10],[6,1],[6,10],[7,6]],"colors":9,"seed":1726342,"id":218,"par":21},{"board":[[0,8],[1,1,6],[2,2,2,4],[3,3,3,0],[4,3,5,8],[5,5,0,6],[6,1,8],[7,7,7,2],[],[7,1,0,8],[4,4,6,5]],"solution":[[0,6],[3,0],[5,1],[0,5],[5,8],[8,0],[10,5],[1,10],[6,8],[4,8],[4,5],[4,3],[9,8],[9,0],[2,4],[7,2],[6,9],[6,1],[9,6],[7,9],[1,7],[1,6],[10,7],[4,10]],"colors":9,"seed":1734261,"id":219,"par":24},{"board":[[0,8,8,0],[1,1,8,5],[2,6,2,4],[3,3],[4,3],[],[6,6,6,4],[7,0,0,5],[8,2,4,5],[7,7,7,1],[1,2,5,3]],"solution":[[3,4],[4,5],[10,5],[1,10],[2,4],[6,4],[10,3],[2,10],[2,6],[2,10],[7,3],[8,3],[8,4],[10,8],[0,7],[8,10],[0,1],[10,8],[1,0],[8,10],[9,1],[10,8],[0,2],[7,0],[9,7],[8,10],[10,9],[1,10],[8,9],[2,8]],"colors":9,"seed":1742180,"id":220,"par":30},{"board":[[0,0,0,7],[1,5,4,2],[2,1,1,4],[3,3,7,1],[4,2],[5,6,6,2],[],[7,7,5,6],[5,4],[3,3,0,6]],"solution":[[1,4],[1,8],[2,8],[3,2],[0,3],[5,4],[7,5],[1,7],[2,1],[4,2],[8,4],[7,8],[3,7],[5,6],[8,5],[9,6],[9,0],[3,9]],"colors":8,"seed":1750099,"id":221,"par":18},{"board":[[0,0,0,3],[1,1,1,3],[2,2,2,6],[],[4,2,6,1],[5,5,4,3],[],[7,7,6,3],[5,4,4,6],[7,7,5,0]],"solution":[[0,3],[9,0],[1,3],[4,1],[2,4],[5,3],[7,3],[4,7],[8,4],[5,8],[5,9],[8,6],[5,8],[9,8],[4,5],[7,5],[7,9],[4,2],[6,4]],"colors":8,"seed":1758018,"id":222,"par":19},{"board":[[0,8,3],[1,1,2,1],[2,6,4],[3,4],[],[5,5,5,3],[6,6,6,2],[7,7,1,4],[8,8,8,0],[7,7,0,4],[2,0,5,3]],"solution":[[2,3],[5,0],[7,3],[1,7],[6,1],[2,6],[1,2],[7,1],[3,4],[9,4],[0,3],[10,3],[10,5],[8,9],[0,8],[0,10],[9,10],[10,0],[2,10],[9,0],[7,9]],"colors":9,"seed":1765937,"id":223,"par":21},{"board":[[0,4,3],[5,5,3,5],[2,2,2,0],[3,0,0,1],[4,1,5],[],[6,6,6,1],[7,7,7,1],[8,8,8,6],[2,4],[8,4,3,7]],"solution":[[1,4],[0,1],[0,9],[2,0],[1,5],[4,1],[3,4],[3,0],[5,3],[6,4],[8,6],[4,5],[7,5],[10,7],[10,3],[4,9],[9,10],[10,4],[8,10],[9,4],[2,9]],"colors":9,"seed":1878585,"id":224,"par":21},{"board":[[0,6,6,5],[1,1,4,0],[2,2,3],[3,7,5],[4,4,4,2],[],[7,6,3,2],[7,7,8,0],[8,8,8,0],[3,5],[1,1,6,5]],"solution":[[0,3],[3,9],[9,5],[10,5],[9,2],[0,10],[2,9],[4,2],[6,2],[6,9],[0,6],[1,0],[1,4],[7,0],[8,0],[7,8],[7,3],[10,6],[3,7],[9,3],[6,10],[6,9],[7,6],[10,9],[1,10]],"colors":9,"seed":1781775,"id":225,"par":25},{"board":[[2,8,1],[],[2,2,3,0],[3,3,7,5],[4,4,4,0],[5,5,0,1],[6,1],[7,7,7,3],[8,8,8,6],[6,5,0],[4,2,6,1]],"solution":[[0,6],[2,9],[5,6],[4,5],[7,2],[6,1],[10,1],[6,10],[5,6],[9,6],[5,9],[10,5],[8,5],[0,8],[0,10],[9,0],[5,9],[3,0],[3,7],[2,3],[10,2],[4,10]],"colors":9,"seed":1789694,"id":226,"par":22},{"board":[[],[6,6,6,2],[8,2,0],[3,3,1,3],[4,5,7,8],[5,5,5,1],[6,0,2],[7,7,8,0],[8,0],[4,1,1,7],[4,4,3,2]],"solution":[[1,6],[2,8],[6,2],[8,6],[4,8],[9,4],[5,9],[2,0],[10,0],[8,2],[3,10],[9,3],[6,8],[1,6],[7,8],[7,2],[4,7],[4,5],[3,9],[9,1],[3,1],[10,3],[10,4],[4,9]],"colors":9,"seed":1797613,"id":227,"par":24},{"board":[[0,5,2],[1,1,4,5],[2,2,8],[3,0,5],[4,4,4,3],[],[6,6,6,2],[7,3,8],[8,8,0,5],[7,7,7,0],[1,1,3,6]],"solution":[[1,3],[2,7],[0,2],[6,2],[10,6],[3,0],[4,10],[1,4],[9,3],[0,5],[8,5],[0,3],[3,8],[3,0],[8,0],[7,8],[3,7],[10,7],[7,3],[9,7],[10,3],[1,10]],"colors":9,"seed":1805532,"id":228,"par":22},{"board":[[],[1,1,1,3],[2,2,2,0],[3,3,0,6],[4,4,0,7],[5,5,5,6],[6,1,2,7],[7,0,7,6],[8,8,8,3],[],[8,4,4,5]],"solution":[[1,0],[8,0],[3,9],[2,3],[5,9],[10,5],[7,9],[6,7],[6,2],[6,1],[9,6],[3,9],[0,3],[7,0],[9,7],[4,0],[7,4],[4,9],[7,9],[0,7],[10,4],[8,10]],"colors":9,"seed":1813451,"id":229,"par":22},{"board":[[],[1,1,3,8],[2,2,6,8],[3,1,8,3],[4,4,4,5],[5,5,2,6],[6,5,2,0],[7,7,7,0],[],[6,0,0,3],[4,7,1,8]],"solution":[[1,0],[2,0],[3,1],[0,3],[5,2],[3,0],[10,0],[3,10],[1,3],[10,1],[9,3],[6,9],[5,6],[4,5],[9,8],[7,8],[10,7],[4,10],[2,9],[6,2],[6,5],[9,6]],"colors":9,"seed":1821370,"id":230,"par":22},{"board":[[0,0,6,5],[1,1,2,3],[],[3,3,3,4],[4,4,2,5],[5,0,0,7],[6,5,2,6],[7,7,6,2],[1,1,7,4],[]],"solution":[[0,2],[4,2],[6,0],[4,6],[3,4],[1,3],[8,4],[5,8],[6,1],[7,6],[0,7],[1,9],[6,9],[2,6],[7,0],[6,2],[6,7],[0,6],[5,0],[2,5],[7,6],[8,7],[1,8]],"colors":8,"seed":2038747,"id":231,"par":23},{"board":[[0,0,7,3],[1,3,1],[2,2,2,0],[3,1],[4,4,4,5],[],[6,6,5,7],[7,7,1],[2,5,5,3],[0,6,6,4]],"solution":[[1,3],[0,1],[3,7],[6,0],[7,3],[0,7],[2,0],[4,6],[9,4],[8,1],[6,8],[1,5],[3,1],[5,3],[8,6],[6,5],[8,5],[2,8],[9,6],[0,9]],"colors":8,"seed":1837208,"id":232,"par":20},{"board":[[0,0,2,6],[1,5,4,6],[0],[3,3,3,6],[4,4,2,7],[5,2,6,4],[],[7,7,7,2],[8,8,1,5],[1,1,5,3],[8,8,0]],"solution":[[2,10],[10,6],[0,2],[1,2],[3,2],[9,3],[5,1],[5,2],[0,5],[0,6],[7,5],[4,7],[5,4],[8,9],[4,5],[5,0],[4,0],[1,4],[5,1],[9,1],[1,5],[9,5],[9,1],[8,1],[8,10]],"colors":9,"seed":1845127,"id":233,"par":25},{"board":[[0,0,1,4],[1,3,4,8],[2,2,3],[3,3,6,8],[4,6,8],[5,4,6],[0,0,6],[7,7,1,8],[],[5,5,5,2],[2,7,7,1]],"solution":[[1,4],[0,1],[5,6],[1,5],[1,2],[1,0],[5,1],[2,8],[9,2],[9,5],[4,9],[3,9],[7,9],[0,7],[3,4],[3,8],[6,4],[7,0],[4,6],[10,7],[6,4],[4,3],[1,4],[6,3],[0,1],[0,6],[7,1],[10,7],[2,10]],"colors":9,"seed":1853046,"id":234,"par":29},{"board":[[0,0,0,1],[1,3,2],[],[3,3,2,3],[4,4,2],[5,5,5,8],[6,6,6,7],[7,2],[8,7,7,1],[8,8,6,4],[0,5,1,4]],"solution":[[1,4],[4,7],[3,1],[7,3],[9,4],[10,4],[0,10],[3,7],[7,2],[3,2],[1,3],[10,1],[8,1],[7,8],[5,7],[10,5],[0,10],[8,0],[6,0],[9,6],[9,7],[7,8]],"colors":9,"seed":1860965,"id":235,"par":22},{"board":[[0,0,0,3],[1,1,6],[2,2,2,8],[3,3,5,4],[],[6,4],[6,3,7,4],[7,7,7,5],[8,8,6,5],[1,1,8],[0,2,5,4]],"solution":[[2,9],[3,5],[6,5],[7,3],[6,7],[0,6],[5,4],[10,4],[5,1],[3,10],[8,3],[1,8],[3,5],[6,3],[10,5],[10,2],[0,10],[6,1],[1,0],[8,0],[9,8],[1,9]],"colors":9,"seed":1868884,"id":236,"par":22},{"board":[[0,2,2,3],[8,6],[2,2,8,6],[3,3,4,7],[4,4,4,6],[5,5,0,1],[],[7,7,3,1],[8,8,1,0],[5,5,1],[0,7,6]],"solution":[[1,10],[5,9],[8,5],[7,8],[0,7],[8,6],[9,6],[8,1],[0,8],[5,0],[5,9],[10,5],[2,5],[2,1],[2,8],[4,5],[3,10],[3,4],[7,3],[10,7],[0,10]],"colors":9,"seed":2086261,"id":237,"par":21},{"board":[[0,6,6,1],[1,3],[2,2,2,6],[],[4,4,4,1],[5,5,0,8],[6,5,3],[7,5,3],[8,8,8,2],[7,7,7,4],[0,0,1,3]],"solution":[[1,6],[0,1],[2,0],[8,2],[5,8],[4,1],[9,4],[6,7],[10,6],[10,1],[5,10],[0,3],[10,0],[6,10],[7,10],[5,6],[6,7],[7,5],[9,7],[6,5],[3,6]],"colors":9,"seed":1884722,"id":238,"par":21},{"board":[[0,0,6,2],[1,7,3,6],[],[3,3,1,3],[4,4,2,7],[5,5,5,2],[6,6,7],[7,4,1],[8,8,8,5],[8,1],[0,0,4,2]],"solution":[[4,6],[0,4],[1,0],[3,1],[3,7],[1,3],[6,1],[0,6],[7,9],[4,2],[4,7],[5,2],[8,5],[10,2],[7,10],[1,4],[9,1],[8,9],[10,7],[7,8],[4,7],[10,8],[0,10]],"colors":9,"seed":1892641,"id":239,"par":23},{"board":[[],[1,1,1,3],[2,2,2,8],[3,3,3,6],[4,4,7,0],[],[8,7,4,5],[7,0,0,5],[8,8,4,5],[1,5,7,0],[6,6,6,2]],"solution":[[1,0],[2,5],[10,2],[3,10],[3,0],[4,3],[9,3],[9,4],[6,9],[7,9],[7,3],[4,7],[6,4],[6,7],[5,6],[9,5],[1,9],[8,5],[8,4],[6,8]],"colors":9,"seed":1900560,"id":240,"par":20},{"board":[[0,1,0,5],[1,2,2,5],[],[3,3,6,7],[4,3,6,7],[5],[6,6,2,0],[7,7,1,2],[4,4,4,0],[3,1,5]],"solution":[[5,9],[9,2],[0,2],[1,2],[6,0],[1,6],[7,1],[6,1],[7,9],[1,6],[3,7],[4,7],[3,4],[6,1],[1,5],[6,5],[4,6],[3,4],[1,9],[4,1],[9,3],[1,9],[0,1],[0,3],[1,0],[8,0],[8,4]],"colors":8,"seed":2013208,"id":241,"par":27},{"board":[[0,0,0,3],[],[2,4,2,1],[3,1,1,5],[4,7],[5,6],[6,5,7,5],[7,4,0,7],[2,2,4,6],[1,3,3,6]],"solution":[[7,4],[8,5],[9,5],[0,9],[7,0],[7,8],[7,4],[4,1],[8,4],[5,7],[3,5],[2,3],[2,8],[2,4],[8,2],[6,5],[6,1],[6,5],[7,6],[3,7],[9,3],[7,9]],"colors":8,"seed":2125856,"id":242,"par":22},{"board":[[0,4,3],[1,7,3,6],[2,2,2,0],[3,5,6,4],[1,1,1,3],[5,5,7,5],[],[4,6],[8,8,0,7],[8,8,0,7],[2,4,6]],"solution":[[1,7],[0,1],[3,0],[3,7],[5,3],[7,10],[8,5],[2,8],[10,7],[7,6],[10,6],[7,0],[0,10],[10,7],[2,10],[0,7],[8,0],[1,2],[5,1],[3,5],[2,3],[4,3],[1,2],[4,1],[9,2],[9,0],[8,9]],"colors":9,"seed":1924317,"id":243,"par":27},{"board":[[0,0,2],[1,1,3,0],[6,7,7,3],[4,0],[4,4,2],[5,5,5,3],[6,6,6,7],[3,2],[8,8,7,1],[5,1,2],[8,8,4]],"solution":[[0,4],[0,3],[4,7],[4,10],[7,9],[10,4],[9,7],[3,0],[4,3],[1,0],[2,1],[6,2],[7,9],[2,4],[6,2],[9,7],[7,6],[9,6],[1,7],[5,7],[1,9],[8,1],[9,1],[5,9],[8,4],[8,10]],"colors":9,"seed":1932236,"id":244,"par":26},{"board":[[0,0,0,6],[],[2,4,4,8],[],[4,4,7,5],[5,1,3,1],[6,6,1,3],[7,5,5,6],[8,8,0,3],[7,7,2,8],[2,2,1,3]],"solution":[[0,1],[7,1],[4,7],[7,3],[7,4],[5,7],[6,5],[7,6],[5,7],[6,5],[1,6],[8,7],[8,0],[10,7],[2,8],[9,8],[5,10],[2,1],[2,9],[10,5],[5,2],[3,5],[10,2],[9,10],[4,9],[1,4]],"colors":9,"seed":1940155,"id":245,"par":26},{"board":[[0,0,5,8],[1,1,1,7],[2,2,2,7],[3,3,3,1],[],[5,5,5,6],[4,0],[7,7,3,2],[8,8,0,4],[8,6,4],[6,6,4]],"solution":[[8,9],[6,8],[6,10],[8,4],[0,8],[9,6],[10,6],[10,9],[0,10],[0,4],[9,0],[8,9],[5,0],[5,10],[1,5],[3,1],[2,5],[7,2],[7,3],[5,7]],"colors":9,"seed":1948074,"id":246,"par":20},{"board":[[0,0,8,4],[1,1,0,3],[2,2,7,5],[],[4,4,3,5],[],[6,6,5,3],[7,7,6,3],[8,8,8,7],[2,4,0,5],[1,1,2,6]],"solution":[[0,3],[1,5],[6,5],[4,6],[4,5],[7,5],[4,3],[10,7],[6,4],[7,6],[2,4],[9,4],[1,9],[2,7],[8,7],[0,8],[9,0],[9,3],[2,9],[10,9],[1,10]],"colors":9,"seed":1955993,"id":247,"par":21},{"board":[[0,0,4,3],[1,1,1,7],[2],[],[4,4,2],[5,5,5,2],[6,6,7,5],[7,7,8,3],[8,8,4,3],[6,6,0,8],[1,2,0,3]],"solution":[[2,4],[4,3],[5,3],[6,5],[1,6],[0,2],[0,4],[7,2],[8,2],[8,4],[10,2],[0,10],[7,8],[6,7],[9,8],[0,9],[10,0],[9,0],[6,9],[10,3],[1,10]],"colors":9,"seed":1963912,"id":248,"par":21},{"board":[[0,7,2,1],[1,4,3],[2,2,2,5],[3,6,3],[6,3,4],[5,7,5,6],[],[7,8,1,6],[8,5,4],[7,8,8,1],[0,0,0,4]],"solution":[[1,3],[1,4],[0,1],[4,8],[9,1],[8,4],[10,8],[3,6],[5,3],[2,5],[0,2],[7,3],[7,1],[9,7],[9,0],[3,9],[6,3],[7,6],[7,0],[4,7],[8,7],[4,3],[9,4],[5,8],[0,5],[5,9],[8,5],[6,8],[0,9],[10,0]],"colors":9,"seed":1971831,"id":249,"par":30},{"board":[[0,0,0,6],[1,1,8,2],[],[3,3,1,4],[4,5],[5,2,2,7],[6,6,6,4],[7,5],[8,8,8,2],[3,3,1,7],[0,4,7,5]],"solution":[[4,7],[3,4],[6,4],[0,6],[10,7],[5,10],[1,5],[5,2],[7,5],[8,2],[1,8],[10,7],[9,7],[10,4],[0,10],[1,3],[1,9],[3,0],[9,0],[3,9]],"colors":9,"seed":2084479,"id":250,"par":20},{"board":[[0,0,6,7],[1,5,0,7],[2,2,2,5],[3,1,6,7],[],[1,4],[6,6,4],[7,4,5,4],[2,1,5],[3,3,3,0]],"solution":[[2,8],[5,6],[8,4],[5,8],[6,5],[7,5],[7,4],[7,5],[0,7],[0,6],[1,7],[3,7],[3,6],[8,3],[2,8],[0,1],[9,0],[1,0],[1,4],[3,1],[9,3]],"colors":8,"seed":1987669,"id":251,"par":21},{"board":[[0,2,1],[1,1,7],[2,6,7],[3,3,0,2],[4,7,1,7],[5,5,5,6],[4,4,0,2],[],[5,6,0],[3,3,6,4]],"solution":[[1,2],[0,1],[3,0],[3,8],[6,0],[8,6],[0,7],[0,8],[2,0],[4,0],[4,1],[4,0],[5,2],[9,4],[9,2],[3,9],[2,3],[7,2],[6,7],[4,6],[8,7],[8,3],[5,8]],"colors":8,"seed":1995588,"id":252,"par":23},{"board":[[0,0,8,4],[1,1,2,1],[2,2,5,7],[],[4,4,1,7],[3,3],[6,6,5,3],[7,3],[8,8,8,0],[6,5,4,2],[0,6,5,7]],"solution":[[5,7],[7,3],[6,3],[2,7],[2,6],[4,7],[10,7],[1,4],[1,2],[4,1],[9,2],[0,4],[9,4],[6,9],[9,10],[9,5],[10,5],[6,9],[10,9],[8,10],[0,8],[0,10]],"colors":9,"seed":2108236,"id":253,"par":22},{"board":[[],[1,1,1,3],[2,2,8,4],[3,3,2,0],[4,4,6,7],[5,5,5,1],[6,6,6,2],[7,5,7,0],[8,4,0,8],[7,0,3,8],[]],"solution":[[1,0],[5,1],[2,10],[9,2],[0,9],[2,0],[6,2],[8,0],[3,8],[3,2],[9,3],[8,9],[10,8],[9,10],[7,10],[9,7],[8,9],[0,8],[7,0],[7,5],[0,7],[4,7],[4,6],[4,9]],"colors":9,"seed":2011426,"id":254,"par":24},{"board":[[],[1,4],[4,4,6,2],[3,3,5,0],[4,6,8,2],[5,5,5,7],[6,6,8,0],[7,1,1,0],[8,0,2],[3,3,8,2],[7,7,1]],"solution":[[2,8],[8,0],[3,8],[4,0],[9,0],[4,9],[2,4],[2,1],[6,8],[9,6],[1,2],[1,10],[6,9],[8,1],[7,1],[8,6],[10,7],[7,8],[10,8],[10,7],[5,7],[3,5],[4,10],[2,4],[6,2],[6,10],[9,2],[3,9]],"colors":9,"seed":2019345,"id":255,"par":28},{"board":[[],[1,7,6,0],[2,0],[3,2,1,6],[4,5,3,2],[5,0],[6,6,5,2],[7,7,7,3],[8,8,1,0],[4,4,4,5],[8,8,1,3]],"solution":[[1,2],[2,5],[3,1],[4,2],[6,2],[7,4],[9,6],[5,0],[8,0],[6,5],[1,6],[1,7],[1,3],[3,8],[4,1],[4,5],[9,4],[8,3],[10,1],[3,8],[3,10],[3,2],[1,3],[8,1],[10,1],[8,10]],"colors":9,"seed":2027264,"id":256,"par":26},{"board":[[0,6,1,4],[1,8,1,4],[],[3,3,3,2],[4,2],[5,5,0,6],[6,6,8,2],[7,7,3],[8,8,2],[0,0,5,1],[5,7,7,4]],"solution":[[3,4],[7,3],[4,8],[6,4],[8,4],[4,2],[8,2],[0,4],[1,4],[10,4],[10,7],[0,1],[5,0],[6,8],[0,6],[0,5],[1,0],[1,8],[0,1],[9,1],[10,9],[5,0],[9,5],[0,9]],"colors":9,"seed":2139912,"id":257,"par":24},{"board":[[0,0,1,5],[1,1,5,2],[],[3,3,3,8],[4,3,4,6],[5,5,7,0],[6,4,7,2],[7,7,0,4],[8,8,8,2],[6,6,1,2],[]],"solution":[[0,2],[1,10],[2,1],[6,10],[8,10],[3,8],[9,10],[0,9],[5,0],[5,6],[1,5],[9,1],[4,9],[7,4],[7,0],[6,7],[4,6],[4,3],[6,4],[9,6]],"colors":9,"seed":2043102,"id":258,"par":20},{"board":[[],[1,7,0],[2,2,2,3],[3,3,3,5],[4,4,8,4],[1,5,0],[6,6,6,2],[7,5,0],[8,8,8,6],[7,5,7],[4,1,1,0]],"solution":[[1,5],[1,9],[5,7],[10,5],[1,10],[10,0],[4,10],[5,1],[7,1],[3,5],[2,3],[6,2],[8,6],[4,8],[4,10],[5,7],[0,5],[7,0],[9,7],[9,0],[7,9]],"colors":9,"seed":2051021,"id":259,"par":21},{"board":[[0,0,4],[1,1,6,2],[2,3,4,3],[],[4,4,8,6],[5,3],[6,6,3,2],[7,7,1,5],[8,8,5],[0,0,1,8],[7,7,2,5]],"solution":[[2,5],[0,2],[7,8],[2,3],[5,2],[8,5],[10,5],[1,10],[4,1],[4,8],[3,4],[9,8],[7,9],[2,3],[10,2],[7,10],[6,2],[6,3],[1,6],[9,1],[0,9]],"colors":9,"seed":2163669,"id":260,"par":21},{"board":[[0,5,5,2],[1,1,7,0],[2,1],[3,5,5,1],[4,4,4,7],[],[6,0],[3,3,3,2],[6,6,6,2],[4,7,7,0]],"solution":[[1,6],[3,2],[4,1],[9,6],[1,9],[9,5],[4,9],[1,5],[2,1],[0,2],[0,3],[7,2],[8,2],[3,0],[0,4],[6,0],[8,6],[3,4],[7,3]],"colors":8,"seed":2066859,"id":261,"par":19},{"board":[[0,0,7],[1,1,7,4],[2,5,4,1],[3,3,1,7],[4,6,6,0],[5,5,4],[6,3,3,0],[],[6,7],[2,2,2,5]],"solution":[[0,8],[1,5],[1,8],[2,1],[4,0],[6,0],[5,2],[8,7],[3,7],[3,1],[6,3],[6,4],[4,8],[4,5],[2,4],[5,4],[5,2],[2,6],[9,6],[9,2]],"colors":8,"seed":2074778,"id":262,"par":20},{"board":[[8,0,4],[1,1,1,7],[2,6,0,4],[3,3,3,8],[],[5,5,6,8],[6,6,7,3],[7,7,0],[8,4],[5,5,0,4],[2,2,2,1]],"solution":[[0,8],[0,7],[2,8],[3,0],[6,3],[1,6],[10,1],[5,0],[7,2],[8,4],[0,8],[9,4],[2,7],[2,9],[2,5],[10,2],[5,0],[6,10],[0,6],[7,0],[7,10],[9,0],[5,9]],"colors":9,"seed":2082697,"id":263,"par":23},{"board":[[0,3,3,5],[1,4,0,5],[],[1,1,4,2],[4,0,2,5],[],[6,6,6,1],[7,7,3,4],[8,8,2,0],[6,3,8,5],[7,7,8,2]],"solution":[[0,2],[1,2],[4,2],[9,2],[3,4],[7,3],[0,7],[8,1],[7,0],[4,8],[10,4],[9,10],[0,9],[9,5],[0,5],[1,0],[3,1],[6,3],[6,9],[1,6],[3,1],[4,3],[8,3],[10,8],[7,10],[4,0],[6,4]],"colors":9,"seed":2090616,"id":264,"par":27},{"board":[[0,5,1,8],[1,7,1],[2,2,0,5],[3,3,4,6],[4,4,7,6],[5,1,0],[],[7,4,6],[3,3,7,6],[2,2,0],[8,8,8,5]],"solution":[[3,7],[5,9],[1,5],[5,6],[2,5],[10,5],[0,10],[0,6],[0,5],[0,2],[7,0],[3,7],[4,0],[8,0],[1,4],[6,1],[4,8],[2,6],[9,6],[2,9],[8,4],[4,2],[7,4],[2,7],[8,7],[3,8]],"colors":9,"seed":2098535,"id":265,"par":26},{"board":[[0,0,8,1],[1,4],[2,2,2,7],[3,3,3,2],[4,1,4,5],[8,1,4],[6,6,5],[7,7,7,8],[],[6,6,5,8],[0,0,3,5]],"solution":[[1,5],[0,1],[4,6],[5,4],[7,0],[2,7],[3,2],[4,5],[0,8],[5,4],[9,8],[4,5],[10,9],[10,3],[0,10],[5,4],[4,0],[1,4],[0,5],[4,1],[0,4],[5,4],[5,1],[8,5],[6,0],[9,0],[6,9]],"colors":9,"seed":2106454,"id":266,"par":27},{"board":[[],[1,2,0,7],[2,3,3,4],[3,3,8,5],[4,4,8,7],[5,5,0,7],[6,6,6,1],[],[8,8,5,2],[6,1,2,0],[4,1,7,0]],"solution":[[1,0],[4,0],[5,0],[1,5],[8,1],[3,8],[3,4],[4,7],[2,4],[2,3],[2,1],[5,2],[8,5],[7,8],[9,2],[10,2],[10,0],[1,9],[6,10],[9,1],[1,7],[9,7],[1,9],[9,10],[10,1],[4,10],[9,1],[6,9]],"colors":9,"seed":2114373,"id":267,"par":28},{"board":[[5,5,7,8],[1,1,2,3],[2,2,0,2],[3,7],[4,4,8,7],[5,5,4],[6,6,6,1],[7,4,8],[],[1,3,3,8],[0,0,0,6]],"solution":[[0,7],[0,3],[4,3],[7,4],[9,7],[1,9],[2,1],[3,8],[9,3],[6,9],[10,6],[2,10],[1,2],[1,9],[4,1],[7,1],[4,7],[7,5],[5,4],[0,5],[7,4],[8,7]],"colors":9,"seed":2122292,"id":268,"par":22},{"board":[[0,0,0,3],[1,1,1,3],[2,2,6,4],[3,3,2,7],[],[5,5,5,1],[],[7,2,6,4],[8,6,7,4],[4,5,7,0],[8,8,8,6]],"solution":[[0,4],[9,0],[1,4],[5,1],[3,9],[9,6],[9,5],[2,9],[7,9],[8,9],[2,7],[2,3],[6,8],[3,2],[3,4],[8,6],[7,8],[7,2],[6,7],[8,3],[10,3],[10,8]],"colors":9,"seed":2130211,"id":269,"par":22},{"board":[[3,3,3,2],[1,1,1,4],[0,2],[],[4,5,5,4],[5,5,7,6],[6,6,6,7],[7,2,0],[8,0,3],[8,8,8,7],[1,4,0,2]],"solution":[[0,2],[8,0],[7,8],[2,7],[2,8],[7,2],[10,2],[6,7],[5,6],[5,7],[9,7],[8,10],[8,3],[9,8],[10,3],[1,10],[4,10],[4,5],[10,4],[1,10]],"colors":9,"seed":2138130,"id":270,"par":20},{"board":[[],[0,0,0],[2,0],[3,3,1,5],[4,4,2,1],[5,1,1,2],[6,6,5],[7,4,4,5],[6,6,7,2],[7,3,3,7]],"solution":[[2,1],[3,6],[4,3],[2,4],[3,0],[4,2],[5,2],[5,0],[8,2],[6,5],[7,5],[7,4],[7,8],[9,7],[9,3],[7,9],[8,9],[6,8]],"colors":8,"seed":2146049,"id":271,"par":18},{"board":[[0,0,7,2],[1,1,7,0],[],[3,3,3,5],[1,1,7,4],[5,2],[6,6,5,2],[3,0],[6,6,4,7],[5,4,4,2]],"solution":[[0,5],[1,7],[0,1],[7,0],[6,5],[3,6],[3,7],[5,2],[9,2],[6,5],[4,9],[8,4],[9,8],[1,3],[4,3],[1,4],[8,9],[9,1],[5,9],[8,1],[6,8]],"colors":8,"seed":2153968,"id":272,"par":21},{"board":[[],[1,0],[2,1,0],[3,5,2,6],[4,4,4,0],[5,2,4,1],[6,3,3,6],[7,7,7,3],[8,6,0],[8,8,8,7],[5,5,2,1]],"solution":[[1,2],[2,8],[4,2],[5,1],[5,4],[10,1],[5,10],[2,0],[8,0],[2,1],[10,2],[10,5],[3,8],[3,2],[3,5],[6,8],[3,6],[6,10],[8,6],[7,10],[9,7],[9,8]],"colors":9,"seed":2371345,"id":273,"par":22},{"board":[[1,7,7,3],[1,7,5],[2,2,0],[7,3,6],[4,2,2,0],[5,8,1,0],[6,6,3],[],[8,1,0,3],[8,5,6,5],[4,4,4,8]],"solution":[[0,6],[4,2],[9,1],[3,9],[6,3],[9,6],[1,9],[0,1],[1,7],[0,1],[3,0],[7,3],[8,0],[2,8],[5,2],[1,5],[9,7],[5,1],[9,5],[10,5],[5,9],[7,5],[2,7],[4,2],[10,4],[8,7],[8,1],[9,8]],"colors":9,"seed":2169806,"id":274,"par":28},{"board":[[0,0,0,1],[1,3],[2,2,6,5],[3,5,6],[4,4,5,2],[],[3,3,5],[7,7,7,6],[8,8,8,0],[4,4,7,6],[8,1,1,2]],"solution":[[2,6],[2,3],[4,2],[10,2],[0,10],[8,0],[6,4],[10,5],[8,10],[4,6],[3,8],[6,3],[6,1],[3,4],[7,8],[9,8],[9,7],[4,3],[1,6],[5,1],[3,4],[3,5],[6,3],[4,5],[4,9]],"colors":9,"seed":2177725,"id":275,"par":25},{"board":[[],[1,1,7],[2,5,6,2],[3,3,6,5],[4,0],[5,1,0],[6,6,5,4],[7,7,2,0],[8,8,3,0],[8,8,1,7],[2,4,4,3]],"solution":[[4,5],[6,4],[3,6],[9,1],[5,0],[5,9],[6,5],[3,6],[7,0],[8,0],[2,7],[2,6],[2,5],[7,2],[1,7],[9,1],[3,8],[10,3],[8,3],[8,9],[10,4],[2,10]],"colors":9,"seed":2185644,"id":276,"par":22},{"board":[[0,0,8],[1,1,0,7],[2,2,5,6],[3,3,3,2],[4,7],[5,5,6],[4,4,4,7],[],[8,1,1,6],[2,0,6,5],[3,8,8,7]],"solution":[[1,4],[2,5],[6,4],[9,2],[5,9],[8,5],[4,7],[6,4],[10,7],[0,10],[0,1],[10,6],[1,0],[8,1],[6,8],[2,6],[3,2],[3,10],[5,3],[5,6],[9,3],[9,0],[2,9]],"colors":9,"seed":2193563,"id":277,"par":23},{"board":[[7,2,2,6],[1],[],[3,7,7,2],[4,3,8,0],[5,5,5,8],[6,6,6,5],[7,0,2,8],[8,1,1,1],[3,3,4],[4,0,0,4]],"solution":[[8,1],[5,8],[6,5],[0,6],[3,0],[7,8],[0,7],[10,9],[4,10],[4,8],[7,0],[0,2],[7,2],[0,3],[10,7],[3,0],[3,4],[7,10],[10,3],[7,3],[0,7],[9,10],[4,9],[10,4]],"colors":9,"seed":2306211,"id":278,"par":24},{"board":[[0,0,1],[1,1,2,7],[2,5],[3,3,4,2],[4,4,0,7],[5,7,1],[6,4,2,5],[],[8,8,5,0],[3,3,8,7],[6,6,6,8]],"solution":[[0,5],[6,2],[3,6],[8,0],[2,8],[5,7],[8,2],[4,5],[4,0],[3,4],[9,5],[8,9],[10,8],[9,8],[3,9],[2,3],[6,2],[6,4],[10,6],[5,10],[3,5],[1,10],[1,2],[1,7]],"colors":9,"seed":2209401,"id":279,"par":24},{"board":[[0,6,3,5],[3,0],[2,2,3,5],[3,6],[4,4,1,2],[5,7,7,1],[6,6,0],[7,7,2,4],[8,8,4],[8,8,0,1],[1,5]],"solution":[[0,10],[1,6],[1,0],[2,10],[0,2],[7,8],[2,0],[4,7],[0,2],[5,4],[2,0],[0,1],[0,3],[6,0],[3,6],[1,3],[2,3],[7,2],[5,7],[10,5],[4,10],[8,4],[9,10],[9,0],[8,9]],"colors":9,"seed":2322049,"id":280,"par":25},{"board":[[0,0,0,4],[1,6],[2,6,3,1],[3,4,2],[4,4,2,1],[5,5,5,0],[6,2],[7,7,3],[7,7,5,6],[3,1]],"solution":[[2,9],[2,7],[1,2],[1,9],[3,6],[0,3],[5,0],[8,2],[8,5],[2,1],[2,6],[9,2],[4,2],[7,9],[7,8],[6,4],[3,7],[9,3],[4,6],[6,9],[1,6],[4,9],[4,7]],"colors":8,"seed":2225239,"id":281,"par":23},{"board":[[2,7,7,6],[1,1,2,3],[2,2,4,3],[3,5],[4,0,3,5],[],[6,6,0,5],[7,6,1],[0,7,5],[4,4,1,0]],"solution":[[3,8],[1,3],[2,3],[8,5],[4,5],[4,3],[6,5],[4,6],[4,2],[6,4],[0,6],[0,8],[0,1],[9,4],[7,9],[7,6],[8,7],[4,8],[1,0],[9,1],[2,9],[0,2]],"colors":8,"seed":2233158,"id":282,"par":22},{"board":[[0,0,0,2],[0,7,7,3],[],[3,3,4,2],[4,6,2],[5,8,4],[6,8,3],[7,7,6,4],[8,8,1,6],[5,5,5,1],[1,1,2]],"solution":[[0,4],[1,6],[3,10],[3,5],[6,3],[1,2],[0,1],[4,0],[10,0],[8,4],[8,10],[9,10],[8,6],[4,8],[5,4],[7,4],[6,5],[7,8],[2,7],[5,6],[6,2],[8,6],[5,2],[9,5]],"colors":9,"seed":2241077,"id":283,"par":24},{"board":[[0,0,1,2],[1,7,7,2],[],[3,3,0,6],[4,4,8,2],[5,5,3,6],[6,3],[7,6],[8,8,8,5],[4,4,0,2],[1,1,5,7]],"solution":[[3,7],[5,7],[5,6],[8,5],[0,2],[1,2],[4,2],[4,8],[9,2],[3,9],[6,3],[7,6],[7,1],[9,7],[4,9],[1,4],[10,4],[10,5],[10,1],[0,1],[0,7]],"colors":9,"seed":2248996,"id":284,"par":21},{"board":[[0,0,4],[1,3,6],[2,2,2,5],[3,1,5],[4,4,5,6],[5,2,1,4],[],[7,7,0,7],[8,8,7,6],[3,6,1],[0,8,8,3]],"solution":[[2,3],[4,1],[3,4],[5,0],[4,3],[5,9],[5,2],[5,4],[0,5],[1,6],[8,6],[7,8],[0,7],[10,1],[7,0],[8,7],[10,8],[0,10],[1,0],[9,1],[9,6],[0,9],[3,0],[4,0],[4,5],[3,1],[9,3]],"colors":9,"seed":2256915,"id":285,"par":27},{"board":[[0,5,3,2],[1,1,1,4],[2,3,3,2],[],[4,4,8,5],[5,8],[6,0,0,8],[7,4,0,5],[8,2],[6,6,6,3],[7,7,7,1]],"solution":[[0,8],[2,8],[0,2],[4,0],[4,5],[1,4],[10,1],[6,5],[7,0],[6,7],[0,3],[0,6],[7,6],[2,0],[8,2],[5,8],[3,5],[9,0],[6,7],[6,3],[9,6],[7,3],[7,4],[10,7]],"colors":9,"seed":2264834,"id":286,"par":24},{"board":[[0,0,6,3],[],[2,2,5,1],[3,3,1,8],[4,2,5,8],[5,0,0,7],[6,6,3,1],[7,7,1,8],[],[5,7,6,8],[4,4,4,2]],"solution":[[0,1],[2,8],[6,8],[1,6],[3,1],[3,8],[6,3],[0,6],[4,1],[2,4],[7,1],[7,8],[9,1],[9,6],[7,9],[10,2],[9,7],[5,7],[5,0],[5,9],[4,9],[4,2],[10,4]],"colors":9,"seed":2272753,"id":287,"par":23},{"board":[[0,8],[1,1,7,4],[2,2,1],[3,8,5],[4,4,4,3],[5,5,0],[6,3,0],[7,7,7,3],[8,0,8],[6,6,6,1],[2,2,5]],"solution":[[0,8],[0,5],[3,10],[8,3],[5,8],[10,5],[8,6],[9,2],[6,8],[3,0],[4,3],[1,4],[7,3],[1,7],[2,1],[2,10],[8,6],[6,2],[8,2],[0,8],[6,3],[9,6]],"colors":9,"seed":2280672,"id":288,"par":22},{"board":[[],[8,0,4],[2,2,7,8],[3,4,0],[4,5,2,6],[5,1,1,4],[6,6,0],[7,7,1,7],[8,8,0],[3,3,2,1],[5,5,6,3]],"solution":[[3,6],[1,3],[6,1],[1,8],[4,6],[5,3],[8,1],[9,5],[1,8],[4,9],[8,1],[1,0],[8,0],[8,1],[2,1],[7,2],[5,7],[3,8],[7,5],[10,3],[10,6],[10,4],[5,7],[4,10],[8,4],[7,5],[5,8],[10,5],[7,8],[2,7],[9,2],[3,9]],"colors":9,"seed":2288591,"id":289,"par":32},{"board":[[0,3,2,1],[1,8,8],[2,2,1,4],[3,3,3,5],[4,4,2,1],[],[6,6,0,7],[7,7,7,5],[8,0,0,5],[6,6,5,4],[8]],"solution":[[10,1],[1,5],[0,1],[4,1],[0,4],[4,10],[2,4],[2,1],[2,10],[9,4],[3,9],[0,3],[9,2],[7,2],[6,7],[8,2],[0,6],[6,8],[8,0],[5,8],[6,0],[6,9]],"colors":9,"seed":2296510,"id":290,"par":22},{"board":[[0,7,2,0],[1,3],[2,2,5,1],[],[4,0,3],[5,5,5,4],[6,6,0,3],[7,7,1],[6,6,7,3],[4,4,2,1]],"solution":[[1,4],[1,7],[4,1],[0,4],[6,1],[8,1],[4,6],[6,3],[3,4],[7,3],[2,3],[9,3],[0,9],[7,0],[0,8],[4,7],[5,4],[2,5],[9,2],[4,9],[8,0],[0,4],[7,0],[8,4],[6,8]],"colors":8,"seed":2304429,"id":291,"par":25},{"board":[[0,5,5,1],[1,1,7],[2,2,2,4],[3,3,7],[4,4,0,3],[5,5,0,7],[6,6,6,2],[],[6,4],[0,1,3,7]],"solution":[[1,3],[0,1],[2,8],[6,2],[3,7],[4,3],[5,7],[9,7],[9,3],[9,1],[9,4],[4,5],[0,9],[0,4],[5,0],[5,9],[4,0],[8,4],[6,8]],"colors":8,"seed":2312348,"id":292,"par":19},{"board":[[0,0,3,1],[1,1,2,5],[],[3,3,3,1],[4,4,4,0],[5,7,2],[6,6,5],[7,2],[8,8,5,4],[0,8,8,7],[6,6,2,7]],"solution":[[1,6],[1,5],[5,7],[0,1],[3,1],[0,3],[4,0],[8,4],[6,8],[9,5],[8,6],[10,5],[6,8],[7,10],[8,6],[5,2],[5,8],[10,7],[7,5],[2,7],[10,5],[6,2],[6,10],[8,2],[9,8],[0,9]],"colors":9,"seed":2320267,"id":293,"par":26},{"board":[[],[1,4,4,0],[2,0,0,7],[3,3,3,1],[4,4,5,3],[5,7,6],[6,5],[7,1,1,8],[8,8,5,6],[0,7,6],[2,2,2,8]],"solution":[[5,9],[2,5],[1,2],[1,0],[3,1],[4,3],[4,6],[0,4],[5,0],[5,6],[9,5],[0,9],[8,5],[6,8],[6,0],[5,6],[8,0],[7,8],[7,1],[9,7],[2,9],[10,8],[10,2]],"colors":9,"seed":2328186,"id":294,"par":23},{"board":[[0,0,5],[1,3,8],[2,2,8],[],[4,4,4,7],[5,5,5,3],[6,2,3,1],[7,7,3],[8,1,1,0],[0,8,2,7],[6,6,6,4]],"solution":[[1,2],[1,7],[6,1],[5,6],[0,5],[8,0],[8,1],[2,8],[6,3],[7,3],[2,6],[4,7],[9,7],[10,4],[6,9],[6,2],[10,6],[9,2],[9,8],[0,9]],"colors":9,"seed":2336105,"id":295,"par":20},{"board":[[0,5,5,1],[7],[2,2,2,0],[3,0,1,4],[],[5,5,7],[6,3,3,4],[7,7,4,2],[8,8,8,1],[8,6,4,0],[6,6,3,1]],"solution":[[1,5],[5,4],[0,1],[0,5],[2,0],[7,2],[3,7],[1,3],[9,0],[6,9],[3,1],[3,0],[3,6],[8,1],[10,1],[6,10],[6,3],[10,3],[10,6],[7,10],[4,7],[9,10],[9,6],[8,9]],"colors":9,"seed":2448753,"id":296,"par":24},{"board":[[],[1,7,1],[2,2,2,0],[3,3,4],[4,0,6,1],[5,0,5],[6,6,8,4],[7,7,0,5],[8,8,7,8],[4,5,1],[3,3,6,2]],"solution":[[1,9],[6,3],[7,5],[2,7],[10,2],[8,6],[1,8],[9,1],[4,1],[5,9],[7,5],[8,7],[6,8],[4,6],[10,6],[5,4],[4,0],[5,0],[9,5],[4,9],[3,9],[3,10]],"colors":9,"seed":2351943,"id":297,"par":22},{"board":[[0,0,0,1],[1,6,3,7],[2,4,7,7],[],[4,4,3,7],[5,5,5,6],[2,2,6,4],[],[8,8,8,3],[1,1,6,5],[3,0,2,8]],"solution":[[2,3],[1,3],[4,3],[1,4],[5,1],[9,5],[1,9],[6,2],[9,1],[0,9],[1,6],[1,7],[9,1],[6,7],[2,9],[6,2],[4,6],[4,9],[8,6],[10,8],[10,2],[10,0],[6,10]],"colors":9,"seed":2359862,"id":298,"par":23},{"board":[[0,6,5],[1,1,7,0],[2,2,4,0],[3,3,8,7],[4,4,4,5],[5],[],[7,7,3,6],[8,8,8,3],[2,1,1,2],[6,0,5,6]],"solution":[[5,0],[0,6],[4,6],[7,0],[8,7],[10,0],[10,6],[1,10],[2,10],[2,4],[3,1],[3,8],[7,3],[1,7],[9,2],[9,1],[2,9],[0,2],[10,0],[2,10]],"colors":9,"seed":2367781,"id":299,"par":20},{"board":[[0,0,6,7],[1,1,1,2],[4,8],[3,3,0,7],[4,4,7,8],[5,0,6,2],[1,3,3,2],[7,8],[],[5,5,5,6],[6,2,4,8]],"solution":[[2,7],[4,7],[0,4],[9,0],[7,8],[10,8],[2,10],[4,7],[10,4],[3,7],[1,10],[5,10],[0,5],[10,2],[6,2],[10,0],[5,10],[0,10],[0,5],[5,3],[3,0],[5,0],[9,5],[6,3],[1,6]],"colors":9,"seed":2585158,"id":300,"par":25}];if(typeof module==='object')module.exports=r.CHROMA_LEVELS;})(typeof globalThis!=='undefined'?globalThis:this);
+
+</script>
+<script>
+/* Shared Canvas renderer. Bottle space uses the centre of the open lip as (0, 0). */
+(() => {
+  'use strict';
+  const colors = [
+    { name:'лавандовый', ink:'#7e65cc', body:'#ab90f5', light:'#e7d9ff', symbol:'◇' },
+    { name:'мятный', ink:'#319e93', body:'#6bd6bd', light:'#d7fff0', symbol:'●' },
+    { name:'персиковый', ink:'#bc735e', body:'#efa489', light:'#ffe0bc', symbol:'△' },
+    { name:'голубой', ink:'#427ead', body:'#7ebbe9', light:'#ddf0ff', symbol:'□' },
+    { name:'золотистый', ink:'#b08d3e', body:'#e7c579', light:'#fff0b1', symbol:'✦' },
+    { name:'розовый', ink:'#ac5687', body:'#e293bd', light:'#ffdeef', symbol:'+' },
+    { name:'лиловый', ink:'#785396', body:'#b68bcc', light:'#f2daff', symbol:'≋' },
+    { name:'вишнёвый', ink:'#a8364a', body:'#e2646f', light:'#ffd3d8', symbol:'♥' },
+    { name:'травяной', ink:'#5e9634', body:'#a3d36c', light:'#eaffcf', symbol:'×' }
+  ];
+  const defaultStyle = 'spring';
+  const styles = {
+    silk: { name:'Тонкая струя', width:3.3, ripple:1.8, splash:0, pulse:0.07, beats:2 },
+    spring: { name:'С плеском', width:5.5, ripple:4.2, splash:6, pulse:0.23, beats:3 },
+    pulse: { name:'Булькающая', width:6.4, ripple:3.5, splash:3, pulse:0.92, beats:3 }
+  };
+  const outline = new Path2D('M-14 0L-14 25Q-14 29 -21 34Q-34 43 -34 59L-34 189Q-34 214 0 214Q34 214 34 189L34 59Q34 43 21 34Q14 29 14 25L14 0Z');
+  // Polygonal approximation of the inner glass, used only to measure cross-sectional area.
+  const shell = [[-14,0],[-14,25],[-16,30],[-21,34],[-29,42],[-33,51],[-34,59],[-34,189],[-32,200],[-25,208],[-14,213],[0,214],[14,213],[25,208],[32,200],[34,189],[34,59],[33,51],[29,42],[21,34],[16,30],[14,25],[14,0]];
+  const tau = 2*Math.PI;
+  const clamp = (x,lo=0,hi=1) => Math.min(hi,Math.max(lo,x));
+  const ease = x => { x=clamp(x); return x*x*(3-2*x); };
+  const mix = (a,b,t) => a+(b-a)*t;
+  function rotated(angle) {
+    const c=Math.cos(angle), s=Math.sin(angle);
+    return shell.map(([x,y]) => [c*x-s*y,s*x+c*y]);
+  }
+  // Integrate x dy along the part of the contour beneath a horizontal free surface.
+  function submergedArea(points, level) {
+    let sum=0, a=points[points.length-1];
+    for (const b of points) {
+      const low=Math.max(level,Math.min(a[1],b[1])), high=Math.max(a[1],b[1]);
+      if (high>low) {
+        const t=((high+low)*0.5-a[1])/(b[1]-a[1]);
+        sum+=(high-low)*Math.sign(b[1]-a[1])*mix(a[0],b[0],t);
+      }
+      a=b;
+    }
+    return Math.abs(sum);
+  }
+  const portion=submergedArea(shell,59)/4;
+  const spillVolumes=Array.from({length:141},(_,degree) => {
+    const angle=degree*Math.PI/180;
+    return submergedArea(rotated(angle),14*Math.sin(angle))/portion;
+  });
+  function spillAngle(units) {
+    let low=0,high=spillVolumes.length-1;
+    while(high-low>1) { const m=(low+high)>>1; if(spillVolumes[m]>units) low=m; else high=m; }
+    return (low+clamp((spillVolumes[low]-units)/(spillVolumes[low]-spillVolumes[high]||1)))*Math.PI/180;
+  }
+  function surface(points, units) {
+    let lo=Infinity, hi=-Infinity;
+    for(const p of points) { lo=Math.min(lo,p[1]); hi=Math.max(hi,p[1]); }
+    if(units<=0) return hi;
+    for(let i=0;i<12;i++) {
+      const mid=(lo+hi)/2;
+      if(submergedArea(points,mid)>units*portion) lo=mid; else hi=mid;
+    }
+    return (lo+hi)/2;
+  }
+  function layerGroups(board) {
+    const groups=[];
+    for(const color of board) {
+      if(groups.length && groups[groups.length-1].color===color) groups[groups.length-1].units++;
+      else groups.push({color,units:1});
+    }
+    return groups;
+  }
+  function gradient(ctx,x0,y0,x1,y1,stops) {
+    const g=ctx.createLinearGradient(x0,y0,x1,y1);
+    for(const [pos,color] of stops) g.addColorStop(pos,color);
+    return g;
+  }
+  function oval(ctx,x,y,rx,ry,fill,stroke) {
+    ctx.beginPath(); ctx.ellipse(x,y,rx,ry,0,0,tau);
+    if(fill) {ctx.fillStyle=fill;ctx.fill();}
+    if(stroke) {ctx.strokeStyle=stroke;ctx.stroke();}
+  }
+  function line(ctx,path,ink,width) {
+    ctx.strokeStyle=ink;ctx.lineWidth=width;ctx.lineCap='round';ctx.stroke(new Path2D(path));
+  }
+  function drawVessel(ctx,pose,groups,options={}) {
+    const {x,y,s,angle=0}=pose;
+    const points=angle ? rotated(angle) : shell;
+    const topLevels=[]; let units=0;
+    for(const group of groups) {units+=group.units;topLevels.push(surface(points,units));}
+    const topY=topLevels.at(-1)??surface(points,0);
+    ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.rotate(angle);
+    ctx.fillStyle=gradient(ctx,-34,0,34,0,[[0,'#a1ddf52b'],[.16,'#b9edff10'],[.74,'#b4dcff05'],[1,'#bce7ff30']]);
+    ctx.fill(outline);
+    ctx.save();ctx.clip(outline);
+    ctx.save();ctx.rotate(-angle);
+    // Each upper layer covers only its own band. The meniscus is anchored to gravity.
+    for(let i=0;i<groups.length;i++) {
+      const liquid=colors[groups[i].color], level=topLevels[i], floor=i?topLevels[i-1]+0.6:270;
+      const amp=i===groups.length-1 ? options.wave||0 : 0;
+      const phase=options.phase||0;
+      const crest = q => level+amp*(.62*Math.sin(q*.067-phase)+.38*Math.sin(q*.11+phase*.8));
+      ctx.beginPath();ctx.moveTo(-250,floor);ctx.lineTo(-250,level);
+      if(amp) for(let q=-248;q<=250;q+=5) ctx.lineTo(q,crest(q));
+      else ctx.lineTo(250,level);
+      ctx.lineTo(250,floor);ctx.closePath();
+      ctx.fillStyle=gradient(ctx,0,level-2,0,Math.max(level+3,floor),[[0,liquid.light],[.048,liquid.body],[.55,liquid.body],[1,liquid.ink]]);
+      ctx.fill();
+      ctx.beginPath();ctx.moveTo(-250,crest(-250));
+      if(amp) for(let q=-248;q<=250;q+=5) ctx.lineTo(q,crest(q));
+      else ctx.lineTo(250,level);
+      ctx.strokeStyle=liquid.light;ctx.lineWidth=i===groups.length-1?1.6:.85;ctx.stroke();
+      if(options.patterns) {
+        const minX=Math.min(...points.filter(p=>p[1]>=level).map(p=>p[0]));
+        const maxX=Math.max(...points.filter(p=>p[1]>=level).map(p=>p[0]));
+        ctx.fillStyle='#182735aa';ctx.textAlign='center';ctx.font='bold 11px sans-serif';
+        if(Number.isFinite(minX)) ctx.fillText(liquid.symbol,(minX+maxX)/2,(level+Math.min(214,floor))/2+4);
+      }
+    }
+    if(units>0 && Math.abs(angle)<.01) {
+      const liquid=colors[groups[groups.length-1].color];
+      ctx.globalAlpha=.47; oval(ctx,0,topY,32,2.5+Math.abs(options.wave||0)*.25,liquid.light);
+      ctx.globalAlpha=1;
+    }
+    ctx.restore();
+    ctx.fillStyle=gradient(ctx,-34,0,34,0,[[0,'#24375830'],[.12,'#f0ffff22'],[.29,'#ffffff03'],[.68,'#061e3700'],[1,'#06182c38']]);
+    ctx.fillRect(-35,-2,70,220);
+    line(ctx,'M-26 66L-26 181Q-26 196 -22 199','#eeffff70',2.3);
+    line(ctx,'M-23 44Q-27 48 -27 53','#ffffffae',2.9);
+    line(ctx,'M28 79V183Q28 200 19 204','#def4ff60',1.25);
+    ctx.restore();
+    ctx.lineWidth=1.8;ctx.strokeStyle='#c1dfefb3';ctx.stroke(outline);
+    ctx.lineWidth=1.2;oval(ctx,0,0,17,3.9,'#162b42','#cfe7f4d9');
+    line(ctx,'M-17 0L-17 5Q0 11 17 5L17 0','#dbedfa91',1.5);
+    if(options.closed) {
+      ctx.fillStyle='#c4a783';ctx.fillRect(-12,-8,24,10);
+      oval(ctx,0,-8,12,3,'#e1c5a1');oval(ctx,0,2,12,2,'#b29879');
+      line(ctx,'M-7 143L-2 148L9 135','#f2fff0cf',2.8);
+    }
+    ctx.restore();
+    return y+s*topY;
+  }
+  function prepareCanvas(canvas,width,height) {
+    const ratio=Math.min(2,window.devicePixelRatio||1);
+    const w=Math.max(1,Math.round(width*ratio)), h=Math.max(1,Math.round(height*ratio));
+    if(canvas.width!==w)canvas.width=w;
+    if(canvas.height!==h)canvas.height=h;
+    const ctx=canvas.getContext('2d');
+    if(!ctx)throw new Error('Canvas 2D unavailable');
+    ctx.setTransform(w/width,0,0,h/height,0,0);
+    return ctx;
+  }
+  function still(canvas,board,patterns) {
+    const w=100,h=240,ctx=prepareCanvas(canvas,w,h);
+    ctx.clearRect(0,0,w,h);
+    drawVessel(ctx,{x:50,y:10,s:1},layerGroups(board),{patterns,closed:board.length===4&&board.every(v=>v===board[0])});
+  }
+  // Integral of a pulsing flow rate. Source loss and destination gain share this curve,
+  // separated by the travel time of the falling stream.
+  function discharged(f,style) {
+    f=clamp(f);
+    const u=ease(f);
+    return u-style.pulse*Math.sin(tau*style.beats*u)/(tau*style.beats);
+  }
+  function stream(ctx,a,b,dir,s,liquid,style,f,head,tail) {
+    if(head<=tail)return;
+    const points=[], phase=tau*style.beats*ease(clamp(f));
+    const bend=dir*s*6;
+    for(let j=0;j<=24;j++) {
+      const u=mix(tail,head,j/24);
+      const x=mix(a.x,b.x,u)+bend*Math.sin(u*Math.PI)+s*style.pulse*.8*Math.sin(16*u-phase)*Math.sin(u*Math.PI);
+      const y=mix(a.y,b.y,.20*u+.80*u*u);
+      const w=s*style.width*(1-.44*u)*(.86-style.pulse*.56*Math.cos(phase-u*2.4));
+      points.push({x,y,w:Math.max(.24*s,w)});
+    }
+    ctx.beginPath();ctx.moveTo(points[0].x-points[0].w,points[0].y);
+    for(const p of points)ctx.lineTo(p.x-p.w,p.y);
+    for(let j=points.length-1;j>=0;j--)ctx.lineTo(points[j].x+points[j].w,points[j].y);
+    ctx.closePath();ctx.fillStyle=gradient(ctx,a.x,a.y,b.x,b.y,[[0,liquid.body],[.56,liquid.light],[1,liquid.body]]);ctx.fill();
+    ctx.beginPath();for(const [i,p] of points.entries()) {if(!i)ctx.moveTo(p.x-p.w*.42,p.y);else ctx.lineTo(p.x-p.w*.42,p.y);}
+    ctx.lineWidth=.85*s;ctx.strokeStyle='#ffffffa4';ctx.stroke();
+    const tip=points[points.length-1];
+    if(head<1)oval(ctx,tip.x,tip.y,tip.w,tip.w*1.35,liquid.light);
+  }
+  function impact(ctx,x,y,s,color,style,time,energy) {
+    if(energy<.01)return;
+    ctx.save();ctx.translate(x,y);ctx.scale(s,s);
+    for(let i=0;i<2;i++) {
+      const p=(time*.12+i*.5)%1;ctx.globalAlpha=(1-p)*energy*.73;ctx.lineWidth=1.3;
+      oval(ctx,0,1,2+p*24,1+p*2,null,color.light);
+    }
+    for(let i=0;i<style.splash;i++) {
+      const p=(time*.14+i*.3819)%1, sign=i%2?1:-1;
+      ctx.globalAlpha=energy*(1-p); const r=1.1+.35*(i%3);
+      oval(ctx,sign*(3+p*(8+i*1.5)),-(8+2*i)*4*p*(1-p),r,r*1.35,color.light);
+    }
+    ctx.restore();
+  }
+  function makePour(source,destination,count,styleId,patterns=false) {
+    const style=Object.hasOwn(styles,styleId) ? styles[styleId] : styles[defaultStyle], color=source[source.length-1];
+    const before=layerGroups(source), receiving=layerGroups(destination);
+    const duration=660+count*100;
+    const flight=.065,start=.25,end=.72;
+    return {duration, draw(ctx,a,b,t,direction) {
+      t=clamp(t);
+      const dir=direction ?? (b.x>=a.x?1:-1);
+      const f=(t-start)/(end-start), arrived=(t-start-flight)/(end-start);
+      const sent=discharged(f,style)*count, landed=discharged(arrived,style)*count;
+      const leaving=before.map(g=>({...g})), filling=receiving.map(g=>({...g}));
+      leaving[leaving.length-1].units-=sent;
+      if(leaving[leaving.length-1].units<.0001)leaving.pop();
+      if(landed>.0001) {
+        if(filling.length&&filling.at(-1).color===color)filling.at(-1).units+=landed;
+        else filling.push({color,units:landed});
+      }
+      const lift=ease(t/start)*(1-ease((t-end-flight)/(1-end-flight)));
+      const angle=dir*lift*spillAngle(Math.max(.02,source.length-sent));
+      const lipX=14*dir*Math.cos(angle)*a.s,lipY=14*dir*Math.sin(angle)*a.s;
+      const clearance=30*b.s;
+      const x=mix(a.x,b.x-dir*6*b.s-lipX,lift);
+      const y=mix(a.y,b.y-clearance-lipY,lift)-Math.sin(Math.PI*lift)*24*a.s;
+      const energy=clamp(arrived*8)*clamp((1-t)/.16);
+      const clock=t*duration*.022;
+      const wave=energy*style.ripple*(1-style.pulse*.45*Math.cos(tau*style.beats*ease(clamp(f))));
+      const level=drawVessel(ctx,b,filling,{wave,phase:clock,patterns,closed:t===1&&destination.length+count===4&&filling.length===1});
+      drawVessel(ctx,{x,y,s:a.s,angle},leaving,{wave:Math.sin(lift*Math.PI)*1.9,phase:clock,patterns});
+      if(t>start && t<end+flight) {
+        stream(ctx,{x:x+lipX,y:y+lipY},{x:b.x,y:level},dir,b.s,colors[color],style,f,
+          clamp((t-start)/flight),clamp((t-end)/flight));
+      }
+      impact(ctx,b.x,level,b.s,colors[color],style,clock,energy);
+    }};
+  }
+  window.ChromaWater={colors,styles,defaultStyle,prepareCanvas,still,makePour};
+})();
+
+</script>
+<script>
+/* CHROMA. Original interface, artwork and game implementation. No dependencies. */
+(() => {
+  'use strict';
+  const E = window.ChromaEngine, LEVELS = window.CHROMA_LEVELS;
+  const $ = id => document.getElementById(id);
+  const icon = (name, cls = '') => `<svg class="${cls}" aria-hidden="true"><use href="#i-${name}"/></svg>`;
+  const Water = window.ChromaWater;
+  const COLORS = Water.colors;
+  const CHAPTER_SIZE = 20;
+  const CHAPTERS = ['Первые капли', 'Новые оттенки', 'Игра полутонов', 'Цветовое равновесие', 'Тихая магия', 'Полная гармония', 'Акварельный рассвет', 'Лунные блики', 'Морская глубина', 'Сад оттенков', 'Янтарный вечер', 'Северное сияние', 'Звёздная пыль', 'Мастер палитры', 'Абсолютный цвет'];
+  const chapterName = index => CHAPTERS[index] || `Глава ${index + 1}`;
+  const THEMES = [
+    { id: 'moon', name: 'Лунная тишина', text: 'Лаванда, звёзды и немного магии', stars: 0, bg: '#151d32', glow: '#45416f' },
+    { id: 'garden', name: 'Тайный сад', text: 'Мятная прохлада вечернего сада', stars: 15, bg: '#173332', glow: '#4c8070' },
+    { id: 'sunset', name: 'Тёплый закат', text: 'Последние лучи уходящего дня', stars: 40, bg: '#3e293d', glow: '#946563' },
+    { id: 'ocean', name: 'Морская глубина', text: 'Бирюза и тишина под волной', stars: 100, bg: '#10303f', glow: '#2f7d8c' },
+    { id: 'amber', name: 'Янтарный вечер', text: 'Мёд, свечи и тёплый свет', stars: 250, bg: '#3a2c1c', glow: '#a07a3c' },
+    { id: 'aurora', name: 'Северное сияние', text: 'Зелёные ленты над ночным небом', stars: 450, bg: '#121d2e', glow: '#3f9a7f' },
+  ];
+  const SAVE_KEY = 'chroma.progress.v1';
+  let storageFailed = false;
+  function readSave() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(SAVE_KEY));
+      if (!raw || raw.version !== 1) return null;
+      const completed = {};
+      for (const [id, result] of Object.entries(raw.completed || {})) {
+        if (!Number.isInteger(+id) || +id < 1 || +id > LEVELS.length || !result || !Number.isInteger(result.moves) || result.moves < 1 || !Number.isInteger(result.stars) || result.stars < 1 || result.stars > 3) continue;
+        completed[id] = { moves: result.moves, stars: result.stars, seconds: Math.max(0, Number(result.seconds) || 0) };
+      }
+      return { version: 1, completed, daily: raw.daily && typeof raw.daily === 'object' ? raw.daily : {}, settings: { sound: false, patterns: false, motion: true, ...(raw.settings || {}) }, theme: THEMES.some(t => t.id === raw.theme) ? raw.theme : 'moon', session: raw.session, totalMoves: Math.max(0, Number(raw.totalMoves) || 0) };
+    } catch { return null; }
+  }
+  const save = readSave() || { version: 1, completed: {}, daily: {}, settings: { sound: false, patterns: false, motion: true }, theme: 'moon', session: null, totalMoves: 0 };
+  // Apply the chosen production style once to profiles from the comparison build.
+  if (save.settings.flowVersion !== 1 || !Object.hasOwn(Water.styles, save.settings.flow)) {
+    save.settings.flow = Water.defaultStyle;
+    save.settings.flowVersion = 1;
+  }
+  let state, selected = null, hintMove = null, busy = false, currentView = 'play', modalKind = null, previousFocus = null;
+  let timerLast = performance.now(), toastTimer, audioContext;
+  const totalStars = () => Object.values(save.completed).reduce((n, r) => n + r.stars, 0);
+  // Every level is open. The suggested level is the first one not yet solved.
+  const nextLevel = () => { const i = LEVELS.findIndex(l => !save.completed[l.id]); return i < 0 ? LEVELS.length : i + 1; };
+  const pad = n => String(n).padStart(2, '0');
+  const time = seconds => `${pad(Math.floor(seconds / 60))}:${pad(Math.floor(seconds % 60))}`;
+  const dateKey = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
+  function dailyLevel(date = dateKey()) {
+    let seed = 0;
+    for (const c of date) seed = (seed * 31 + c.charCodeAt(0)) >>> 0;
+    return { ...LEVELS[15 + seed % 27], id: 'daily', date };
+  }
+  const getLevel = () => state.mode === 'daily' ? dailyLevel(state.date) : LEVELS[state.level - 1];
+  function persist() {
+    save.session = state && !E.won(state.board) ? { ...state, board: E.clone(state.board), history: state.history.slice(-300) } : null;
+    try {
+      localStorage.setItem(SAVE_KEY, JSON.stringify(save));
+      $('saved-state').innerHTML = `Прогресс сохранён ${icon('check')}`;
+    } catch {
+      $('saved-state').textContent = 'Сохранение недоступно';
+      if (!storageFailed) { storageFailed = true; toast('Браузер запретил сохранение. Прогресс доступен до закрытия вкладки.'); }
+    }
+  }
+  function toast(message) {
+    $('toast').textContent = message; $('toast').classList.add('visible');
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => $('toast').classList.remove('visible'), 3500);
+  }
+  function sound(kind) {
+    if (!save.settings.sound) return;
+    try {
+      audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
+      if (audioContext.state === 'suspended') audioContext.resume();
+      const start = audioContext.currentTime;
+      const notes = kind === 'win' ? [392, 494, 587, 784] : kind === 'complete' ? [523, 659] : kind === 'error' ? [185] : [330, 440];
+      notes.forEach((hz, i) => {
+        const osc = audioContext.createOscillator(), gain = audioContext.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(hz, start + i * .09);
+        gain.gain.setValueAtTime(0, start + i * .09); gain.gain.linearRampToValueAtTime(.045, start + i * .09 + .015);
+        gain.gain.exponentialRampToValueAtTime(.001, start + i * .09 + .32);
+        osc.connect(gain); gain.connect(audioContext.destination); osc.start(start + i * .09); osc.stop(start + i * .09 + .35);
+      });
+    } catch { /* Silent mode remains usable when Web Audio is unavailable. */ }
+  }
+  function applySettings() {
+    document.body.classList.remove(...THEMES.map(t => `theme-${t.id}`));
+    const theme = THEMES.find(t => t.id === save.theme);
+    if (totalStars() < theme.stars) save.theme = 'moon';
+    document.body.classList.add(`theme-${save.theme}`);
+    document.body.classList.toggle('reduce-motion', !save.settings.motion);
+    $('sound-button').setAttribute('aria-pressed', String(!!save.settings.sound));
+    $('sound-button').setAttribute('aria-label', save.settings.sound ? 'Выключить звук' : 'Включить звук');
+  }
+  function newState(level, mode = 'normal', date) {
+    const data = mode === 'daily' ? dailyLevel(date) : LEVELS[level - 1];
+    return { level: mode === 'daily' ? 1 : level, mode, date: mode === 'daily' ? data.date : null, board: E.clone(data.board), history: [], moves: 0, elapsed: 0, extra: false, started: false, hints: 0 };
+  }
+  function validSession(s) {
+    if (!s || !['normal', 'daily'].includes(s.mode) || !Number.isInteger(s.level) || s.level < 1 || s.level > LEVELS.length) return false;
+    if (s.mode === 'daily' && s.date !== dateKey()) return false;
+    const level = s.mode === 'daily' ? dailyLevel(s.date) : LEVELS[s.level - 1];
+    if (!E.validBoard(s.board, level.colors) || E.won(s.board) || !Number.isInteger(s.moves) || s.moves < 0 || !Number.isFinite(s.elapsed) || s.elapsed < 0 || s.elapsed > 1e8 || !Array.isArray(s.history) || s.history.length > 300) return false;
+    if (!!s.extra !== (s.board.length === level.board.length + 1)) return false;
+    if (!s.history.every(h => h && E.validBoard(h.board, level.colors) && Number.isInteger(h.moves) && h.moves >= 0 && h.moves <= s.moves && h.board.length === s.board.length)) return false;
+    return true;
+  }
+  state = validSession(save.session) ? save.session : newState(nextLevel());
+  function startLevel(level, mode = 'normal') {
+    if (busy) return;
+    closeModal();
+    state = newState(level, mode); selected = null; hintMove = null; timerLast = performance.now();
+    changeView('play'); render(); persist();
+    if (mode === 'daily') toast(save.daily[state.date] ? 'Можно пройти ещё раз. Задача дня уже решена.' : 'Новая задача дня. Удачи!');
+  }
+  function changeView(view) {
+    if (busy) return;
+    currentView = view;
+    for (const name of ['play', 'levels', 'collection']) $('view-' + name).hidden = name !== view;
+    window.scrollTo(0, 0); // a level picked deep in the long list must not open with the board scrolled away
+    document.querySelectorAll('[data-view]').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+    const titles = { play: ['Всё в своём цвете<span>.</span>', 'Найдите порядок. Насладитесь процессом.', 'Игра'], levels: ['Каждый шаг — новый оттенок<span>.</span>', 'Продолжайте свою маленькую цветовую историю.', 'Уровни'], collection: ['Выберите своё настроение<span>.</span>', 'Пространство, в котором приятно задержаться.', 'Коллекция'] };
+    $('page-title').innerHTML = titles[view][0]; $('page-subtitle').textContent = titles[view][1]; $('breadcrumb-current').textContent = titles[view][2];
+    if (view === 'levels') {
+      renderLevels();
+      // Long lists open at the chapter of the level being played.
+      if (state.level > CHAPTER_SIZE) requestAnimationFrame(() => $('level-grid').querySelector('.level-tile.current')?.scrollIntoView({ block: 'center' }));
+    }
+    if (view === 'collection') renderThemes();
+    if (view === 'play') requestAnimationFrame(sizeBoard);
+    timerLast = performance.now();
+  }
+  function renderBoard() {
+    const board = $('board');
+    let slots = Array.from(board.querySelectorAll('[data-bottle]'));
+    if (slots.length !== state.board.length) {
+      slots = state.board.map((b, index) => {
+        const button = document.createElement('button');
+        button.dataset.bottle = index;
+        button.innerHTML = '<canvas aria-hidden="true"></canvas><span class="bottle-number"></span>';
+        return button;
+      });
+      board.replaceChildren(...slots);
+      sizeBoard();
+    }
+    state.board.forEach((b, i) => {
+      const slot = slots[i], closed = E.complete(b);
+      slot.className = ['bottle-slot', selected === i && 'selected', closed && 'is-complete',
+        hintMove?.[0] === i && 'hint-from', hintMove?.[1] === i && 'hint-to'].filter(Boolean).join(' ');
+      slot.setAttribute('aria-pressed', String(selected === i));
+      slot.disabled = closed;
+      const signature = b.join('.') + '/' + !!save.settings.patterns;
+      if (slot.dataset.signature === signature) return;
+      slot.dataset.signature = signature;
+      const desc = b.length ? b.slice().reverse().map(c => COLORS[c].name).join(', ') : 'пустая';
+      slot.setAttribute('aria-label', 'Бутылочка ' + (i + 1) + ': ' + desc + (closed ? ', собрана' : ''));
+      slot.lastElementChild.innerHTML = closed ? icon('check') : pad(i + 1);
+      Water.still(slot.firstElementChild, b, save.settings.patterns);
+    });
+  }
+  function sizeBoard() {
+    const board = $('board'), scene = $('board-scene');
+    if (currentView !== 'play' || !scene.clientWidth) return;
+    const style = getComputedStyle(scene);
+    const width = scene.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+    const count = state.board.length, columns = count <= 5 ? count : Math.ceil(count / 2);
+    // Boards with nine colours have six bottles per row; tighter gaps keep them wide enough to tap.
+    const gap = columns >= 6 ? (innerWidth <= 760 ? 7 : 12) : innerWidth <= 760 ? 12 : 15;
+    const w = Math.max(12, Math.min(count > 5 ? 76 : 91, Math.floor((width - (columns - 1) * gap) / columns)));
+    board.style.columnGap = gap + 'px';
+    board.style.setProperty('--bottle-width', w + 'px');
+    board.style.setProperty('--bottle-height', w * 2.4 + 'px');
+    board.style.gridTemplateColumns = 'repeat(' + columns + ', ' + w + 'px)';
+  }
+  function message(text, type = '') { $('board-message').textContent = text; $('board-message').className = 'board-message ' + type; }
+  function renderStats() {
+    $('move-count').textContent = state.moves;
+    $('timer').textContent = time(state.elapsed);
+    const count = state.board.filter(E.complete).length;
+    $('completion-fill').style.width = `${count / getLevel().colors * 100}%`;
+    $('undo-button').disabled = !state.history.length || E.won(state.board);
+    $('hint-button').disabled = busy || E.won(state.board);
+    $('extra-button').disabled = state.extra || E.won(state.board);
+    $('restart-button').disabled = false;
+    $('extra-count').textContent = state.extra ? '✓' : '+1';
+    $('total-stars').textContent = totalStars();
+    const done = Object.keys(save.completed).length;
+    $('journey-fill').style.width = `${done / LEVELS.length * 100}%`;
+    $('journey-label').textContent = `${done} из ${LEVELS.length} уровней`;
+    $('nav-level').textContent = pad(nextLevel());
+    $('daily-button').innerHTML = `${save.daily[dateKey()] ? 'Решено · сыграть ещё' : 'Попробовать'} ${icon(save.daily[dateKey()] ? 'check' : 'arrow')}`;
+  }
+  function render() {
+    $('level-title').textContent = state.mode === 'daily' ? 'Задача дня' : `Уровень ${pad(state.level)}`;
+    $('chapter-name').textContent = state.mode === 'daily' ? 'МАЛЕНЬКАЯ ПОБЕДА' : chapterName(Math.floor((state.level - 1) / CHAPTER_SIZE)).toUpperCase();
+    const dailyDate = new Intl.DateTimeFormat('ru', { day: 'numeric', month: 'long' }).format(new Date());
+    $('daily-date').textContent = dailyDate + ' · каждый день новая задача';
+    renderBoard(); renderStats();
+    if (E.won(state.board)) message('Каждый цвет нашёл своё место. Красиво!');
+    else if (hintMove) message(`Перелейте из бутылочки ${hintMove[0] + 1} в ${hintMove[1] + 1}`, 'hint');
+    else if (selected !== null) message('Теперь выберите пустую бутылочку или такой же верхний цвет');
+    else message(state.level === 1 && state.mode === 'normal' ? 'Нажмите на бутылочку, затем — на пустую' : 'Выберите бутылочку, затем — куда перелить');
+  }
+  let activePour = null;
+  function endPour() {
+    if (activePour) activePour();
+  }
+  function animatePour(from, to, sourceBoard, destBoard, count, onFinish) {
+    if (!save.settings.motion || document.hidden || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      onFinish(); return;
+    }
+    const source = $('board').querySelector('[data-bottle="' + from + '"]');
+    const dest = $('board').querySelector('[data-bottle="' + to + '"]');
+    const overlay = $('water-overlay'), scene = $('board-scene');
+    const frame = scene.getBoundingClientRect(), src = source.getBoundingClientRect(), dst = dest.getBoundingClientRect();
+    const margin = Math.ceil(src.width * 2.6);
+    const left = Math.min(src.left, dst.left) - frame.left - margin;
+    const top = Math.min(src.top, dst.top) - frame.top - margin;
+    const width = Math.max(src.right,dst.right) - frame.left - left + margin;
+    const height = Math.max(src.bottom,dst.bottom) - frame.top - top + src.width * .35;
+    function pose(r) { return { x:r.left-frame.left-left+r.width/2, y:r.top-frame.top-top+r.width*.10, s:r.width/100 }; }
+    const a=pose(src), b=pose(dst);
+    const roomLeft=dst.left+dst.width/2-frame.left;
+    const roomRight=frame.width-roomLeft;
+    const forward=dst.left>=src.left?1:-1;
+    const needed=2.25*src.width;
+    const direction=(forward===1?roomLeft:roomRight)>=needed ? forward : (roomLeft>=roomRight?1:-1);
+    let raf=0;
+    const cleanup=() => {
+      cancelAnimationFrame(raf);
+      activePour=null;
+      source.classList.remove('pouring'); dest.classList.remove('pouring');
+      overlay.hidden=true; scene.classList.remove('in-motion');
+      onFinish();
+    };
+    activePour=cleanup;
+    try {
+      const animation=Water.makePour(sourceBoard,destBoard,count,save.settings.flow,save.settings.patterns);
+      Object.assign(overlay.style,{left:left+'px',top:top+'px',width:width+'px',height:height+'px'});
+      const ctx=Water.prepareCanvas(overlay,width,height);
+      scene.classList.add('in-motion');overlay.hidden=false;
+      source.classList.add('pouring');dest.classList.add('pouring');
+      const started=performance.now();
+      function draw(now) {
+        const t=Math.min(1,Math.max(0,(now-started)/animation.duration));
+        if(t>=1){cleanup();return;}
+        try {ctx.clearRect(0,0,width,height);animation.draw(ctx,a,b,t,direction);}
+        catch(error){console.warn('CHROMA water',error);cleanup();return;}
+        raf=requestAnimationFrame(draw);
+      }
+      draw(started);
+    } catch(error) { console.warn('CHROMA water',error); if(activePour)cleanup(); }
+  }
+  function chooseBottle(index) {
+    if (busy || E.won(state.board) || E.complete(state.board[index])) return;
+    state.started = true;
+    if (selected === index) { selected = null; hintMove = null; render(); return; }
+    if (selected === null) {
+      if (!state.board[index].length) { message('Сначала выберите бутылочку с жидкостью'); return; }
+      selected = index; hintMove = null; sound('tap'); render(); return;
+    }
+    const result = E.pour(state.board, selected, index);
+    if (!result) {
+      sound('error');
+      const node = document.querySelector(`[data-bottle="${index}"]`); node.classList.add('shake'); setTimeout(() => node.classList.remove('shake'), 350);
+      message(state.board[index].length === 4 ? 'Эта бутылочка уже полная' : 'Переливать можно только в такой же верхний цвет или в пустую', 'warning');
+      if (state.board[index].length) { selected = index; hintMove = null; renderBoard(); }
+      return;
+    }
+    const from = selected, sourceBoard = state.board[from], destBoard = state.board[index];
+    selected = null; hintMove = null;
+    sound('pour');
+    state.history.push({ board: E.clone(state.board), moves: state.moves });
+    state.board = result.board; state.moves++; save.totalMoves++;
+    render();
+    const showWin = E.won(state.board) ? finish() : null;
+    if (!showWin) persist();
+    animatePour(from, index, sourceBoard, destBoard, result.count, () => { if (showWin) showWin(); });
+    if (showWin) return;
+    else if (E.complete(state.board[index])) { sound('complete'); message('Ещё один цвет на своём месте'); }
+    else if (!hasUsefulMoves()) message('Нужен другой путь. Отмените ход или добавьте бутылочку.', 'warning');
+  }
+  function hasUsefulMoves() {
+    return state.board.some((b, from) => b.length && !E.complete(b) && state.board.some((d, to) => E.amount(state.board, from, to) && (d.length || !E.uniform(b))));
+  }
+  function undo() {
+    if (!state.history.length || E.won(state.board)) return;
+    const previous = state.history.pop(); state.board = previous.board; state.moves = previous.moves;
+    selected = null; hintMove = null; render(); persist(); sound('tap');
+  }
+  function restart() {
+    if (busy) return;
+    if (!state.moves && !state.extra) { selected = null; hintMove = null; render(); return; }
+    showModal('restart', `<span class="modal-eyebrow">МОЖНО НАЧАТЬ СНАЧАЛА</span><h2 id="modal-title">Свежий взгляд?</h2><p>Текущая расстановка вернётся к началу уровня. Пройденные уровни и звёзды сохранятся.</p><button class="modal-primary" id="confirm-restart">Начать заново ${icon('reset')}</button><button class="modal-secondary" id="cancel-restart">Продолжить игру</button>`);
+    $('confirm-restart').onclick = () => { const { level, mode, date } = state; state = newState(level, mode, date); selected = null; hintMove = null; closeModal(); render(); persist(); };
+    $('cancel-restart').onclick = closeModal;
+  }
+  function extraBottle() {
+    if (busy || state.extra || E.won(state.board)) return;
+    state.board.push([]); state.extra = true;
+    // Keep undo snapshots dimensionally consistent; the extra bottle is a
+    // permanent assist for this attempt, including when earlier moves undo.
+    state.history.forEach(h => h.board.push([]));
+    selected = null; hintMove = null; render(); persist(); sound('tap'); toast('Чуть больше свободы. Дополнительная бутылочка добавлена.');
+  }
+  function certifiedMove(level) {
+    if (state.extra && state.board.at(-1).length) return null;
+    const matches = b => b.every((bottle, i) => bottle.join('.') === state.board[i].join('.'));
+    let b = E.clone(level.board);
+    for (const move of level.solution) {
+      if (matches(b)) return move;
+      const next = E.pour(b, move[0], move[1]);
+      if (!next) return null;
+      b = next.board;
+    }
+    return null;
+  }
+  let activeHint = null;
+  function cancelHint() {
+    if (!activeHint) return;
+    activeHint(); activeHint=null; busy=false;
+    renderStats();
+  }
+  function hint() {
+    if (busy || E.won(state.board)) return;
+    selected=null; hintMove=null; renderBoard();
+    const level=getLevel();
+    function reveal(move) {
+      if (move) {hintMove=move; state.hints++; render(); persist();}
+      else {render(); message('Путь пока не найден. Попробуйте отменить ход или добавить бутылочку.', 'warning');}
+    }
+    // While the board is still on the stored certificate path, its next move is instant.
+    const certified = certifiedMove(level);
+    if (certified) {reveal(certified);return;}
+    busy=true; renderStats();message('Ищем путь… Можно продолжать играть.', 'hint');
+    let worker, timer, url;
+    const finishSearch=move=>{cancelHint();reveal(move);};
+    activeHint=() => { clearTimeout(timer); worker?.terminate(); if(url)URL.revokeObjectURL(url); };
+    try {
+      url=URL.createObjectURL(new Blob([E.workerSource()],{type:'text/javascript'}));
+      worker=new Worker(url);
+      worker.onmessage=e=>{if(activeHint===dispose) finishSearch(e.data);};
+      worker.onerror=()=>{if(activeHint===dispose) finishSearch(null);};
+      const dispose=activeHint;
+      timer=setTimeout(()=>{if(activeHint===dispose) finishSearch(null);},3600);
+      worker.postMessage(state.board);
+    } catch {finishSearch(null);}
+  }
+  function finish() {
+    selected = null; hintMove = null;
+    const level = getLevel(), stars = state.moves <= level.par + 2 ? 3 : state.moves <= level.par + 7 ? 2 : 1;
+    let improvement = 0;
+    if (state.mode === 'daily') save.daily[state.date] = { moves: state.moves, seconds: state.elapsed };
+    else {
+      const old = save.completed[state.level]; improvement = Math.max(0, stars - (old?.stars || 0));
+      save.completed[state.level] = { moves: Math.min(old?.moves ?? Infinity, state.moves), stars: Math.max(old?.stars || 0, stars), seconds: Math.min(old?.seconds ?? Infinity, state.elapsed) };
+    }
+    persist(); renderStats(); sound('win');
+    const daily = state.mode === 'daily', final = !daily && state.level === LEVELS.length;
+    const remaining = LEVELS.length - Object.keys(save.completed).length;
+    const finalText = remaining ? `Это последний уровень. Непройденных осталось: ${remaining} — их можно открыть в списке уровней.` : `Вы прошли все ${LEVELS.length} уровней. Можно вернуться за недостающими звёздами.`;
+    return () => {
+    confetti();
+    showModal('win', `<div class="win-content"><div class="win-art">${icon('drop')}</div><span class="modal-eyebrow">${daily ? 'ЗАДАЧА ДНЯ РЕШЕНА' : final ? 'ВСЯ ПАЛИТРА СОБРАНА' : 'КАЖДЫЙ ЦВЕТ НА СВОЁМ МЕСТЕ'}</span><h2 id="modal-title">${final ? 'Полная гармония.' : 'Порядок найден.'}</h2><p>${daily ? 'Сегодня вы подарили себе маленькую победу.' : final ? finalText :'Вдохните. Полюбуйтесь. И добавьте ещё немного цвета.'}</p><div class="win-stars">${Array.from({ length: 3 }, (_, i) => icon('star', i < stars ? '' : 'empty')).join('')}</div><div class="win-metrics"><div><b>${state.moves}</b><span>ходов</span></div><div><b>${time(state.elapsed)}</b><span>ваше время</span></div></div><div class="win-reward">${daily ? 'Новая задача появится завтра' : improvement ? `+${improvement} ${improvement === 1 ? 'звезда' : 'звезды'} в вашу коллекцию` : 'Звёзды и лучший результат сохранены'}</div><button class="modal-primary" id="next-level">${daily ? 'Продолжить историю' : final ? 'Все уровни' : 'Следующий уровень'} ${icon('arrow')}</button><button class="modal-secondary" id="win-levels">Выбрать уровень</button></div>`);
+    $('next-level').onclick = () => {
+      if (final) { closeModal(); changeView('levels'); }
+      else startLevel(daily ? nextLevel() : state.level + 1);
+    };
+    $('win-levels').onclick = () => { closeModal(); changeView('levels'); };
+    };
+  }
+  function confetti() {
+    if (!save.settings.motion || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    $('confetti').innerHTML = Array.from({ length: 40 }, (_, i) => `<i class="confetti-piece" style="left:${Math.random() * 100}%;background:${COLORS[i % COLORS.length].body};animation-delay:${Math.random() * .7}s;animation-duration:${2 + Math.random()}s;transform:rotate(${Math.random() * 180}deg)"></i>`).join('');
+    setTimeout(() => $('confetti').replaceChildren(), 4200);
+  }
+  function renderLevels() {
+    $('levels-complete').textContent = `${Object.keys(save.completed).length} / ${LEVELS.length} пройдено`;
+    $('levels-subtitle').textContent = `${LEVELS.length} головоломок. Все уровни открыты — играйте в любом порядке.`;
+    const chapters = Array.from({ length: Math.ceil(LEVELS.length / CHAPTER_SIZE) }, (_, c) => {
+      const levels = LEVELS.slice(c * CHAPTER_SIZE, (c + 1) * CHAPTER_SIZE);
+      return { c, levels, stars: levels.reduce((n, l) => n + (save.completed[l.id]?.stars || 0), 0) };
+    });
+    const playing = state.mode === 'normal' ? Math.floor((state.level - 1) / CHAPTER_SIZE) : -1;
+    $('chapter-nav').innerHTML = chapters.map(({ c, levels, stars }) => `<button class="${c === playing ? 'current' : ''}" data-chapter="${c}" aria-label="Глава ${c + 1}: уровни ${levels[0].id}–${levels.at(-1).id}, звёзд ${stars} из ${levels.length * 3}">${levels[0].id}–${levels.at(-1).id}<small>${icon('star')}${stars}</small></button>`).join('');
+    $('level-grid').innerHTML = chapters.map(({ c, levels, stars }) => `<section class="chapter" id="chapter-${c}"><h3><span>${pad(c + 1)} / ${chapterName(c)}</span><small>${icon('star')}${stars} / ${levels.length * 3}</small></h3><div class="levels-row">${levels.map(l => {
+      const result = save.completed[l.id];
+      return `<button class="level-tile${l.id === state.level && state.mode === 'normal' ? ' current' : ''}${result ? ' solved' : ''}" data-level="${l.id}" aria-label="Уровень ${l.id}${result ? `, звёзд: ${result.stars}, лучший результат: ${result.moves} ходов` : ', не пройден'}">${pad(l.id)}<span class="tile-stars">${result ? Array.from({ length: 3 }, (_, i) => icon('star', i < result.stars ? '' : 'empty')).join('') : ''}</span></button>`;
+    }).join('')}</div></section>`).join('');
+  }
+  function renderThemes() {
+    $('theme-grid').innerHTML = THEMES.map(t => {
+      const locked = totalStars() < t.stars, active = save.theme === t.id;
+      return `<article class="theme-card"><div class="theme-preview" style="--preview-bg:${t.bg};--preview-glow:${t.glow}">${[0, 1, 2].map((n) => `<span class="preview-tube"><i style="--liquid:${COLORS[n].body}"></i><i style="--liquid:${COLORS[(n + 1) % 3].body}"></i><i style="--liquid:${COLORS[n].body}"></i></span>`).join('')}</div><div class="theme-content"><h3>${t.name}</h3><p>${t.text}</p><button class="theme-select" data-theme="${t.id}" ${locked || active ? 'disabled' : ''}>${icon(locked ? 'lock' : active ? 'check' : 'palette')}${locked ? `Откроется за ${t.stars} звёзд` : active ? 'Выбрано' : 'Выбрать оформление'}</button></div></article>`;
+    }).join('');
+  }
+  function showModal(kind, html) {
+    if (!$('modal-backdrop').hidden) previousFocus ||= document.activeElement;
+    else previousFocus = document.activeElement;
+    modalKind = kind; $('modal-content').innerHTML = html; $('modal-backdrop').hidden = false;
+    timerLast = performance.now();
+    requestAnimationFrame(() => $('modal-content').querySelector('button')?.focus());
+  }
+  function closeModal() {
+    $('modal-backdrop').hidden = true; modalKind = null; timerLast = performance.now();
+    if (previousFocus?.isConnected) previousFocus.focus(); previousFocus = null;
+  }
+  function showHelp() {
+    showModal('help', `<span class="modal-eyebrow">ВСЁ НАЧИНАЕТСЯ С КАПЛИ</span><h2 id="modal-title">Найдите свой порядок.</h2><div class="help-step"><span class="step-number">1</span><div><h3>Выберите бутылочку</h3><p>Нажмите на ту, из которой хотите перелить жидкость. Она немного приподнимется.</p></div></div><div class="help-step"><span class="step-number">2</span><div><h3>Найдите подходящее место</h3><p>Переливать можно в пустую бутылочку или на такой же верхний цвет, если есть свободное место.</p></div></div><div class="help-step"><span class="step-number">3</span><div><h3>Соберите все оттенки</h3><p>В каждой полной бутылочке должен остаться один цвет. Собранная бутылочка закрывается пробкой.</p></div></div><p class="key-note"><kbd>Z</kbd> — отменить · <kbd>R</kbd> — заново · <kbd>H</kbd> — подсказка<br>Цифры <kbd>1–9</kbd> выбирают бутылочки. <kbd>Esc</kbd> снимает выбор.<br>Все уровни открыты — играйте в любом порядке. Подсказки и отмены бесплатны и без ограничений. Дополнительная бутылочка — одна на попытку. Звёзды зависят от числа ходов: три — до ориентира +2, две — до +7, одна — за завершение. Ориентир — найденный путь, а не доказанный минимум.</p><button class="modal-primary" id="help-done">Всё понятно ${icon('check')}</button>`);
+    $('help-done').onclick = closeModal;
+  }
+  function showSettings() {
+    showModal('settings', `<span class="modal-eyebrow">ВАШ ЛИЧНЫЙ РИТМ</span><h2 id="modal-title">Как вам комфортнее?</h2>${[['sound', 'Мягкие звуки', 'Тихие ноты при переливании'], ['patterns', 'Символы на цветах', 'Помогают различать похожие оттенки'], ['motion', 'Плавная анимация', 'Полёт бутылочек и маленький праздник']].map(([id, title, desc]) => `<div class="settings-row"><div><h3>${title}</h3><p>${desc}</p></div><button class="toggle" role="switch" aria-label="${title}" aria-checked="${!!save.settings[id]}" data-setting="${id}"><span></span></button></div>`).join('')}<div class="settings-row"><label for="flow-style">Переливание</label><select id="flow-style">${Object.entries(Water.styles).map(([key, style])=>`<option value="${key}" ${key===save.settings.flow?'selected':''}>${style.name}</option>`).join('')}</select></div><p>Прогресс сохраняется на этом устройстве автоматически. Интернет не нужен. При удалении игры или очистке её данных прогресс удалится.</p><button class="modal-primary" id="settings-done">Продолжить игру ${icon('arrow')}</button>`);
+    $('flow-style').onchange = e => {save.settings.flow=e.target.value;persist();};
+    $('settings-done').onclick = closeModal;
+  }
+  function showProfile() {
+    const results = Object.values(save.completed);
+    showModal('profile', `<span class="modal-eyebrow">ЦВЕТ ВАШИХ МАЛЕНЬКИХ ПОБЕД</span><h2 id="modal-title">Ваш прогресс.</h2><p>Каждый собранный цвет — ещё немного порядка.</p><div class="stat-grid"><div><b>${results.length}</b><span>пройдено уровней</span></div><div><b>${totalStars()}</b><span>собрано звёзд</span></div><div><b>${save.totalMoves}</b><span>всего переливаний</span></div><div><b>${Object.keys(save.daily).length}</b><span>решено задач дня</span></div></div><button class="modal-primary" id="profile-done">Продолжить ${icon('arrow')}</button>`);
+    $('profile-done').onclick = closeModal;
+  }
+  // A new action finishes the visual tail. The move itself has already been saved.
+  function interruptForInput(event) {
+    if (event.type === 'keydown' && !/^[1-9zZяЯrRкКhHрР]$|^Escape$/.test(event.key)) return;
+    if (activePour) {
+      const winning = E.won(state.board);
+      endPour();
+      if (winning) {event.preventDefault();event.stopImmediatePropagation();return;}
+    }
+    if (activeHint) cancelHint();
+  }
+  document.addEventListener('click',interruptForInput,true);
+  document.addEventListener('keydown',interruptForInput,true);
+  document.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => changeView(button.dataset.view)));
+  document.querySelector('.brand').addEventListener('click', e => { e.preventDefault(); changeView('play'); });
+  $('board').addEventListener('click', e => { const b = e.target.closest('[data-bottle]'); if (b) chooseBottle(+b.dataset.bottle); });
+  $('undo-button').onclick = undo; $('restart-button').onclick = restart; $('hint-button').onclick = hint; $('extra-button').onclick = extraBottle;
+  $('daily-button').onclick = () => {
+    if (busy) return;
+    if (state.mode === 'daily' && state.date === dateKey() && !E.won(state.board)) { changeView('play'); return; }
+    if (state.moves && !E.won(state.board)) {
+      showModal('daily', `<span class="modal-eyebrow">ЕЩЁ ОДНА МАЛЕНЬКАЯ ИСТОРИЯ</span><h2 id="modal-title">Перейти к задаче дня?</h2><p>Текущая попытка будет начата заново при возвращении. Пройденные уровни и звёзды сохранятся.</p><button class="modal-primary" id="confirm-daily">Начать задачу дня ${icon('sun')}</button><button class="modal-secondary" id="cancel-daily">Остаться здесь</button>`);
+      $('confirm-daily').onclick = () => startLevel(1, 'daily'); $('cancel-daily').onclick = closeModal;
+    } else startLevel(1, 'daily');
+  };
+  for (const id of ['help-button', 'game-help', 'footer-help']) $(id).onclick = showHelp;
+  for (const id of ['settings-button', 'mobile-settings']) $(id).onclick = showSettings;
+  $('profile-button').onclick = showProfile;
+  $('sound-button').onclick = () => { save.settings.sound = !save.settings.sound; applySettings(); persist(); if (save.settings.sound) sound('tap'); };
+  $('chapter-nav').onclick = e => { const b = e.target.closest('[data-chapter]'); if (b) $('chapter-' + b.dataset.chapter)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); };
+  $('level-grid').onclick = e => { const b = e.target.closest('[data-level]'); if (b && !b.disabled) { if (+b.dataset.level === state.level && state.mode === 'normal' && !E.won(state.board)) changeView('play'); else startLevel(+b.dataset.level); } };
+  $('theme-grid').onclick = e => { const b = e.target.closest('[data-theme]'); if (!b || b.disabled) return; save.theme = b.dataset.theme; applySettings(); persist(); renderThemes(); toast('Новое настроение уже здесь.'); };
+  $('modal-content').onclick = e => { const b = e.target.closest('[data-setting]'); if (!b) return; const setting = b.dataset.setting; save.settings[setting] = !save.settings[setting]; b.setAttribute('aria-checked', String(save.settings[setting])); applySettings(); renderBoard(); persist(); if (setting === 'sound') sound('tap'); };
+  $('modal-close').onclick = closeModal;
+  $('modal-backdrop').onclick = e => { if (e.target === $('modal-backdrop')) closeModal(); };
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (modalKind) {
+      if (e.key === 'Escape') { e.preventDefault(); closeModal(); }
+      if (e.key === 'Tab') {
+        const focusables = [...$('modal').querySelectorAll('button:not(:disabled),a[href],input')];
+        const first = focusables[0], last = focusables.at(-1);
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+      return;
+    }
+    if (currentView !== 'play' || busy) return;
+    const key = e.key.toLowerCase();
+    if (key === 'z' || key === 'я') { e.preventDefault(); undo(); }
+    else if (key === 'r' || key === 'к') { e.preventDefault(); restart(); }
+    else if (key === 'h' || key === 'р') { e.preventDefault(); hint(); }
+    else if (key === 'Escape') { selected = null; hintMove = null; render(); }
+    else if (/^[1-9]$/.test(key) && +key <= state.board.length) chooseBottle(+key - 1);
+  });
+  window.addEventListener('resize', () => { endPour(); sizeBoard(); });
+  window.addEventListener('pagehide', persist);
+  document.addEventListener('visibilitychange', () => { timerLast = performance.now(); if (document.hidden) {endPour();cancelHint();persist();} });
+  setInterval(() => {
+    const now = performance.now(), delta = (now - timerLast) / 1000; timerLast = now;
+    if (!document.hidden && currentView === 'play' && !modalKind && state.started && !E.won(state.board)) {
+      state.elapsed += Math.min(delta, 2); $('timer').textContent = time(state.elapsed);
+    }
+  }, 1000);
+  setInterval(() => { if (!busy && state.started && !E.won(state.board)) persist(); }, 5000);
+  // Hooks for the Android shell: the system Back button and saving before the app is paused.
+  window.chromaBack = () => {
+    if (activePour) endPour();
+    if (modalKind) { closeModal(); return true; }
+    if (currentView !== 'play') { cancelHint(); changeView('play'); return true; }
+    if (selected !== null || hintMove) { selected = null; hintMove = null; render(); return true; }
+    return false;
+  };
+  window.chromaSave = () => { endPour(); cancelHint(); persist(); };
+  applySettings(); render(); persist();
+})();
+
+</script>
+<!-- Web-only additions (GitHub Pages build): offline service worker, persistent storage, install hint for iPhone/Android.
+     Injected before </body> by tools/build_web.cjs; the APK does not include this. -->
+<style>
+.web-install{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:200;width:min(440px,calc(100% - 24px));
+  background:#2b2b3a;color:#ece8f6;border:1px solid #ffffff22;border-radius:16px;box-shadow:0 14px 40px #0004;padding:16px 18px 14px;font:13px/1.5 var(--font,Arial,sans-serif)}
+.web-install h2{margin:0 0 8px;font-size:15px;font-weight:650;color:#fff}
+.web-install ol{margin:0;padding-left:20px;display:grid;gap:5px}
+.web-install b{color:#fff;font-weight:600}
+.web-install .web-note{margin:10px 0 0;color:#b9b3cc;font-size:12px}
+.web-install .web-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;justify-content:flex-end}
+.web-install button,.web-install a.web-btn{appearance:none;border:0;border-radius:10px;padding:9px 14px;font:600 13px/1.2 var(--font,Arial,sans-serif);cursor:pointer;text-decoration:none}
+.web-install .web-primary{background:#907af5;color:#fff}
+.web-install .web-secondary{background:#ffffff1a;color:#ece8f6}
+</style>
+<script>
+(() => {
+  const host = location.hostname;
+  if (host === 'appassets.androidplatform.net') return;
+  const local = host === 'localhost' || host === '127.0.0.1';
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || local)) {
+    addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+  }
+  const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  if (standalone) {
+    if (navigator.storage && navigator.storage.persist) navigator.storage.persisted().then(on => on || navigator.storage.persist()).catch(() => {});
+    return;
+  }
+  const KEY = 'chroma.web.installHint.v1';
+  try { if (localStorage.getItem(KEY)) return; } catch (_) {}
+  const ua = navigator.userAgent;
+  const ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const android = /Android/.test(ua);
+  if (!ios && !android) return;
+
+  const box = document.createElement('aside');
+  box.className = 'web-install';
+  box.setAttribute('role', 'dialog');
+  box.setAttribute('aria-label', 'Как играть без интернета');
+  box.innerHTML = ios ? `
+    <h2>Играйте без интернета</h2>
+    <ol>
+      <li>Откройте эту страницу в <b>Safari</b>, если она открылась внутри другого приложения.</li>
+      <li>Нажмите <b>«Поделиться»</b>. В iOS 26 и новее сначала нажмите <b>•••</b> рядом с адресом.</li>
+      <li>Выберите <b>«На экран „Домой“»</b>, включите <b>«Открыть как веб‑приложение»</b> и нажмите <b>«Добавить»</b>.</li>
+      <li>Запустите CHROMA с иконки один раз при интернете. Дальше игра работает офлайн.</li>
+    </ol>
+    <p class="web-note">Прогресс хранится в игре с иконки, отдельно от Safari.</p>
+    <div class="web-actions"><button type="button" class="web-primary" data-close>Понятно</button></div>` : `
+    <h2>Установите игру</h2>
+    <p>Скачайте приложение для Android или добавьте игру на главный экран через меню браузера. После установки интернет не нужен.</p>
+    <div class="web-actions">
+      <button type="button" class="web-secondary" data-close>Позже</button>
+      <button type="button" class="web-secondary" data-install hidden>Добавить на экран</button>
+      <a class="web-btn web-primary" href="https://github.com/ase1i/chroma/releases/latest/download/CHROMA.apk">Скачать APK</a>
+    </div>`;
+  const close = () => { box.remove(); try { localStorage.setItem(KEY, '1'); } catch (_) {} };
+  box.querySelector('[data-close]').addEventListener('click', close);
+  const installButton = box.querySelector('[data-install]');
+  if (installButton) addEventListener('beforeinstallprompt', event => {
+    event.preventDefault();
+    installButton.hidden = false;
+    installButton.onclick = () => { event.prompt(); event.userChoice.then(choice => { if (choice.outcome === 'accepted') close(); }); };
+  });
+  addEventListener('appinstalled', close);
+  const show = () => document.body.appendChild(box);
+  document.readyState === 'loading' ? addEventListener('DOMContentLoaded', show) : show();
+})();
+</script>
+</body>
+</html>
